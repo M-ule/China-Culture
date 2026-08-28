@@ -27,13 +27,13 @@ h2 { font-size:15px; margin:16px 0 8px; padding-left:8px; border-left:3px solid 
 .settings label { font-size:12px; color:#374151; font-weight:500; }
 .table-wrap { overflow-x:auto; }
 table { width:100%; border-collapse:collapse; margin-bottom:4px; font-size:12px; min-width:760px; }
-th, td { border:1px solid var(--wrks-viz-border); padding:5px 8px; text-align:left; }
+th, td { border:1px solid var(--wrks-viz-border); padding:5px 8px; text-align:center; vertical-align:middle; }
 th { background:var(--header-bg); font-weight:600; font-size:11px; color:#374151; }
-td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; } td.calc { background:var(--calc-bg); color:#374151; }
+td.num, th.num { text-align:center; font-variant-numeric:tabular-nums; } td.calc { background:var(--calc-bg); color:#374151; }
 td.input-cell { background:var(--input-bg); padding:2px 4px; position:relative; } td.input-cell::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--input-border); }
 input, select { font-family:inherit; font-size:12px; border:1px solid var(--input-border); background:#fffbeb; padding:4px 6px; border-radius:4px; width:100%; min-width:60px; }
 input:focus, select:focus { outline:none; border-color:var(--input-focus); box-shadow:0 0 0 2px rgba(245,158,11,.2); }
-input[type=number] { text-align:right; } select { background:#fffbeb; cursor:pointer; } .settings input, .settings select { width:auto; min-width:90px; }
+input[type=number] { text-align:center; } select { background:#fffbeb; cursor:pointer; text-align:center; text-align-last:center; } .settings input, .settings select { width:auto; min-width:90px; }
 .badge { display:inline-block; padding:2px 6px; border-radius:4px; font-size:11px; font-weight:600; } .badge-ok { background:#d1fae5; color:#065f46; } .badge-bad { background:#fee2e2; color:#991b1b; }
 .remain-ok { background:#d1fae5 !important; color:#065f46 !important; font-weight:700; }
 .remain-bad { background:#fee2e2 !important; color:#991b1b !important; font-weight:700; }
@@ -48,6 +48,47 @@ input[type=number] { text-align:right; } select { background:#fffbeb; cursor:poi
 .step-btn:first-child { border-radius:0 4px 0 0; border-bottom:0; } .step-btn:last-child { border-radius:0 0 4px 0; } .step-btn:hover { background:#fde68a; color:#111827; }
 .step-one::-webkit-inner-spin-button, .step-one::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; } .step-one { -moz-appearance:textfield; }
 .settings .step-wrap { width:92px; } .settings .step-wrap input { width:72px; min-width:0; }
+
+/* 생산표 공통 열 정렬
+   1·2단계: 판정까지 동일 위치
+   3단계: 운영시간까지 동일 위치 */
+#t1, #t2, #t3, #tw { table-layout:fixed; }
+
+/* 공통 1~5열: 자원/상품 · 레벨 · 생산방식 · 건물 수 · 운영시간 */
+#t1 th:nth-child(1), #t2 th:nth-child(1), #t3 th:nth-child(1) { width:120px !important; }
+#t1 th:nth-child(2), #t2 th:nth-child(2), #t3 th:nth-child(2) { width:82px !important; }
+#t1 th:nth-child(3), #t2 th:nth-child(3), #t3 th:nth-child(3) { width:136px !important; }
+#t1 th:nth-child(4), #t2 th:nth-child(4), #t3 th:nth-child(4) { width:100px !important; }
+#t1 th:nth-child(5), #t2 th:nth-child(5), #t3 th:nth-child(5) { width:110px !important; }
+
+/* 1·2단계 공통 6~8열: 현재 보유량 · 잔여/부족 · 판정 */
+#t1 th:nth-child(6), #t2 th:nth-child(6) { width:130px !important; }
+#t1 th:nth-child(7), #t2 th:nth-child(7) { width:130px !important; }
+#t1 th:nth-child(8), #t2 th:nth-child(8) { width:95px !important; }
+
+/* 자동 계산 열은 상대적으로 좁게 */
+#t1 th:nth-child(9), #t1 th:nth-child(10) { width:92px !important; }
+#t2 th:nth-child(9), #t2 th:nth-child(10),
+#t2 th:nth-child(11), #t2 th:nth-child(12) { width:92px !important; }
+#t3 th:nth-child(6), #t3 th:nth-child(7), #t3 th:nth-child(8) { width:100px !important; }
+
+/* 표 전체 폭도 열 합계에 맞춰 고정하여 단계마다 공통 열의 세로선이 어긋나지 않도록 함 */
+#t1 { width:1087px !important; min-width:1087px; }
+#t2 { width:1271px !important; min-width:1271px; }
+#t3 { width:848px !important; min-width:848px; }
+
+/* 불가사의 계산기 */
+#tw { width:900px; min-width:900px; }
+#tw th:nth-child(1) { width:88px; }
+#tw th:nth-child(2) { width:126px; }
+#tw th:nth-child(3) { width:126px; }
+#tw th:nth-child(4) { width:88px; }
+#tw th:nth-child(5), #tw th:nth-child(6), #tw th:nth-child(7), #tw th:nth-child(8) { width:104px; }
+
+.input-cell input, .input-cell select { text-align:center; text-align-last:center; }
+.input-cell .step-wrap { margin:0 auto; }
+.badge { min-width:48px; text-align:center; }
+
 @media (max-width:720px) { body { padding:10px; } .settings { grid-template-columns:auto auto; } .bonus-box { flex-wrap:wrap; } }
 </style>
 </head>
