@@ -99,7 +99,7 @@ input[type=number] { text-align:center; } select { background:#fffbeb; cursor:po
 <div id="panel-prod" class="panel active">
   <div class="settings">
     <label>불가사의</label><select id="wonder"><option>자금성</option><option>병마용</option><option>만리장성</option></select>
-    <label>보너스 적용 레벨</label><input type="number" id="wLv" min="0" max="50" step="1" value="30" style="width:70px">
+    <label>보너스 적용 레벨</label><div class="step-wrap settings-step"><input type="number" id="wLv" class="step-one" min="0" max="50" step="1" value="30"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
     <label>일괄 운영시간(h)</label><div class="step-wrap"><input type="number" id="baseH" class="step-one" min="0" step="any" value="12"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
     <span></span>
   </div>
@@ -113,7 +113,7 @@ input[type=number] { text-align:center; } select { background:#fffbeb; cursor:po
   <div class="note">1. 불가사의와 보너스 적용 레벨을 입력하면 자원 생산 보너스가 자동 반영되고 추가 일꾼 수와 다음 증가 레벨이 표시됩니다.<br>2. 자원과 상품의 생산 시간, 건물 수, 현재 보유량 등을 입력하면 생산량·사용량·소비량을 계산 및 판정합니다.<br>3. 최종 상품의 현재 보유량은 <b>불가사의 계산기</b> 탭에서 입력하세요.<br>4. 이전 레벨 건물 추가 시 소수점을 활용해보세요. Ex) 6레벨 자원에서 5레벨 건물 한 개 추가시 0.66, 4레벨 추가시 0.44 (정밀값은 아님)<br>5. 일괄 운영시간을 기본으로 사용합니다. 운영시간이 입력된 행은 해당 시간이 우선 적용됩니다.<br>6. 건물 수와 운영시간은 소수 직접 입력이 가능하며 ▲▼ 버튼은 1씩 증감합니다.</div>
 </div>
 <div id="panel-wonder" class="panel">
-  <div class="settings" style="grid-template-columns:auto auto auto auto auto 1fr;"><label>현재 레벨</label><input type="number" id="curLv" min="0" max="50" step="1" value="33" style="width:70px"><label>목표 레벨</label><input type="number" id="tgtLv" min="0" max="50" step="1" value="35" style="width:70px"><label>최대 도달 예측</label><span id="maxLv" style="font-weight:600;color:var(--wrks-viz-primary);">Lv—</span></div>
+  <div class="settings" style="grid-template-columns:auto auto auto auto auto 1fr;"><label>현재 레벨</label><div class="step-wrap settings-step"><input type="number" id="curLv" class="step-one" min="0" max="50" step="1" value="33"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div><label>목표 레벨</label><div class="step-wrap settings-step"><input type="number" id="tgtLv" class="step-one" min="0" max="50" step="1" value="35"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div><label>최대 도달 예측</label><span id="maxLv" style="font-weight:600;color:var(--wrks-viz-primary);">Lv—</span></div>
   <div class="table-wrap"><table id="tw"><thead><tr><th style="width:80px">상품</th><th style="width:110px">현재 보유량</th><th class="num">잔여/부족</th><th style="width:70px">판정</th><th class="num">목표 구간 소비량</th><th class="num">상품 예상 생산량</th><th class="num">예상 보유량</th><th class="num">예상 소요 시간(h)</th></tr></thead><tbody></tbody></table></div>
   <div class="note">1. 현재 레벨과 목표 레벨을 입력하면 목표 구간의 비단·도자기 소비량을 계산합니다.<br>2. 현재 보유량은 직접 입력하며, 상품별 예상 소요 시간은 생산 계산기의 생산량 설정을 기준으로 계산합니다.<br>3. 목표 레벨은 현재 레벨보다 낮게 설정할 수 없으며, 낮은 값을 입력하면 현재 레벨로 자동 보정됩니다.<br>4. 최대 레벨은 현재 고령토·점토·도자기 보유량과 고령토 예상 생산량을 기준으로 계산합니다. 고령토→점토→도자기는 Lv6·30분 생산 효율로 환산하며, 쌀·비단 및 생산시간은 고려하지 않습니다.</div>
 </div>
