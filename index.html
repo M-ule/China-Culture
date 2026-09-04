@@ -26,11 +26,14 @@ h2 { font-size:15px; margin:16px 0 8px; padding-left:8px; border-left:4px solid 
 /* 마야 문명 계산기와 같은 상단 UI 비율 */
 .settings { display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; padding:10px 12px; background:#fef2f2; border:1px solid #fecaca; border-radius:var(--wrks-viz-radius); margin-bottom:8px; }
 .settings label { font-size:12px; color:var(--wrks-viz-primary); font-weight:700; }
-.table-wrap { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; margin-bottom:4px; font-size:12px; min-width:760px; }
-th, td { border:1px solid var(--wrks-viz-border); padding:5px 8px; text-align:center; vertical-align:middle; }
-th { background:var(--header-bg); font-weight:700; font-size:11px; color:var(--header-fg); }
-td:first-child { background:#f3c7c0; color:#7f1d1d; font-weight:700; }
+.table-wrap { overflow-x:auto; position:relative; }
+table { width:100%; border-collapse:separate; border-spacing:0; margin-bottom:4px; font-size:12px; min-width:760px; }
+th, td { border-right:1px solid #e7b7b7; border-bottom:1px solid #e7b7b7; padding:5px 8px; text-align:center; vertical-align:middle; }
+th:first-child, td:first-child { border-left:1px solid #e7b7b7; }
+thead tr:first-child th { border-top:1px solid #e7b7b7; }
+th { background:var(--header-bg); font-weight:700; font-size:11px; color:var(--header-fg); position:sticky; top:0; z-index:3; }
+th:first-child { left:0; z-index:5; }
+td:first-child { background:#f3c7c0; color:#7f1d1d; font-weight:700; position:sticky; left:0; z-index:2; }
 td.num, th.num { text-align:center; font-variant-numeric:tabular-nums; } td.calc { background:var(--calc-bg); color:#374151; }
 td.input-cell { background:var(--input-bg); padding:2px 4px; position:relative; } td.input-cell::before { content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--input-border); }
 input, select { font-family:inherit; font-size:12px; border:1px solid var(--input-border); background:#fffbeb; padding:4px 6px; border-radius:4px; width:100%; min-width:60px; }
@@ -42,7 +45,7 @@ input[type=number] { text-align:center; } select { background:#fffbeb; cursor:po
 .note { font-size:11px; color:#6b7280; line-height:1.7; padding:9px 12px; background:#fef2f2; border:1px solid #fecaca; border-radius:var(--wrks-viz-radius); margin-top:10px; }
 .note b { color:var(--wrks-viz-primary); }
 .bonus-box { display:flex; flex-wrap:wrap; gap:8px 18px; padding:9px 12px; background:#fdf2f2; border:1px solid #e7b7b7; border-radius:var(--wrks-viz-radius); margin-bottom:8px; font-size:12px; } .bonus-box b { color:var(--wrks-viz-primary); }
-.w-lv { width:72px; } .w-mode { width:118px; }
+.w-lv { width:72px; }
 /* 건물 수·운영 시간: 소수 직접 입력 허용 + 화살표는 정확히 1씩 증감 */
 .step-wrap { display:flex; align-items:stretch; width:100%; min-width:72px; }
 .step-wrap input { min-width:0; border-radius:4px 0 0 4px; border-right:0; }
@@ -66,13 +69,10 @@ input[type=number] { text-align:center; } select { background:#fffbeb; cursor:po
 
 /* 모든 계산기 표 열 너비 100px 통일 */
 #t1, #t2, #t3, #tw { table-layout:fixed; }
-#t1 th:nth-child(1), #t1 th:nth-child(2), #t1 th:nth-child(3), #t1 th:nth-child(4), #t1 th:nth-child(5), #t1 th:nth-child(6), #t1 th:nth-child(7), #t1 th:nth-child(8), #t1 th:nth-child(9), #t1 th:nth-child(10), #t1 th:nth-child(11) { width:100px !important; }
+#t1 th, #t2 th, #t3 th, #tw th { width:100px !important; }
 #t1 { width:1100px !important; min-width:1100px !important; }
-#t2 th:nth-child(1), #t2 th:nth-child(2), #t2 th:nth-child(3), #t2 th:nth-child(4), #t2 th:nth-child(5), #t2 th:nth-child(6), #t2 th:nth-child(7), #t2 th:nth-child(8), #t2 th:nth-child(9), #t2 th:nth-child(10), #t2 th:nth-child(11), #t2 th:nth-child(12), #t2 th:nth-child(13) { width:100px !important; }
 #t2 { width:1300px !important; min-width:1300px !important; }
-#t3 th:nth-child(1), #t3 th:nth-child(2), #t3 th:nth-child(3), #t3 th:nth-child(4), #t3 th:nth-child(5), #t3 th:nth-child(6), #t3 th:nth-child(7), #t3 th:nth-child(8) { width:100px !important; }
 #t3 { width:800px !important; min-width:800px !important; }
-#tw th:nth-child(1), #tw th:nth-child(2), #tw th:nth-child(3), #tw th:nth-child(4), #tw th:nth-child(5), #tw th:nth-child(6), #tw th:nth-child(7), #tw th:nth-child(8) { width:100px !important; }
 #tw { width:800px !important; min-width:800px !important; }
 .w-mode { width:100% !important; max-width:100%; }
 .input-cell input, .input-cell select { max-width:100%; }
@@ -98,7 +98,7 @@ input[type=number] { text-align:center; } select { background:#fffbeb; cursor:po
   <div class="table-wrap"><table id="t2"><thead><tr><th>자원</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th class="num">잔여/부족</th><th>판정</th><th class="num">소요 시간(h)</th><th class="num">예상 생산량</th><th class="num">원재료 사용량</th><th class="num">쌀 사용량</th><th class="num">예상 소비량</th></tr></thead><tbody></tbody></table></div>
   <h2>3단계 · 최종 상품 생산 (비단 · 도자기)</h2>
   <div class="table-wrap"><table id="t3"><thead><tr><th>상품</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th class="num">예상 생산량</th><th class="num">원재료 사용량</th><th class="num">쌀 사용량</th></tr></thead><tbody></tbody></table></div>
-  <div class="note">1. 불가사의와 보너스 적용 레벨을 입력하면 자원 생산 보너스가 자동 반영되고 추가 일꾼 수와 다음 증가 레벨이 표시됩니다.<br>2. 자원과 상품의 생산 시간, 건물 수, 현재 보유량 등을 입력하면 생산량·사용량·소비량과 판정 및 충분 시간을 계산합니다.<br>3. 최종 상품의 현재 보유량은 <b>불가사의 계산기</b> 탭에서 입력하세요.<br>4. 이전 레벨 건물 추가 시 소수점을 활용해보세요. Ex) 6레벨 자원, 생산건물에서 5레벨 건물 한 개 추가시 0.66, 4레벨 추가시 0.44 (정밀값은 아님)<br>5. 일괄 운영 시간을 기본으로 사용합니다. 운영 시간이 입력된 행은 해당 시간이 우선 적용됩니다.<br>6. 소요 시간(h)은 현재 운영 시간과 무관하게 현재 보유량을 포함해 판정이 처음 '잔여'가 되는 총 운영 시간입니다.</div>
+  <div class="note">1. 불가사의와 보너스 적용 레벨을 입력하면 자원 생산 보너스가 자동 반영되고 추가 일꾼 수와 다음 증가 레벨이 표시됩니다.<br>2. 자원과 상품의 생산 시간, 건물 수, 현재 보유량 등을 입력하면 생산량·사용량·소비량과 판정 및 충분 시간을 계산합니다.<br>3. 최종 상품의 현재 보유량은 <b>불가사의 계산기</b> 탭에서 입력하세요.<br>4. 이전 레벨 건물 추가 시 소수점을 활용해보세요. Ex) 6레벨 자원, 생산건물에서 5레벨 건물 한 개 추가시 0.66, 4레벨 추가시 0.44 (정밀값은 아님)<br>5. 일괄 운영 시간을 기본으로 사용합니다. 운영 시간이 입력된 행은 해당 시간이 우선 적용됩니다.<br>6. 소요 시간(h)은 현재 보유량을 포함하여 판정이 처음 ‘잔여’가 되기까지 필요한 운영 시간입니다.</div>
 </div>
 <div id="panel-wonder" class="panel">
   <div class="settings"><label>현재 레벨</label><div class="step-wrap settings-step"><input type="number" id="curLv" class="step-one" min="0" max="50" step="1" value="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div><label>목표 레벨</label><div class="step-wrap settings-step"><input type="number" id="tgtLv" class="step-one" min="0" max="50" step="1" value="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div><label>최대 도달 예측</label><span id="maxLv" style="font-weight:700;color:var(--wrks-viz-primary);">Lv—</span></div>
