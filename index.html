@@ -119,6 +119,13 @@ body.detail-modal-open{overflow:hidden}
   <div class="table-wrap"><table id="tw"><thead><tr><th>상품</th><th>현재 보유량</th><th class="num">잔여/부족</th><th>판정</th><th class="num">소요 시간(h)</th><th class="num">구간 소비량</th><th class="num">예상 생산량</th><th class="num">예상 보유량</th></tr></thead><tbody></tbody></table></div>
   <div class="note">1. 현재 레벨과 목표 레벨을 입력하면 목표 구간의 비단·도자기 소비량을 계산합니다.<br>2. 현재 보유량은 직접 입력하며, 상품별 충분 시간은 생산 계산기의 생산량 설정을 기준으로 계산합니다.<br>3. 상품생산 예상량과 예상 소요시간은 생산 계산기 시트 설정을 기준으로 계산합니다.<br>4. 목표 레벨은 현재 레벨보다 낮게 설정할 수 없으며, 낮은 값을 입력하면 현재 레벨로 자동 보정됩니다.<br>5. 최대 레벨은 현재 고령토·점토·도자기 보유량과 고령토 예상 생산량을 기준으로 계산합니다. 고령토→점토→도자기는 Lv6·30분 생산 효율로 환산하며, 쌀·비단 및 생산시간은 고려하지 않습니다.</div>
 </div>
+<div id="resetChoiceModal" class="detail-modal" hidden aria-hidden="true">
+  <div class="detail-backdrop" data-reset-close></div>
+  <section class="detail-sheet reset-choice-sheet" role="dialog" aria-modal="true" aria-labelledby="resetChoiceTitle">
+    <div class="detail-head"><div><h3 id="resetChoiceTitle">초기화</h3><p>저장한 입력값 또는 최초 기본값으로 되돌릴 수 있습니다.</p></div><button type="button" class="detail-close" data-reset-close aria-label="닫기">×</button></div>
+    <div class="reset-choice-actions"><button id="restoreSavedBtn" type="button" class="restore-saved">저장한 입력값 복원</button><button id="restoreFactoryBtn" type="button" class="restore-factory">최초 기본값으로 초기화</button><button type="button" class="cancel-reset" data-reset-close>취소</button></div>
+  </section>
+</div>
 <script>
 const DEFAULT_STORAGE_KEY='china-culture-user-default-v1';\nconst INITIAL_STATE={prod:{'쌀 농장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'누에 숲':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'고령토 채석장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'실 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'점토 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'비단 작업장':{lv:1,mode:'1분',bldgs:1,hours:''},'도자기 작업장':{lv:1,mode:'1분',bldgs:1,hours:''}},settings:{wonder:'자금성',wLv:0,baseH:0},wStock:{silk:0,porc:0},wLvSet:{cur:1,tgt:1}};
 let resetStatusTimer=null;
