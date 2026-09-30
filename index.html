@@ -48,11 +48,11 @@ input[type=number] { text-align:center; } select { background:#fffbeb; cursor:po
 .badge { display:inline-block; min-width:48px; padding:2px 6px; border-radius:4px; font-size:11px; font-weight:700; } .badge-ok { background:#d1fae5; color:#065f46; } .badge-bad { background:#fee2e2; color:#991b1b; }
 .remain-ok { background:#d1fae5 !important; color:#065f46 !important; font-weight:800; }
 .remain-bad { background:#fee2e2 !important; color:#991b1b !important; font-weight:800; }
-.note { font-size:11px; color:#6b7280; line-height:1.7; padding:9px 12px; background:#fef2f2; border:1px solid #fecaca; border-radius:var(--wrks-viz-radius); margin-top:10px; }
+.note { width:var(--main-width);max-width:100%; font-size:11px; color:#6b7280; line-height:1.7; padding:9px 12px; background:#fef2f2; border:1px solid #fecaca; border-radius:var(--wrks-viz-radius); margin-top:10px; }
 .note b { color:#111827; }
 .power-note{color:var(--wrks-viz-primary);}
 .power-note b{color:inherit;}
-.bonus-box { display:flex; flex-wrap:wrap; gap:8px 18px; padding:9px 12px; background:#fdf2f2; border:1px solid #e7b7b7; border-radius:var(--wrks-viz-radius); margin-bottom:8px; font-size:12px; } .bonus-box b { color:var(--wrks-viz-primary); }
+.bonus-box { width:var(--main-width);max-width:100%; display:flex; flex-wrap:wrap; gap:8px 18px; padding:9px 12px; background:#fdf2f2; border:1px solid #e7b7b7; border-radius:var(--wrks-viz-radius); margin-bottom:8px; font-size:12px; } .bonus-box b { color:var(--wrks-viz-primary); }
 .bonus-item{display:flex;gap:6px;align-items:baseline}
 .w-lv { width:72px; }
 /* 건물 수·운영 시간: 소수 직접 입력 허용 + 화살표는 정확히 1씩 증감 */
@@ -124,6 +124,98 @@ body.detail-modal-open{overflow:hidden}
 .power-layout{display:flex;align-items:flex-start;gap:8px;margin-top:8px}.power-main,.power-side{flex:0 0 auto}.convert-panel[hidden]{display:none}
 .divider-top td{border-top:3px solid var(--wrks-viz-primary)}
 
+
+/* 영토 및 연구 */
+.plan-settings{width:400px;max-width:100%;min-height:50px}
+.plan-settings .setting-value{min-width:88px;min-height:30px;font-weight:800;color:#7a4b4b}
+.plan-subtitle{font-size:13px;color:#7f1d1d;margin:10px 0 7px;font-weight:800}
+.plan-summary{display:grid;grid-template-columns:repeat(4,100px);gap:0;margin:0;width:400px;max-width:100%}
+.plan-summary.plan-summary-3{grid-template-columns:repeat(3,100px);width:300px}
+.plan-stat{box-sizing:border-box;width:100px;min-width:100px;max-width:100px;min-height:58px;border:1px solid #e7b7b7;background:#fef2f2;padding:7px 4px;text-align:center}
+.plan-stat:first-child{border-radius:6px 0 0 6px}.plan-stat:last-child{border-radius:0 6px 6px 0}
+.plan-stat+.plan-stat{border-left:0}
+.plan-stat-label{display:block;font-size:10px;color:#7a4b4b;font-weight:800;margin-bottom:3px;white-space:nowrap}
+.plan-stat-value{display:block;font-size:15px;color:#7f1d1d;font-weight:900;font-variant-numeric:tabular-nums;white-space:nowrap}
+.plan-stat.remain-good{background:#d1fae5;border-color:#a7f3d0}.plan-stat.remain-good .plan-stat-value{color:#065f46}
+.plan-stat.remain-bad{background:#fee2e2;border-color:#fecaca}.plan-stat.remain-bad .plan-stat-value{color:#991b1b}
+.plan-progress-warning{font-size:11px;line-height:1.55;margin:6px 0 0;color:#78631b}
+.plan-input-row{display:grid;grid-template-columns:180px 120px;gap:8px;align-items:center;margin:7px 0;width:308px;max-width:100%}
+.plan-input-row label{font-size:11px;font-weight:800;color:#7a4b4b}
+.plan-input-row input,.plan-input-row select{min-height:30px}
+.plan-auto{display:inline-flex;align-items:center;justify-content:center;min-height:30px;border:0;background:transparent;font-weight:800;color:#374151}
+.plan-note{width:var(--main-width);max-width:100%}
+
+#panel-plan>.note,#panel-plan>.plan-progress-warning{width:var(--main-width);max-width:100%}
+#panel-plan>.section-title-row{width:var(--main-width);max-width:100%}
+#tArea input[data-plan-count]::placeholder{color:#7a4b4b;opacity:.78;font-size:10px;font-weight:700}
+#tConstruction tfoot th{background:#fff7ed;color:#7f1d1d;font-weight:900}
+.plan-overview-grid{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.plan-overview-block{flex:0 0 auto}
+.plan-overview-block .plan-subtitle{margin-top:0}
+#tTerritory,#tCurrency,#tWorkers,#tArea,#tConstruction{table-layout:fixed!important;border-spacing:0!important}
+#tTerritory,#tCurrency,#tWorkers{width:400px!important;min-width:400px!important}
+#tArea{width:500px!important;min-width:500px!important}
+#tConstruction{width:600px!important;min-width:600px!important}
+#tTerritory th,#tTerritory td,#tCurrency th,#tCurrency td,#tWorkers th,#tWorkers td,#tArea th,#tArea td,#tConstruction th,#tConstruction td{
+  box-sizing:border-box!important;width:100px!important;min-width:100px!important;max-width:100px!important;
+  height:30px!important;min-height:30px!important;padding:4px 6px!important;line-height:20px!important;vertical-align:middle!important
+}
+#tTerritory th,#tCurrency th,#tWorkers th,#tArea th,#tConstruction th{white-space:nowrap}
+#tTerritory .input-cell input,#tCurrency .input-cell input,#tWorkers .input-cell input,#tArea .input-cell input,#tConstruction .input-cell input,#tConstruction select{height:24px!important;min-height:24px!important;padding:2px 5px!important}
+#tConstruction select{width:100%;font-size:10px}
+#tConstruction .construction-remove{width:26px;height:24px;border:1px solid #e7b7b7;border-radius:4px;background:#fff;color:#991b1b;font-weight:900;cursor:pointer}
+#tConstruction .construction-remove:hover{background:#fef2f2}
+.construction-toolbar{width:600px;max-width:100%;margin-top:7px;display:flex;justify-content:flex-start}
+.construction-add{height:32px;padding:0 12px;border:1px solid #e7b7b7;border-radius:6px;background:#fef2f2;color:#7a4b4b;font:800 11px var(--wrks-viz-font-family);cursor:pointer}
+.construction-add:hover{background:#f6d9d5}
+.plan-research-result{display:grid;grid-template-columns:repeat(4,100px);gap:0;margin:0 0 10px;width:400px;max-width:100%}
+.plan-research-result .plan-stat{background:#f9fafb}
+.plan-research-result .plan-stat:first-child{border-radius:6px 0 0 6px}.plan-research-result .plan-stat:last-child{border-radius:0 6px 6px 0}
+.plan-control-block{width:600px;max-width:100%;margin:8px 0}
+.plan-control-block .plan-input-row{width:420px;grid-template-columns:210px 200px}
+.research-clear{height:32px;width:90px;padding:0 12px;border:1px solid #fecaca;border-radius:6px;background:#fee2e2;color:#991b1b;font:800 11px var(--wrks-viz-font-family);cursor:pointer;white-space:nowrap}.research-clear:hover{background:#fecaca;border-color:#fca5a5}
+.research-selection{display:flex;align-items:stretch;width:760px;max-width:100%;margin:0 0 8px;overflow:visible}
+.research-selection-group{display:grid;grid-template-columns:82px 245px;min-width:0}
+.research-selection-group>span{box-sizing:border-box;min-height:32px;padding:4px 6px;border-top:1px solid #e7b7b7;border-bottom:1px solid #e7b7b7;border-right:1px solid #e7b7b7;display:flex;align-items:center;justify-content:center;font-size:11px}
+.research-selection-group .label{background:#fef2f2;color:#7a4b4b;font-weight:800;border-left:1px solid #e7b7b7;border-radius:6px 0 0 6px}
+.research-selection-group .value{background:#fff;color:#374151;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;line-height:1.35;border-radius:0 6px 6px 0}
+.research-selection .target-group{margin-left:0}
+.research-selection .reset-cell{display:flex;align-items:center;justify-content:flex-end;width:106px;min-width:106px;padding-left:16px;background:transparent}
+.research-selection .reset-cell .research-clear{height:32px;width:90px}
+.research-action{display:none;position:absolute;z-index:5;width:190px;box-sizing:border-box;padding:8px;border:1px solid #d9a4a4;border-radius:7px;background:#fff;box-shadow:0 5px 16px rgba(80,20,20,.16);transform:translateX(-50%)}
+.research-action.open{display:grid;grid-template-columns:1fr;gap:5px}.research-action .research-action-name{font-size:11px;font-weight:900;color:#7f1d1d;text-align:center;padding:1px 2px 3px}
+.research-action button{height:30px;padding:0 8px;border:1px solid #e7b7b7;border-radius:5px;background:#fff;color:#7a4b4b;font:800 10px var(--wrks-viz-font-family);cursor:pointer}
+.research-action button:hover{background:#fef2f2}.research-action button.primary{background:#7f1d1d;color:#fff;border-color:#7f1d1d}.research-action button.primary:hover{background:#6b1717}.research-action button:disabled{cursor:default;opacity:.55;background:#f3f4f6;color:#6b7280}
+.research-tree-scroll{width:760px;max-width:100%;overflow-x:auto;overflow-y:hidden;padding-bottom:5px}
+.research-tree{position:relative;width:760px;height:790px;border:1px solid #e7b7b7;border-radius:7px;background:#fffafa;overflow:hidden}
+.research-tree-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.research-tree-lines line{stroke:#d7b1b1;stroke-width:2}.research-tree-lines line.completed{stroke:#9ca3af}.research-tree-lines line.needed{stroke:#b91c1c;stroke-width:2.5}
+.research-tree-nodes{position:absolute;inset:0;z-index:2}
+.research-node{position:absolute;width:132px;min-height:48px;transform:translate(-50%,-50%);border:1px solid #d6b2b2;border-radius:7px;background:#fff;color:#4b5563;padding:5px 6px;cursor:pointer;font-family:var(--wrks-viz-font-family);box-shadow:0 1px 2px rgba(127,29,29,.05)}
+.research-node:hover{border-color:#991b1b;background:#fff7f7}.research-node .name{display:block;font-size:11px;font-weight:900;line-height:1.2;color:#553333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.research-node .cost{display:block;margin-top:3px;font-size:10px;font-weight:800;color:#8a6666;font-variant-numeric:tabular-nums}
+.research-node.completed{background:#f3f4f6;border-color:#c7c9ce}.research-node.completed .name{color:#6b7280}.research-node.completed .cost{color:#9ca3af}
+.research-node.needed{background:#fef2f2;border-color:#ef9a9a}.research-node.needed .name{color:#7f1d1d}.research-node.needed .cost{color:#991b1b}
+.research-node.current{outline:3px solid #991b1b;outline-offset:1px;background:#fff}.research-node.current .name{color:#7f1d1d}
+.research-node.target{outline:3px solid #d97706;outline-offset:1px;background:#fffbeb;border-color:#f6c453}.research-node.target .name{color:#92400e}.research-node.target .cost{color:#a16207}
+.research-legend{display:flex;gap:12px;flex-wrap:wrap;width:760px;max-width:100%;margin:7px 0 0;font-size:10px;color:#6b7280}.research-legend span{display:inline-flex;align-items:center;gap:4px}.research-legend i{display:inline-block;width:12px;height:8px;border:1px solid #d6b2b2;border-radius:2px;background:#fff}.research-legend .done i{background:#f3f4f6;border-color:#c7c9ce}.research-legend .need i{background:#fef2f2;border-color:#ef9a9a}.research-legend .cur i{background:#fff;border:2px solid #991b1b}.research-legend .tgt i{background:#fffbeb;border:2px solid #d97706}
+@media(max-width:720px){
+  .tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .plan-settings{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);width:100%!important;height:auto!important;gap:7px 9px}
+  .plan-settings .setting-value{width:100%;min-height:44px}
+  .plan-summary{grid-template-columns:repeat(2,100px);width:200px}
+  .plan-stat{min-height:58px}.plan-stat:nth-child(2){border-radius:0 6px 6px 0}.plan-stat:nth-child(3){border-left:1px solid #e7b7b7;border-radius:6px 0 0 6px}.plan-stat:nth-child(4){border-radius:0 6px 6px 0}
+  .plan-input-row,.plan-control-block .plan-input-row{grid-template-columns:1fr 1fr;width:100%}
+  .plan-input-row input,.plan-input-row select,.plan-auto{min-height:44px;font-size:15px}
+  #tTerritory,#tCurrency,#tWorkers{min-width:400px!important}
+  #tArea{min-width:500px!important}
+  #tConstruction{min-width:600px!important}
+  .research-clear{height:40px}
+  .research-selection{width:760px;max-width:none}
+  .research-action button{height:36px}
+  .research-tree-scroll{width:100%}
+}
+
+
 /* 이집트 최신판과 동일한 공통 레이아웃 규격 */
 #t1,#t2,#t3,#tw,#tSleep,#tPower,#tConvert{table-layout:fixed!important;border-spacing:0!important}
 #t1{width:1000px!important;min-width:1000px!important}
@@ -189,12 +281,51 @@ body.detail-modal-open{overflow:hidden}
   #t1 input,#t1 select,#t2 input,#t2 select,#t3 input,#t3 select{font-size:16px;min-height:40px}
   #tConvert{min-width:800px!important}
 }
+
+/* v29 도시 현황: 계산기와 동일한 100px × 30px 셀 */
+.plan-overview-grid{display:grid;grid-template-columns:repeat(3,200px);gap:14px;align-items:start;margin-bottom:4px;width:628px;max-width:100%}
+.plan-overview-block{width:200px;min-width:0}
+.plan-overview-block .plan-subtitle{margin:0 0 7px;font-size:14px;font-weight:900}
+#tTerritory,#tCurrency,#tWorkers{width:200px!important;min-width:200px!important;table-layout:fixed}
+.plan-overview-grid tr.plan-input-row{display:table-row;width:auto;max-width:none;margin:0}
+#tTerritory td,#tCurrency td,#tWorkers td{box-sizing:border-box;width:100px!important;min-width:100px!important;max-width:100px!important;height:30px!important;min-height:30px!important;padding:4px 6px!important;vertical-align:middle}
+#tTerritory td:first-child,#tCurrency td:first-child,#tWorkers td:first-child{width:100px!important;min-width:100px!important;max-width:100px!important}
+#tTerritory .input-cell input,#tCurrency .input-cell input,#tWorkers .input-cell input{box-sizing:border-box;width:100%!important;height:24px!important;min-height:24px!important;margin:0!important}
+#tTerritory td.input-cell,#tCurrency td.input-cell,#tWorkers td.input-cell{padding:2px 4px!important}
+.plan-overview-grid tr.plan-input-row td:first-child,.plan-overview-grid tr.plan-key-row td:first-child{font-weight:900}
+.plan-overview-grid tr.plan-key-row td{border-bottom-width:2px}
+.plan-overview-grid tr.plan-key-row td.calc{font-size:12px;font-weight:900;white-space:nowrap}
+.plan-overview-grid tr.plan-secondary-start td{border-top-width:2px}
+#tConstruction{width:500px!important;min-width:500px!important}
+#tConstruction th,#tConstruction td{height:30px!important;min-height:30px!important;padding:3px 5px!important}
+#tConstruction th:nth-child(1),#tConstruction td:nth-child(1){width:170px!important;min-width:170px!important;max-width:170px!important}
+#tConstruction th:nth-child(2),#tConstruction td:nth-child(2){width:100px!important;min-width:100px!important;max-width:100px!important}
+#tConstruction th:nth-child(3),#tConstruction td:nth-child(3){width:100px!important;min-width:100px!important;max-width:100px!important}
+#tConstruction th:nth-child(4),#tConstruction td:nth-child(4){width:130px!important;min-width:130px!important;max-width:130px!important}
+#tConstruction .construction-building-cell{display:flex;align-items:center;gap:4px;width:100%}
+#tConstruction .construction-building-cell select{flex:1 1 auto;min-width:0}
+#tConstruction .construction-remove{flex:0 0 24px;width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#991b1b;font:900 16px/24px var(--wrks-viz-font-family);padding:0;cursor:pointer}
+#tConstruction .construction-remove:hover{background:#fee2e2}
+.construction-toolbar{width:500px;max-width:100%}
+.research-tree-toolbar{position:absolute;z-index:4;left:10px;right:10px;top:8px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;pointer-events:none}
+.research-tree-toolbar>*{pointer-events:auto}
+.research-tree-toolbar .research-legend{position:static;width:auto;max-width:none;margin:0;gap:9px;font-size:10px;line-height:1.2}
+.research-cost-chip{display:flex;align-items:center;gap:8px;min-height:28px;padding:4px 9px;border:1px solid #e7b7b7;border-radius:6px;background:rgba(255,250,250,.96);color:#7a4b4b;font-size:10px;font-weight:800;white-space:nowrap;box-shadow:0 1px 2px rgba(127,29,29,.04)}
+.research-cost-chip b{font-size:13px;color:#7f1d1d;font-variant-numeric:tabular-nums}
+@media(max-width:660px){.plan-overview-grid{grid-template-columns:200px;width:200px}.plan-overview-block{width:200px}}
+
+[data-city-detail][hidden]{display:none!important}
+#cityOverview th.city-heading{width:200px!important;min-width:200px!important;max-width:200px!important;text-align:center;font-size:12px;position:static}
+.construction-cost-cell{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.construction-cost-cell span{flex:1;min-width:0}
+#tConstruction .construction-remove{flex:0 0 38px;width:38px;height:24px;border:1px solid #fca5a5;border-radius:4px;background:#fee2e2;color:#991b1b;font:700 11px var(--wrks-viz-font-family);cursor:pointer}
+#tConstruction .construction-remove:hover{background:#fecaca}
 </style>
 </head>
 <body>
 <h1>중국 문명 생산 계산기 시뮬레이터</h1>
 <div class="legend"><div class="legend-item"><span class="legend-box legend-input"></span>입력 가능 (노란색)</div><div class="legend-item"><span class="legend-box legend-calc"></span>자동 계산</div></div>
-<div class="tabs"><button class="tab active" data-tab="prod">생산 계산기</button><button class="tab" data-tab="wonder">불가사의 목표</button></div>
+<div class="tabs"><button class="tab active" data-tab="prod">생산 계산기</button><button class="tab" data-tab="wonder">불가사의 목표</button><button class="tab" data-tab="plan">영토 및 연구</button></div>
 <div id="panel-prod" class="panel active">
   <div class="settings">
     <label>불가사의</label><select id="wonder"><option>자금성</option><option>병마용</option><option>만리장성</option></select>
@@ -256,6 +387,96 @@ body.detail-modal-open{overflow:hidden}
     4. <b>최대 도달 레벨(고령토)</b>은 현재 고령토·점토·도자기 보유량과 고령토 예상 생산량을 반영하며, 쌀·비단 및 생산 시간은 고려하지 않습니다.
   </div>
 </div>
+
+<div id="panel-plan" class="panel">
+<div class="section-title-row"><h2>도시 현황</h2><button id="cityDetailsToggle" type="button" class="save-default-btn" aria-expanded="false" aria-controls="cityOverview buildingComposition">상세 보기</button></div>
+  <div class="plan-overview-grid" id="cityOverview">
+    <div class="plan-overview-block">
+      <div class="table-wrap"><table id="tWorkers"><thead><tr><th colspan="2" scope="colgroup" class="city-heading">일꾼 현황</th></tr></thead><tbody>
+        <tr class="plan-input-row"><td><label for="planHome_smallHome">소형 주택</label></td><td class="input-cell"><input id="planHome_smallHome" data-plan-home-count="smallHome" type="number" min="0" step="1" value="0" aria-label="소형 주택 수"></td></tr>
+        <tr class="plan-input-row"><td><label for="planHome_mediumHome">중형 주택</label></td><td class="input-cell"><input id="planHome_mediumHome" data-plan-home-count="mediumHome" type="number" min="0" step="1" value="0" aria-label="중형 주택 수"></td></tr>
+        <tr class="plan-input-row"><td><label for="planHome_premiumHome">호화 주택</label></td><td class="input-cell"><input id="planHome_premiumHome" data-plan-home-count="premiumHome" type="number" min="0" step="1" value="0" aria-label="호화 주택 수"></td></tr>
+        <tr class="plan-key-row"><td>잔여/부족</td><td class="num calc" id="planWorkersRemain">0명</td></tr>
+        <tr data-city-detail hidden><td>현재 일꾼</td><td class="num calc" id="planWorkersAvailable">0명</td></tr>
+        <tr data-city-detail hidden><td>필요 일꾼</td><td class="num calc" id="planWorkersTotal">0명</td></tr>
+        <tr data-city-detail hidden class="plan-secondary-start"><td>주택 제공</td><td class="num calc" id="planWorkersHomes">0명</td></tr>
+        <tr data-city-detail hidden><td>불가사의 보너스</td><td class="num calc" id="planWorkersWonder">0명</td></tr>
+        <tr data-city-detail hidden><td>누에·고령토 필요</td><td class="num calc" id="planWorkersBase">0명</td></tr>
+        <tr data-city-detail hidden><td>쌀 농장 필요</td><td class="num calc" id="planWorkersRice">0명</td></tr>
+        <tr data-city-detail hidden><td>가공소 필요</td><td class="num calc" id="planWorkersProcessors">0명</td></tr>
+        <tr data-city-detail hidden><td>작업장 필요</td><td class="num calc" id="planWorkersWorkshops">0명</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="plan-overview-block">
+      <div class="table-wrap"><table id="tTerritory"><thead><tr><th colspan="2" scope="colgroup" class="city-heading">영토 현황</th></tr></thead><tbody>
+        <tr><td>보너스 적용 레벨</td><td class="num calc" id="planWonderLv">Lv.0</td></tr>
+        <tr class="plan-input-row"><td>보석 해금(칸)</td><td class="input-cell"><input id="planGemExpansions" data-plan-field="gemExpansions" type="number" min="0" step="1" value="0"></td></tr>
+        <tr class="plan-key-row"><td>남은 면적</td><td class="num calc" id="planRemainAreaTable">112 (7.0칸)</td></tr>
+        <tr data-city-detail hidden><td>면적 사용률</td><td class="num calc" id="planAreaUsageRate">0%</td></tr>
+        <tr data-city-detail hidden class="plan-secondary-start"><td>진행도 해금</td><td class="num calc" id="planProgressAuto">0칸</td></tr>
+        <tr data-city-detail hidden><td>총 해금 영토</td><td class="num calc" id="planTotalExpansionsTable">7칸</td></tr>
+        <tr data-city-detail hidden><td>사용 가능 면적</td><td class="num calc" id="planTotalAreaTable">112</td></tr>
+        <tr data-city-detail hidden><td>건물 사용 면적</td><td class="num calc" id="planUsedAreaTable">0</td></tr>
+      </tbody></table></div>
+    </div>
+    <div class="plan-overview-block">
+      <div class="table-wrap"><table id="tCurrency"><thead><tr><th colspan="2" scope="colgroup" class="city-heading">오수전 현황</th></tr></thead><tbody>
+        <tr class="plan-input-row"><td>현재 보유량</td><td class="input-cell"><input id="planCurrencyStock" data-plan-field="currencyStock" type="text" inputmode="decimal" autocomplete="off" value="0" placeholder="예: 100K, 1.2M"></td></tr>
+        <tr class="plan-input-row"><td>시간당 생산량</td><td class="input-cell"><input id="planCurrencyPerHourInput" data-plan-field="currencyPerHour" type="number" min="0" step="any" value="0"></td></tr>
+        <tr class="plan-input-row"><td>운영 시간(h)</td><td class="input-cell"><input id="planCurrencyHours" data-plan-field="currencyHours" type="number" min="0" step="any" value="" placeholder="기본"></td></tr>
+      </tbody></table></div>
+    </div>
+  </div>
+  <input id="planProgressOverride" data-plan-field="progressOverride" type="hidden" value="0">
+  <div id="planProgressFallbackRow" hidden></div>
+  <div class="plan-progress-warning" id="planProgressWarning">보너스 적용 레벨과 자동 연동되며, Lv.2·7·13·17·24의 확장 보상을 누적 반영합니다.</div>
+
+  <section id="buildingComposition" data-city-detail hidden>
+  <div class="section-title-row"><h2>건물 구성</h2><button id="buildingReset" type="button" class="reset-btn" title="직접 입력한 건물 수를 기본값으로 되돌립니다">초기화</button><span id="buildingResetStatus" class="reset-status" role="status"></span></div>
+  <div class="table-wrap"><table id="tArea"><thead><tr><th>건물</th><th>건물 수</th><th>필요 일꾼</th><th>1채 면적</th><th>사용 면적</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <div class="section-title-row"><h2>건물 건설 비용</h2></div>
+  <div class="table-wrap"><table id="tConstruction"><thead><tr><th>건물 종류</th><th>목표 레벨</th><th>건설 수</th><th>필요 오수전</th></tr></thead><tbody></tbody><tfoot><tr><th colspan="3">총 필요 오수전</th><th class="num calc" id="planConstructionTotal">0</th></tr></tfoot></table></div>
+  <div class="construction-toolbar"><button type="button" id="constructionAdd" class="construction-add">+ 건설 항목 추가</button></div>
+
+  <div class="section-title-row"><h2>연구</h2></div>
+  <div class="research-selection" aria-live="polite">
+    <div class="research-selection-group current-group"><span class="label">현재 연구</span><span id="researchCurrentLabel" class="value">미선택</span></div>
+    <div class="research-selection-group target-group"><span class="label">목표 연구</span><span id="researchTargetLabel" class="value">미선택</span></div>
+    <span class="reset-cell"><button type="button" id="researchReset" class="research-clear">초기화</button></span>
+  </div>
+  <div class="research-tree-scroll">
+    <div id="researchTree" class="research-tree">
+      <div class="research-tree-toolbar">
+        <div class="research-legend" aria-label="연구 상태 안내">
+          <span class="done"><i></i>완료</span><span class="need"><i></i>추가 필요</span><span class="cur"><i></i>현재 연구</span><span class="tgt"><i></i>목표 연구</span>
+        </div>
+        <div class="research-cost-chip"><span>연구 비용</span><b id="planResearchCost">0</b></div>
+      </div>
+      <svg id="researchTreeLines" class="research-tree-lines" aria-hidden="true"></svg>
+      <div id="researchTreeNodes" class="research-tree-nodes"></div>
+      <div id="researchAction" class="research-action" aria-live="polite">
+        <span id="researchActionName" class="research-action-name"></span>
+        <button type="button" id="researchToggleCurrent">현재 연구에 추가</button>
+        <button type="button" id="researchSetTarget" class="primary">목표 연구로 설정</button>
+        <button type="button" id="researchActionClose">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="note plan-note">
+    <b>도시 현황·건물 구성</b><br>
+    상세 보기를 누르면 도시 현황의 계산 내역과 건물 구성이 함께 나타납니다. 숨겨도 입력값과 계산은 유지됩니다. 주택 수는 일꾼 현황, 생산 건물 수는 생산 계산기를 기본으로 사용합니다. 건물 구성에 직접 입력한 수가 우선하며, 입력칸을 비우면 기본값으로 돌아갑니다. 호화 쌀 농장은 건물 구성에서 입력합니다. 초기화는 건물 구성의 직접 입력값을 지우고 호화 쌀 농장을 0으로 되돌립니다.<br><br>
+    <b>일꾼·영토</b><br>
+    현재 일꾼은 주택 제공 인원과 불가사의 보너스의 합계이며, 필요 일꾼은 건물을 동시에 운영할 때 필요한 인원입니다. 남은 면적은 사용 가능 면적에서 건물 면적을 뺀 값으로, 16면적을 1칸으로 환산합니다. 누에 숲·고령토 채석장은 별도 영토이므로 면적을 차감하지 않습니다. 진행도 해금은 보너스 적용 레벨에 따라 Lv.2 +3칸 · Lv.7 +5칸 · Lv.13 +7칸 · Lv.17 +8칸 · Lv.24 +8칸을 누적 반영하며, 보석 해금은 별도로 더합니다.<br><br>
+    <b>오수전·건물 건설 비용</b><br>
+    현재 보유량과 시간당 생산량은 게임에서 확인한 값을 입력합니다. 보유량은 100K·1.2M처럼 입력할 수 있으며, 운영 시간을 비우면 생산 계산기의 기본 운영 시간을 사용합니다. 건설 항목에 건물 종류·목표 레벨·건설 수를 지정하면 Lv.1 건설부터 목표 레벨까지의 누적 오수전을 계산합니다. 오른쪽 삭제 버튼은 해당 건설 항목만 제거합니다. 건설 항목은 비용 계산용이며 현재 건물 수에 자동으로 더해지지 않습니다.<br><br>
+    <b>연구</b><br>
+    연구 노드를 눌러 현재 연구에 추가·해제하거나 목표 연구로 지정합니다. 현재 연구는 여러 개를 선택할 수 있고 각 선행 연구도 완료한 것으로 처리합니다. 연구 비용은 목표까지 추가로 필요한 연구의 합계입니다. 연구 초기화는 현재·목표 연구 선택을 지웁니다.
+  </div>
+</div>
+
 <div id="detailModal" class="detail-modal" hidden aria-hidden="true">
   <div class="detail-backdrop" data-detail-close></div>
   <section class="detail-sheet" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
@@ -299,12 +520,97 @@ const state=JSON.parse(JSON.stringify(INITIAL_STATE.prod));
 const settings={...INITIAL_STATE.settings};
 const wStock={...INITIAL_STATE.wStock};
 const wLvSet={...INITIAL_STATE.wLvSet};
+
+const CITY_PLAN_DATA={
+  expansionSize:4,
+  initialExpansions:7,
+  /* 각 레벨에서 새로 추가되는 영토 칸 수. 달성한 보상은 누적 합산한다. */
+  progressionRewards:{'자금성':[{level:2,amount:3},{level:7,amount:5},{level:13,amount:7},{level:17,amount:8},{level:24,amount:8}],'병마용':[{level:2,amount:3},{level:7,amount:5},{level:13,amount:7},{level:17,amount:8},{level:24,amount:8}],'만리장성':[{level:2,amount:3},{level:7,amount:5},{level:13,amount:7},{level:17,amount:8},{level:24,amount:8}]},
+  areaBuildings:[
+    {key:'cityHall',name:'시청',w:5,l:5,fixed:1,workers:null},
+    {key:'smallHome',name:'소형 주택',w:2,l:2,workers:null,providesWorkers:1},
+    {key:'mediumHome',name:'중형 주택',w:4,l:4,workers:null,providesWorkers:2},
+    {key:'premiumHome',name:'호화 주택',w:3,l:2,workers:null,providesWorkers:2},
+    {key:'쌀 농장',name:'쌀 농장',w:5,l:4,sync:true,workers:2,workerGroup:'rice'},
+    {key:'premiumRice',name:'호화 쌀 농장',w:4,l:4,workers:2,workerGroup:'rice'},
+    {key:'누에 숲',name:'누에 숲',w:0,l:0,sync:true,workers:1,workerGroup:'base'},
+    {key:'고령토 채석장',name:'고령토 채석장',w:0,l:0,sync:true,workers:1,workerGroup:'base'},
+    {key:'실 가공소',name:'실 가공소',w:6,l:3,sync:true,workers:3,workerGroup:'processor'},
+    {key:'점토 가공소',name:'점토 가공소',w:5,l:4,sync:true,workers:3,workerGroup:'processor'},
+    {key:'비단 작업장',name:'비단 작업장',w:5,l:3,sync:true,workers:8,workerGroup:'workshop'},
+    {key:'도자기 작업장',name:'도자기 작업장',w:6,l:4,sync:true,workers:8,workerGroup:'workshop'}
+  ],
+  constructionCatalog:{
+    smallHome:{name:'소형 주택',costs:[50,380,2900,8700,17000,34000]},
+    mediumHome:{name:'중형 주택',costs:[250,1900,14000,42000,84000,170000]},
+    premiumHome:{name:'호화 주택',costs:[250,80,80,80,80,80]},
+    '쌀 농장':{name:'쌀 농장',costs:[130,980,7400,22000,44000,88000]},
+    premiumRice:{name:'호화 쌀 농장',costs:[150,50,50,50,50,50]},
+    '실 가공소':{name:'실 가공소',costs:[350,2600,20000,60000,120000,240000]},
+    '점토 가공소':{name:'점토 가공소',costs:[350,2600,20000,60000,120000,240000]},
+    '비단 작업장':{name:'비단 작업장',costs:[500,3800,29000,87000,170000,340000]},
+    '도자기 작업장':{name:'도자기 작업장',costs:[500,3800,29000,87000,170000,340000]}
+  },
+  homeProduction:{
+    smallHome:{name:'소형 주택',hours:3,out:[1150,2250,4500,13500,24000,42000]},
+    mediumHome:{name:'중형 주택',hours:6,out:[3700,7500,15000,45000,80000,145000]},
+    premiumHome:{name:'호화 주택',hours:8,out:[4300,8700,17300,55000,95000,165000]}
+  },
+  research:[{"id":"Technology_China_RiseOfChina","name":"중국의 부상","cost":50,"parents":[]},{"id":"Technology_China_InkAndBrush","name":"먹과 붓","cost":60,"parents":["Technology_China_RiseOfChina"]},{"id":"Technology_China_Sericulture","name":"양잠","cost":70,"parents":["Technology_China_RiseOfChina"]},{"id":"Technology_China_SilkManufacture","name":"비단 제조","cost":250,"parents":["Technology_China_InkAndBrush","Technology_China_Sericulture"]},{"id":"Technology_China_RammedEarthHouses","name":"판축 주택","cost":500,"parents":["Technology_China_SilkManufacture"]},{"id":"Technology_China_PaddyFields","name":"논","cost":1500,"parents":["Technology_China_SilkManufacture"]},{"id":"Technology_China_Calligraphy","name":"서예","cost":1800,"parents":["Technology_China_SilkManufacture"]},{"id":"Technology_China_RefinedSilk","name":"정제 비단","cost":2500,"parents":["Technology_China_RammedEarthHouses"]},{"id":"Technology_China_DynasticLaw","name":"왕조 법","cost":20000,"parents":["Technology_China_PaddyFields","Technology_China_Calligraphy"]},{"id":"Technology_China_SilkMastery","name":"비단 숙련","cost":50000,"parents":["Technology_China_RefinedSilk"]},{"id":"Technology_China_EnhancedPaddyFields","name":"개량 논","cost":70000,"parents":["Technology_China_DynasticLaw"]},{"id":"Technology_China_DedicatedWorkforce","name":"전담 노동력","cost":70000,"parents":["Technology_China_SilkMastery","Technology_China_EnhancedPaddyFields"]},{"id":"Technology_China_KaolinProcessing","name":"고령토 가공","cost":110000,"parents":["Technology_China_DedicatedWorkforce"]},{"id":"Technology_China_IronPlough","name":"철제 쟁기","cost":270000,"parents":["Technology_China_DedicatedWorkforce"]},{"id":"Technology_China_PorcelainProduction","name":"도자기 생산","cost":250000,"parents":["Technology_China_KaolinProcessing"]},{"id":"Technology_China_LaborDuties","name":"부역","cost":170000,"parents":["Technology_China_IronPlough"]},{"id":"Technology_China_BakedBricks","name":"구운 벽돌","cost":210000,"parents":["Technology_China_PorcelainProduction"]},{"id":"Technology_China_DeepFoundations","name":"깊은 기초","cost":330000,"parents":["Technology_China_PorcelainProduction"]},{"id":"Technology_China_AdvancedClayworks","name":"고급 점토 공예","cost":420000,"parents":["Technology_China_PorcelainProduction"]},{"id":"Technology_China_Terracing","name":"계단식 경작","cost":660000,"parents":["Technology_China_LaborDuties"]},{"id":"Technology_China_FloorPlans","name":"평면 설계","cost":730000,"parents":["Technology_China_BakedBricks"]},{"id":"Technology_China_UrbanManagement","name":"도시 관리","cost":1000000,"parents":["Technology_China_DeepFoundations"]},{"id":"Technology_China_PorcelainMastery","name":"도자기 숙련","cost":1300000,"parents":["Technology_China_AdvancedClayworks","Technology_China_Terracing"]},{"id":"Technology_China_DrylandFarming","name":"건조지 농업","cost":1500000,"parents":["Technology_China_Terracing"]},{"id":"Technology_China_ChineseConsensus","name":"중국의 합의","cost":1800000,"parents":["Technology_China_FloorPlans","Technology_China_UrbanManagement","Technology_China_PorcelainMastery","Technology_China_DrylandFarming"]}]
+};
+
+/* 중국 연구 트리 시각 배치: 4열 × 12단계 */
+const RESEARCH_TREE_LAYOUT={
+  Technology_China_RiseOfChina:[380,40],
+  Technology_China_InkAndBrush:[285,100], Technology_China_Sericulture:[475,100],
+  Technology_China_SilkManufacture:[380,160],
+  Technology_China_RammedEarthHouses:[190,220], Technology_China_PaddyFields:[380,220], Technology_China_Calligraphy:[570,220],
+  Technology_China_RefinedSilk:[285,280], Technology_China_DynasticLaw:[475,280],
+  Technology_China_SilkMastery:[285,340], Technology_China_EnhancedPaddyFields:[475,340],
+  Technology_China_DedicatedWorkforce:[380,400],
+  Technology_China_KaolinProcessing:[285,460], Technology_China_IronPlough:[475,460],
+  Technology_China_PorcelainProduction:[285,520], Technology_China_LaborDuties:[475,520],
+  Technology_China_BakedBricks:[95,585], Technology_China_DeepFoundations:[285,585], Technology_China_AdvancedClayworks:[475,585], Technology_China_Terracing:[665,585],
+  Technology_China_FloorPlans:[95,650], Technology_China_UrbanManagement:[285,650], Technology_China_PorcelainMastery:[475,650], Technology_China_DrylandFarming:[665,650],
+  Technology_China_ChineseConsensus:[380,735]
+};
+let planResearchActionId='';
+
+const INITIAL_PLAN_STATE={
+  progressOverride:0,gemExpansions:0,premiumRice:0,
+  homes:{smallHome:{lv:1,count:0},mediumHome:{lv:1,count:0},premiumHome:{lv:1,count:0}},
+  buildingCounts:{},buildingOverrides:{},constructionRows:[],
+  currencyStock:0,currencyPerHour:0,currencyHours:'',currencyHoursManual:null,currentTechs:[],targetTech:''
+};
+const planState=JSON.parse(JSON.stringify(INITIAL_PLAN_STATE));
+
 const DETAIL_GROUPS={base:['쌀 농장','누에 숲','고령토 채석장'],intermediate:['실 가공소','점토 가공소'],product:['비단 작업장','도자기 작업장']};
 const DETAIL_GROUP_META={base:{title:'기초 자원 상세 설정',subtitle:'서로 다른 레벨·건물 수·운영 시간을 실제 구성대로 입력합니다.'},intermediate:{title:'중간 자원 상세 설정',subtitle:'서로 다른 레벨·생산 방식·건물 수·운영 시간을 실제 구성대로 입력합니다.'},product:{title:'상품 상세 설정',subtitle:'서로 다른 레벨·생산 방식·건물 수·운영 시간을 실제 구성대로 입력합니다.'}};
 const DETAIL_DEFAULTS=Object.fromEntries(Object.values(DETAIL_GROUPS).flat().map(b=>[b,{enabled:false,rows:[]}])) ;
 const details=JSON.parse(JSON.stringify(DETAIL_DEFAULTS));
 let activeDetailGroup='base',activeDetailBuilding=DETAIL_GROUPS.base[0];
-function fmtQty(n){if(n===null||n===undefined||isNaN(n))return '—';return Math.round(n).toLocaleString('ko-KR',{maximumFractionDigits:0});}
+function fmtQty(n){
+  if(n===null||n===undefined||isNaN(n))return '—';
+  const v=Number(n),a=Math.abs(v),sign=v<0?'-':'';
+  if(a>=1000000){const m=Math.round(a/10000)/100;return sign+m.toLocaleString('ko-KR',{maximumFractionDigits:2})+'M';}
+  if(a>=100000){const k=Math.floor(a/100)/10;return sign+k.toLocaleString('ko-KR',{maximumFractionDigits:1})+'K';}
+  return Math.round(v).toLocaleString('ko-KR',{maximumFractionDigits:0});
+}
+function parseCompactNumber(value){
+  if(typeof value==='number')return Number.isFinite(value)?value:NaN;
+  const raw=String(value??'').trim().replace(/,/g,'').replace(/\s+/g,'').toUpperCase();
+  if(!raw)return NaN;
+  const m=raw.match(/^([+-]?(?:\d+(?:\.\d*)?|\.\d+))([KM])?$/);
+  if(!m)return NaN;
+  const base=parseFloat(m[1]);if(!Number.isFinite(base))return NaN;
+  return base*(m[2]==='M'?1000000:m[2]==='K'?1000:1);
+}
+function fmtCompactInput(n){
+  const v=Math.max(0,Number(n)||0),a=Math.abs(v);
+  if(a>=1000000){const m=Math.round(a/10000)/100;return m.toLocaleString('ko-KR',{maximumFractionDigits:2})+'M';}
+  if(a>=100000){const k=Math.floor(a/100)/10;return k.toLocaleString('ko-KR',{maximumFractionDigits:1})+'K';}
+  return Math.round(v).toLocaleString('ko-KR',{maximumFractionDigits:0});
+}
 function fmtHours(n){if(n===null||n===undefined||isNaN(n))return '—';const rounded=Math.round(n*100)/100;return rounded.toLocaleString('ko-KR',{minimumFractionDigits:0,maximumFractionDigits:2});}
 function fmtPower(n){if(n===null||n===undefined||!Number.isFinite(n))return '—';const r=Math.round(n*10)/10;return r.toLocaleString('ko-KR',{maximumFractionDigits:1});}
 function fmtSignedPower(n){if(n===null||n===undefined||!Number.isFinite(n))return '—';const r=Math.round(n*10)/10;return r>0?'+'+fmtPower(r):fmtPower(r);}
@@ -340,17 +646,51 @@ function resourceRequiredHours(building,cons){const stock=state[building].stock|
 function intermediateRequiredHours(building,cons){const s=state[building],p=baseOutput(building),stock=s.stock||0;if(cons<=stock)return 0;if(detailEnabled(building))return timeToProduceAmount(building,cons-stock);if(!p||s.bldgs<=0||p.out<=0)return null;const perCycle=p.out*s.bldgs;const cycles=Math.ceil((cons-stock)/perCycle-1e-12);return cycles*p.min/60;}
 function riceConsumption(){return totalRiceUse('실 가공소')+totalRiceUse('점토 가공소')+totalRiceUse('비단 작업장')+totalRiceUse('도자기 작업장');}
 function silkwormConsumption(){return totalSubUse('실 가공소');}function kaolinConsumption(){return totalSubUse('점토 가공소');}function threadConsumption(){return totalSubUse('비단 작업장');}function clayConsumption(){return totalSubUse('도자기 작업장');}
-function snapshotState(){return {state:JSON.parse(JSON.stringify(state)),settings:{...settings},wStock:{...wStock},wLvSet:{...wLvSet},details:JSON.parse(JSON.stringify(details))};}
+function snapshotState(){return {state:JSON.parse(JSON.stringify(state)),settings:{...settings},wStock:{...wStock},wLvSet:{...wLvSet},details:JSON.parse(JSON.stringify(details)),planState:JSON.parse(JSON.stringify(planState))};}
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(snapshotState()));}catch(e){}}
 function showResetStatus(message){const status=document.getElementById('resetStatus');if(!status)return;status.textContent=message;if(resetStatusTimer)clearTimeout(resetStatusTimer);resetStatusTimer=setTimeout(()=>{status.textContent='';},1800);}
 function hasSavedDefault(){try{return !!localStorage.getItem(DEFAULT_STORAGE_KEY);}catch(e){return false;}}
-function normalizeState(){Object.keys(state).forEach(b=>{const s=state[b];s.lv=clamp(parseInt(s.lv)||1,1,6);s.bldgs=Math.max(0,parseFloat(s.bldgs)||0);if(Object.prototype.hasOwnProperty.call(s,'stock'))s.stock=Math.round(parseFloat(s.stock)||0);if(s.hours!==''&&s.hours!==null&&s.hours!==undefined){const h=parseFloat(s.hours);s.hours=Number.isFinite(h)?Math.max(0,h):'';}const modes=DATA.lm[b+'|'+s.lv]||[];if(modes.length&&!modes.includes(s.mode))s.mode=modes[0];});if(!['자금성','병마용','만리장성'].includes(settings.wonder))settings.wonder='자금성';settings.wLv=clamp(parseInt(settings.wLv)||0,0,50);settings.baseH=Math.max(0,parseFloat(settings.baseH)||0);if(!['30분','1시간','2시간'].includes(settings.productRawCycle))settings.productRawCycle='30분';settings.sleepPrepH=settings.sleepPrepH===''?'':Math.max(0,parseFloat(settings.sleepPrepH)||0);if(!['최장','30분','1시간','2시간'].includes(settings.sleepCycle))settings.sleepCycle='최장';settings.sleepCount=Math.max(0,Math.floor(parseFloat(settings.sleepCount)||0));wStock.silk=Math.round(parseFloat(wStock.silk)||0);wStock.porc=Math.round(parseFloat(wStock.porc)||0);wLvSet.cur=clamp(parseInt(wLvSet.cur)||0,0,50);wLvSet.tgt=clamp(parseInt(wLvSet.tgt)||0,0,50);if(wLvSet.tgt<wLvSet.cur)wLvSet.tgt=wLvSet.cur;normalizeDetails();}
+function normalizeState(){Object.keys(state).forEach(b=>{const s=state[b];s.lv=clamp(parseInt(s.lv)||1,1,6);s.bldgs=Math.max(0,parseFloat(s.bldgs)||0);if(Object.prototype.hasOwnProperty.call(s,'stock'))s.stock=Math.round(parseFloat(s.stock)||0);if(s.hours!==''&&s.hours!==null&&s.hours!==undefined){const h=parseFloat(s.hours);s.hours=Number.isFinite(h)?Math.max(0,h):'';}const modes=DATA.lm[b+'|'+s.lv]||[];if(modes.length&&!modes.includes(s.mode))s.mode=modes[0];});if(!['자금성','병마용','만리장성'].includes(settings.wonder))settings.wonder='자금성';settings.wLv=clamp(parseInt(settings.wLv)||0,0,50);settings.baseH=Math.max(0,parseFloat(settings.baseH)||0);if(!['30분','1시간','2시간'].includes(settings.productRawCycle))settings.productRawCycle='30분';settings.sleepPrepH=settings.sleepPrepH===''?'':Math.max(0,parseFloat(settings.sleepPrepH)||0);if(!['최장','30분','1시간','2시간'].includes(settings.sleepCycle))settings.sleepCycle='최장';settings.sleepCount=Math.max(0,Math.floor(parseFloat(settings.sleepCount)||0));wStock.silk=Math.round(parseFloat(wStock.silk)||0);wStock.porc=Math.round(parseFloat(wStock.porc)||0);wLvSet.cur=clamp(parseInt(wLvSet.cur)||0,0,50);wLvSet.tgt=clamp(parseInt(wLvSet.tgt)||0,0,50);if(wLvSet.tgt<wLvSet.cur)wLvSet.tgt=wLvSet.cur;planState.progressOverride=Math.max(0,Math.floor(parseFloat(planState.progressOverride)||0));planState.gemExpansions=Math.max(0,Math.floor(parseFloat(planState.gemExpansions)||0));planState.premiumRice=Math.max(0,parseFloat(planState.premiumRice)||0);if(!planState.homes||typeof planState.homes!=='object')planState.homes={};['smallHome','mediumHome','premiumHome'].forEach(k=>{const h=planState.homes[k]||(planState.homes[k]={lv:1,count:0});h.lv=clamp(parseInt(h.lv)||1,1,6);h.count=Math.max(0,parseFloat(h.count)||0);});planState.currencyStock=Math.max(0,Math.round(parseFloat(planState.currencyStock)||0));planState.currencyPerHour=Math.max(0,parseFloat(planState.currencyPerHour)||0);if(planState.currencyHoursManual!==true&&planState.currencyHoursManual!==false){const legacyCh=parseFloat(planState.currencyHours);planState.currencyHoursManual=Number.isFinite(legacyCh)&&legacyCh>0;}if(planState.currencyHoursManual!==true){planState.currencyHours='';planState.currencyHoursManual=false;}else{const ch=parseFloat(planState.currencyHours);planState.currencyHours=Number.isFinite(ch)?Math.max(0,ch):'';}const techIds=new Set(CITY_PLAN_DATA.research.map(t=>t.id));if(!Array.isArray(planState.currentTechs))planState.currentTechs=[];if(planState.currentTech&&techIds.has(planState.currentTech)&&!planState.currentTechs.includes(planState.currentTech))planState.currentTechs.push(planState.currentTech);delete planState.currentTech;planState.currentTechs=[...new Set(planState.currentTechs.filter(id=>techIds.has(id)))];if(planState.targetTech&&!techIds.has(planState.targetTech))planState.targetTech='';normalizeDetails();
+if(!planState.buildingCounts||typeof planState.buildingCounts!=='object')planState.buildingCounts={};
+if(!planState.buildingOverrides||typeof planState.buildingOverrides!=='object')planState.buildingOverrides={};
+/* v28 주택 수를 일꾼 현황으로 한 번만 승계하고 기본 연동으로 전환한다. */
+if(planState.housingInputsVersion!==1){
+  ['smallHome','mediumHome','premiumHome'].forEach(key=>{
+    if(Object.prototype.hasOwnProperty.call(planState.buildingOverrides,key))planState.homes[key].count=Math.max(0,Math.floor(parseFloat(planState.buildingOverrides[key])||0));
+    delete planState.buildingOverrides[key];
+  });
+  planState.housingInputsVersion=1;
+}
+/* v25부터 생산 건물은 입력값이 없으면 항상 생산 계산기와 실시간 연동한다. 이전 버전의 buildingManual 값은 의도적으로 승계하지 않는다. */
+for(const item of CITY_PLAN_DATA.areaBuildings){
+  if(item.fixed!==undefined)continue;
+  if(item.sync||item.providesWorkers){
+    if(Object.prototype.hasOwnProperty.call(planState.buildingOverrides,item.key)){
+      planState.buildingOverrides[item.key]=Math.max(0,Math.floor(parseFloat(planState.buildingOverrides[item.key])||0));
+    }
+  }else{
+    let seed=Object.prototype.hasOwnProperty.call(planState.buildingOverrides,item.key)?planState.buildingOverrides[item.key]:null;
+    if(seed===null){
+      if(item.key==='premiumRice')seed=Math.max(0,parseFloat(planState.premiumRice)||0);
+      else seed=Math.max(0,parseFloat(planState.homes[item.key]?.count)||0);
+    }
+    planState.buildingOverrides[item.key]=Math.max(0,Math.floor(parseFloat(seed)||0));
+  }
+}
+if(!Array.isArray(planState.constructionRows))planState.constructionRows=[];
+planState.constructionRows=planState.constructionRows.map((r,i)=>({
+  id:String(r?.id||('row'+(i+1))),
+  key:CITY_PLAN_DATA.constructionCatalog[r?.key]?r.key:'',
+  lv:clamp(parseInt(r?.lv)||1,1,6),
+  count:Math.max(0,Math.floor(parseFloat(r?.count)||0))
+}));
+}
 function syncUIFromState(){document.getElementById('wonder').value=settings.wonder;document.getElementById('wLv').value=settings.wLv;document.getElementById('baseH').value=settings.baseH;document.getElementById('curLv').value=wLvSet.cur;document.getElementById('tgtLv').value=wLvSet.tgt;const prc=document.getElementById('productRawCycle');if(prc)prc.value=settings.productRawCycle;const sph=document.getElementById('sleepPrepH');if(sph)sph.value=settings.sleepPrepH;const sc=document.getElementById('sleepCycle');if(sc)sc.value=settings.sleepCycle;const sn=document.getElementById('sleepCount');if(sn)sn.value=settings.sleepCount;}
-function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);const saved=raw?JSON.parse(raw):null;if(saved){if(saved.state)Object.assign(state,saved.state);if(saved.settings)Object.assign(settings,saved.settings);if(saved.wStock)Object.assign(wStock,saved.wStock);if(saved.wLvSet)Object.assign(wLvSet,saved.wLvSet);if(saved.details)Object.assign(details,saved.details);}}catch(e){console.error('loadState error:',e);}normalizeState();syncUIFromState();saveState();}
-function applySnapshot(snapshot,message){const selectedWonder=settings.wonder;const src=snapshot||{};Object.keys(state).forEach(k=>delete state[k]);Object.assign(state,JSON.parse(JSON.stringify(INITIAL_STATE.prod)),JSON.parse(JSON.stringify(src.state||{})));Object.assign(settings,INITIAL_STATE.settings,src.settings||{});settings.wonder=selectedWonder;Object.assign(wStock,INITIAL_STATE.wStock,src.wStock||{});Object.assign(wLvSet,INITIAL_STATE.wLvSet,src.wLvSet||{});Object.keys(details).forEach(k=>delete details[k]);Object.assign(details,JSON.parse(JSON.stringify(DETAIL_DEFAULTS)),JSON.parse(JSON.stringify(src.details||{})));normalizeState();syncUIFromState();renderAll();saveState();showResetStatus(message);}
+function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);const saved=raw?JSON.parse(raw):null;if(saved){if(saved.state)Object.assign(state,saved.state);if(saved.settings)Object.assign(settings,saved.settings);if(saved.wStock)Object.assign(wStock,saved.wStock);if(saved.wLvSet)Object.assign(wLvSet,saved.wLvSet);if(saved.details)Object.assign(details,saved.details);if(saved.planState)Object.assign(planState,saved.planState);}}catch(e){console.error('loadState error:',e);}normalizeState();syncUIFromState();saveState();}
+function applySnapshot(snapshot,message){const selectedWonder=settings.wonder;const src=snapshot||{};Object.keys(state).forEach(k=>delete state[k]);Object.assign(state,JSON.parse(JSON.stringify(INITIAL_STATE.prod)),JSON.parse(JSON.stringify(src.state||{})));Object.assign(settings,INITIAL_STATE.settings,src.settings||{});settings.wonder=selectedWonder;Object.assign(wStock,INITIAL_STATE.wStock,src.wStock||{});Object.assign(wLvSet,INITIAL_STATE.wLvSet,src.wLvSet||{});Object.keys(planState).forEach(k=>delete planState[k]);Object.assign(planState,JSON.parse(JSON.stringify(INITIAL_PLAN_STATE)),JSON.parse(JSON.stringify(src.planState||{})));Object.keys(details).forEach(k=>delete details[k]);Object.assign(details,JSON.parse(JSON.stringify(DETAIL_DEFAULTS)),JSON.parse(JSON.stringify(src.details||{})));normalizeState();syncUIFromState();renderAll();saveState();showResetStatus(message);}
 function saveUserDefault(){let overwrite=false;try{overwrite=!!localStorage.getItem(DEFAULT_STORAGE_KEY);}catch(e){}if(overwrite&&!window.confirm('기존 저장값을 현재 입력값으로 덮어쓸까요?'))return;try{localStorage.setItem(DEFAULT_STORAGE_KEY,JSON.stringify(snapshotState()));showResetStatus('저장 완료');}catch(e){showResetStatus('저장 실패');}}
 function restoreSavedDefault(){try{const raw=localStorage.getItem(DEFAULT_STORAGE_KEY);if(!raw){showResetStatus('저장값 없음');return false;}applySnapshot(JSON.parse(raw),'저장값 복원');return true;}catch(e){showResetStatus('복원 실패');return false;}}
-function restoreFactoryDefault(){applySnapshot({state:INITIAL_STATE.prod,settings:INITIAL_STATE.settings,wStock:INITIAL_STATE.wStock,wLvSet:INITIAL_STATE.wLvSet,details:DETAIL_DEFAULTS},'초기화 완료');}
+function restoreFactoryDefault(){applySnapshot({state:INITIAL_STATE.prod,settings:INITIAL_STATE.settings,wStock:INITIAL_STATE.wStock,wLvSet:INITIAL_STATE.wLvSet,details:DETAIL_DEFAULTS,planState:INITIAL_PLAN_STATE},'초기화 완료');}
 function openResetChoiceModal(){const modal=document.getElementById('resetChoiceModal');document.getElementById('restoreSavedBtn').disabled=!hasSavedDefault();modal.removeAttribute('hidden');modal.setAttribute('aria-hidden','false');document.body.classList.add('detail-modal-open');postSize();}
 function closeResetChoiceModal(){const modal=document.getElementById('resetChoiceModal');modal.setAttribute('hidden','');modal.setAttribute('aria-hidden','true');document.body.classList.remove('detail-modal-open');document.getElementById('resetBtn')?.focus();postSize();}
 function renderBonus(){const b=getBonus(),next=getNextWorker(),w=settings.wonder;let txt;if(w==='자금성')txt='쌀 +'+(b.r*100).toFixed(1)+'% / 금화 +'+(b.g*100).toFixed(1)+'%';else if(w==='병마용')txt='금화 +'+(b.g*100).toFixed(1)+'%';else txt='쌀 +'+(b.r*100).toFixed(1)+'%';document.getElementById('bonusBox').innerHTML='<div class="bonus-item"><span>생산 보너스</span><b>'+txt+'</b></div><div class="bonus-item"><span>추가 일꾼 수</span><b>'+b.w+'명</b></div><div class="bonus-item"><span>다음 일꾼 증가</span><b>'+(next?next+'레벨':'최대 레벨')+'</b></div>';}
@@ -420,8 +760,225 @@ function renderConversion(){const order=['쌀 농장','누에 숲','고령토 �
 function renderWonderContext(){const base=document.getElementById('wonderBaseHDisplay'),ctx=document.getElementById('wonderContext');if(base)base.textContent=fmtHours(settings.baseH)+' h';if(ctx)ctx.innerHTML='<span>불가사의</span><span class="wonder-context-value">'+settings.wonder+'</span><span>보너스</span><span class="wonder-context-value">Lv.'+settings.wLv+'</span>'; }
 function finalRequiredHours(building,need,stock){const shortfall=Math.max(0,need-stock);if(shortfall<=0)return 0;if(detailEnabled(building))return timeToProduceAmount(building,shortfall);const s=state[building],p=baseOutput(building);if(!p||s.bldgs<=0||p.out<=0)return null;const perCycle=p.out*s.bldgs;const cycles=Math.ceil(shortfall/perCycle-1e-12);return cycles*p.min/60;}
 function renderWonder(){const cur=wLvSet.cur,tgt=wLvSet.tgt;const wcCur=DATA.wc[cur]||{cs:0,cp:0},wcTgt=DATA.wc[tgt]||{cs:0,cp:0};const silkNeed=wcTgt.cs-wcCur.cs,porcNeed=wcTgt.cp-wcCur.cp;const silkProd=totalOutput('비단 작업장'),porcProd=totalOutput('도자기 작업장');const silkStock=wStock.silk||0,porcStock=wStock.porc||0;const silkRemain=silkStock+silkProd-silkNeed,porcRemain=porcStock+porcProd-porcNeed;const silkH=finalRequiredHours('비단 작업장',silkNeed,silkStock),porcH=finalRequiredHours('도자기 작업장',porcNeed,porcStock);const kaolinNow=state['고령토 채석장'].stock||0,kaolinProd=totalOutput('고령토 채석장');const clayNow=state['점토 가공소'].stock||0,porcNow=porcStock;const clayP=prodInfo('점토 가공소',6,'30분'),porcP=prodInfo('도자기 작업장',6,'30분');let maxLv=cur;if(clayP&&porcP){const kaolinTotal=kaolinNow+kaolinProd;const clayFromKaolin=kaolinTotal*clayP.out/clayP.sub;const clayTotal=clayNow+clayFromKaolin;const porcTotal=porcNow+clayTotal*porcP.out/porcP.sub;for(let n=50;n>=cur;n--){if(DATA.wc[n]&&(DATA.wc[n].cp-wcCur.cp)<=porcTotal){maxLv=n;break;}}}document.getElementById('maxLv').textContent='Lv'+maxLv;document.querySelector('#tw tbody').innerHTML='<tr><td>비단</td><td class="num calc '+remainClass(silkRemain)+'">'+fmtQty(silkRemain)+'</td><td class="num calc">'+fmtQty(silkNeed)+'</td><td class="num calc">'+fmtQty(silkStock)+'</td><td class="num calc">'+fmtQty(silkProd)+'</td><td class="num calc">'+fmtQty(silkStock+silkProd)+'</td><td class="num calc">'+fmtHours(silkH)+'</td></tr><tr><td>도자기</td><td class="num calc '+remainClass(porcRemain)+'">'+fmtQty(porcRemain)+'</td><td class="num calc">'+fmtQty(porcNeed)+'</td><td class="num calc">'+fmtQty(porcStock)+'</td><td class="num calc">'+fmtQty(porcProd)+'</td><td class="num calc">'+fmtQty(porcStock+porcProd)+'</td><td class="num calc">'+fmtHours(porcH)+'</td></tr>';}
-function renderAll(){renderBonus();renderTables();renderWonder();renderSleepReserve();renderPower();renderConversion();renderWonderContext();renderDetailLaunchers();postSize();}
+
+function planProgressionInfo(){
+  const rewards=CITY_PLAN_DATA.progressionRewards[settings.wonder];
+  if(!Array.isArray(rewards))return {verified:false,count:Math.max(0,Math.floor(planState.progressOverride||0))};
+  const count=rewards.reduce((sum,r)=>sum+(settings.wLv>=r.level?(r.amount||1):0),0);
+  return {verified:true,count};
+}
+function planSyncedCount(key){
+  if(!state[key])return 0;
+  if(detailEnabled(key))return details[key].rows.reduce((s,r)=>s+Math.max(0,parseFloat(r.count)||0),0);
+  return Math.max(0,parseFloat(state[key].bldgs)||0);
+}
+function planBuildingCount(item){
+  if(item.fixed!==undefined)return item.fixed;
+  if((item.sync||item.providesWorkers)&&!Object.prototype.hasOwnProperty.call(planState.buildingOverrides||{},item.key)){
+    return Math.max(0,Math.floor(item.providesWorkers?planState.homes[item.key].count:planSyncedCount(item.key)));
+  }
+  return Math.max(0,Math.floor(parseFloat(planState.buildingOverrides?.[item.key])||0));
+}
+function planUsedArea(){
+  return CITY_PLAN_DATA.areaBuildings.reduce((sum,item)=>sum+Math.max(0,item.w*item.l)*planBuildingCount(item),0);
+}
+function constructionUnitCost(key,lv){
+  const row=CITY_PLAN_DATA.constructionCatalog[key];if(!row)return 0;
+  const n=clamp(parseInt(lv)||1,1,6);
+  return row.costs.slice(0,n).reduce((a,b)=>a+(parseFloat(b)||0),0);
+}
+function planConstructionCost(){
+  return (planState.constructionRows||[]).reduce((sum,r)=>sum+constructionUnitCost(r.key,r.lv)*Math.max(0,Math.floor(r.count||0)),0);
+}
+function constructionBuildingOptions(selected){
+  const opts=['<option value="">건물 선택</option>'];
+  for(const [key,v] of Object.entries(CITY_PLAN_DATA.constructionCatalog))opts.push('<option value="'+key+'"'+(selected===key?' selected':'')+'>'+v.name+'</option>');
+  return opts.join('');
+}
+function constructionLevelOptions(selected){return [1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+'>Lv.'+lv+'</option>').join('');}
+function renderPlanConstruction(){
+  const tbody=document.querySelector('#tConstruction tbody');if(!tbody)return;
+  if(!(planState.constructionRows||[]).length){tbody.innerHTML='<tr><td colspan="4" class="calc" style="color:#9ca3af">+ 건설 항목 추가를 눌러 계산할 건물을 추가하세요.</td></tr>';}
+  else tbody.innerHTML=planState.constructionRows.map(r=>{
+    const unit=constructionUnitCost(r.key,r.lv),need=unit*Math.max(0,Math.floor(r.count||0));
+    return '<tr data-construction-row="'+r.id+'"><td class="input-cell"><div class="construction-building-cell"><select data-construction-field="key">'+constructionBuildingOptions(r.key)+'</select></div></td><td class="input-cell"><select data-construction-field="lv">'+constructionLevelOptions(r.lv)+'</select></td><td class="input-cell"><input type="number" min="0" step="1" data-construction-field="count" value="'+(r.count||'')+'" placeholder="0"></td><td class="num calc"><div class="construction-cost-cell"><span>'+fmtQty(need)+'</span><button type="button" class="construction-remove" data-construction-remove="'+r.id+'" aria-label="건설 항목 삭제" title="건설 항목 삭제">삭제</button></div></td></tr>';
+  }).join('');
+  const total=document.getElementById('planConstructionTotal');if(total)total.textContent=fmtQty(planConstructionCost());
+}
+function planWorkerUsage(){
+  const result={total:0,base:0,rice:0,processor:0,workshop:0};
+  CITY_PLAN_DATA.areaBuildings.forEach(item=>{
+    if(typeof item.workers!=='number'||item.workers<=0)return;
+    const need=item.workers*planBuildingCount(item);result.total+=need;
+    if(item.workerGroup&&Object.prototype.hasOwnProperty.call(result,item.workerGroup))result[item.workerGroup]+=need;
+  });
+  return result;
+}
+function planWorkerAvailability(){
+  let homes=0;
+  CITY_PLAN_DATA.areaBuildings.forEach(item=>{if(typeof item.providesWorkers==='number'&&item.providesWorkers>0)homes+=item.providesWorkers*planBuildingCount(item);});
+  const wonder=Math.max(0,parseFloat(getBonus().w)||0);
+  return {homes,wonder,total:homes+wonder};
+}
+function renderPlanArea(){
+  const detailsShown=planState.cityDetailsVisible===true;
+  document.querySelectorAll('[data-city-detail]').forEach(row=>{row.hidden=!detailsShown;});
+  const detailsButton=document.getElementById('cityDetailsToggle');
+  detailsButton.textContent=detailsShown?'상세 숨기기':'상세 보기';
+  detailsButton.setAttribute('aria-expanded',String(detailsShown));
+  document.querySelectorAll('[data-plan-home-count]').forEach(input=>{input.value=planState.homes[input.dataset.planHomeCount].count;});
+  const p=planProgressionInfo(),gem=Math.max(0,Math.floor(planState.gemExpansions||0)),totalExp=CITY_PLAN_DATA.initialExpansions+p.count+gem;
+  const totalArea=totalExp*CITY_PLAN_DATA.expansionSize*CITY_PLAN_DATA.expansionSize,used=planUsedArea(),remain=totalArea-used;
+  const workers=planWorkerUsage(),available=planWorkerAvailability(),workerRemain=available.total-workers.total,usageRate=totalArea>0?used/totalArea*100:0;
+  document.getElementById('planWonderLv').textContent='Lv.'+settings.wLv;
+  document.getElementById('planWorkersAvailable').textContent=fmtPower(available.total)+'명';
+  document.getElementById('planWorkersTotal').textContent=fmtPower(workers.total)+'명';
+  const wr=document.getElementById('planWorkersRemain');wr.textContent=fmtSignedPower(workerRemain)+'명';wr.classList.toggle('remain-ok',workerRemain>=0);wr.classList.toggle('remain-bad',workerRemain<0);
+  document.getElementById('planWorkersHomes').textContent=fmtPower(available.homes)+'명';
+  document.getElementById('planWorkersWonder').textContent=fmtPower(available.wonder)+'명';
+  document.getElementById('planWorkersBase').textContent=fmtPower(workers.base)+'명';
+  document.getElementById('planWorkersRice').textContent=fmtPower(workers.rice)+'명';
+  document.getElementById('planWorkersProcessors').textContent=fmtPower(workers.processor)+'명';
+  document.getElementById('planWorkersWorkshops').textContent=fmtPower(workers.workshop)+'명';
+  document.getElementById('planProgressAuto').textContent=p.verified?(p.count+'칸'):'검증 대기';
+  const fallback=document.getElementById('planProgressFallbackRow');if(fallback)fallback.hidden=true;
+  document.getElementById('planProgressWarning').style.display=p.verified?'none':'block';
+  document.getElementById('planProgressOverride').value=planState.progressOverride;
+  document.getElementById('planGemExpansions').value=planState.gemExpansions;
+  document.getElementById('planTotalExpansionsTable').textContent=fmtQty(totalExp)+'칸';
+  document.getElementById('planTotalAreaTable').textContent=fmtQty(totalArea);
+  document.getElementById('planUsedAreaTable').textContent=fmtQty(used);
+  const rate=document.getElementById('planAreaUsageRate');if(rate)rate.textContent=fmtPower(usageRate)+'%';
+  const remainCell=document.getElementById('planRemainAreaTable'),remainCells=remain/16;remainCell.textContent=fmtQty(remain)+' ('+remainCells.toLocaleString('ko-KR',{minimumFractionDigits:1,maximumFractionDigits:1})+'칸)';remainCell.classList.toggle('remain-ok',remain>=0);remainCell.classList.toggle('remain-bad',remain<0);
+  document.querySelector('#tArea tbody').innerHTML=CITY_PLAN_DATA.areaBuildings.map(item=>{
+    const count=planBuildingCount(item),area=Math.max(0,item.w*item.l),total=area*count;
+    const workerNeed=typeof item.workers==='number'?item.workers*count:null;
+    let countCell;
+    if(item.fixed!==undefined)countCell=fmtPower(count);
+    else if((item.sync||item.providesWorkers)&&!Object.prototype.hasOwnProperty.call(planState.buildingOverrides||{},item.key)){
+      countCell='<input type="number" min="0" step="1" data-plan-count="'+item.key+'" value="" placeholder="기본" title="'+(item.providesWorkers?'일꾼 현황':'생산 계산기')+' 기준 '+fmtPower(count)+'채" aria-label="'+item.name+' 수">';
+    }else{
+      const manual=Math.max(0,Math.floor(parseFloat(planState.buildingOverrides?.[item.key])||0));
+      countCell='<input type="number" min="0" step="1" data-plan-count="'+item.key+'" value="'+manual+'">';
+    }
+    const workerTotalCell=workerNeed===null?'—':fmtPower(workerNeed);
+    const areaCell=area===0?'0':item.w+'×'+item.l+' · '+area;
+    return '<tr><td>'+item.name+'</td><td class="input-cell">'+countCell+'</td><td class="num calc">'+workerTotalCell+'</td><td class="num calc">'+areaCell+'</td><td class="num calc">'+fmtQty(total)+'</td></tr>';
+  }).join('');
+  renderPlanConstruction();
+}
+
+function renderPlanCurrency(){
+  const stock=Math.max(0,parseFloat(planState.currencyStock)||0),perHour=Math.max(0,parseFloat(planState.currencyPerHour)||0);
+  const manual=planState.currencyHoursManual===true&&planState.currencyHours!==''&&Number.isFinite(parseFloat(planState.currencyHours));
+  const hours=manual?Math.max(0,parseFloat(planState.currencyHours)||0):Math.max(0,parseFloat(settings.baseH)||0);
+  document.getElementById('planCurrencyStock').value=fmtCompactInput(stock);
+  document.getElementById('planCurrencyPerHourInput').value=perHour;
+  const hInput=document.getElementById('planCurrencyHours');hInput.value=manual?String(planState.currencyHours):'';hInput.placeholder='기본';hInput.title='비워두면 생산 계산기의 기본 운영 시간 '+fmtHours(settings.baseH)+' h를 사용합니다.';
+  return {perHour,hours,projected:stock+perHour*hours};
+}
+function planTechMap(){return new Map(CITY_PLAN_DATA.research.map(t=>[t.id,t]));}
+function planAncestors(id,map,out=new Set()){const t=map.get(id);if(!t)return out;for(const p of t.parents){if(!out.has(p)){out.add(p);planAncestors(p,map,out);}}return out;}
+function planResearchInfo(){
+  const map=planTechMap(),target=planState.targetTech;
+  const done=new Set(),currentIds=Array.isArray(planState.currentTechs)?planState.currentTechs:[];
+  for(const id of currentIds){if(!map.has(id))continue;planAncestors(id,map,done);done.add(id);}
+  if(!map.has(target))return {map,needed:new Set(),done,targetPath:new Set(),cost:0,count:0};
+  const targetPath=planAncestors(target,map,new Set());targetPath.add(target);
+  const needed=new Set(targetPath);for(const id of done)needed.delete(id);
+  let cost=0;for(const id of needed)cost+=map.get(id)?.cost||0;
+  return {map,needed,done,targetPath,cost,count:needed.size};
+}
+function planResearchCost(){return planResearchInfo().cost;}
+function planToggleCurrentTech(id){
+  const map=planTechMap(),set=new Set(Array.isArray(planState.currentTechs)?planState.currentTechs:[]);
+  if(set.has(id)){set.delete(id);planState.currentTechs=[...set];return;}
+  const ancestors=planAncestors(id,map,new Set());
+  for(const oldId of [...set])if(ancestors.has(oldId))set.delete(oldId);
+  set.add(id);planState.currentTechs=[...set];
+}
+function renderResearchTree(info){
+  const nodes=document.getElementById('researchTreeNodes'),svg=document.getElementById('researchTreeLines');if(!nodes||!svg)return;
+  nodes.innerHTML=CITY_PLAN_DATA.research.map(t=>{
+    const pos=RESEARCH_TREE_LAYOUT[t.id]||[380,40],cls=['research-node'];
+    if(info.done.has(t.id))cls.push('completed');
+    if(info.needed.has(t.id))cls.push('needed');
+    const isCurrent=Array.isArray(planState.currentTechs)&&planState.currentTechs.includes(t.id);
+    if(isCurrent)cls.push('current');
+    if(t.id===planState.targetTech)cls.push('target');
+    const pressed=isCurrent||t.id===planState.targetTech?'true':'false';
+    return '<button type="button" class="'+cls.join(' ')+'" data-research-id="'+t.id+'" aria-pressed="'+pressed+'" style="left:'+pos[0]+'px;top:'+pos[1]+'px" title="'+t.name+' · '+fmtQty(t.cost)+'"><span class="name">'+t.name+'</span><span class="cost">'+fmtQty(t.cost)+'</span></button>';
+  }).join('');
+  const lines=[];
+  for(const t of CITY_PLAN_DATA.research){const child=RESEARCH_TREE_LAYOUT[t.id];if(!child)continue;for(const pid of t.parents){const parent=RESEARCH_TREE_LAYOUT[pid];if(!parent)continue;let cls='';if(info.done.has(pid)&&info.done.has(t.id))cls='completed';else if(info.targetPath.has(pid)&&info.targetPath.has(t.id)&&info.needed.has(t.id))cls='needed';lines.push('<line class="'+cls+'" x1="'+parent[0]+'" y1="'+(parent[1]+26)+'" x2="'+child[0]+'" y2="'+(child[1]-26)+'"/>');}}
+  svg.setAttribute('viewBox','0 0 760 790');svg.innerHTML=lines.join('');
+}
+function renderPlanResearch(){
+  const info=planResearchInfo();
+  const currentIds=Array.isArray(planState.currentTechs)?planState.currentTechs:[],currentNames=currentIds.map(id=>info.map.get(id)?.name).filter(Boolean),tgt=info.map.get(planState.targetTech);
+  document.getElementById('researchCurrentLabel').textContent=currentNames.length?currentNames.join(' · '):'미선택';
+  document.getElementById('researchCurrentLabel').title=currentNames.join(' · ');
+  document.getElementById('researchTargetLabel').textContent=tgt?tgt.name:'미선택';
+  document.getElementById('planResearchCost').textContent=fmtQty(info.cost);
+  const action=document.getElementById('researchAction'),actionTech=info.map.get(planResearchActionId);
+  if(actionTech){
+    action.classList.add('open');document.getElementById('researchActionName').textContent=actionTech.name;
+    const selected=currentIds.includes(actionTech.id),alreadyDone=info.done.has(actionTech.id)&&!selected,currentBtn=document.getElementById('researchToggleCurrent');
+    currentBtn.textContent=selected?'현재 연구에서 해제':(alreadyDone?'연구 완료':'현재 연구에 추가');currentBtn.disabled=alreadyDone;
+    const pos=RESEARCH_TREE_LAYOUT[actionTech.id]||[380,40],x=Math.max(105,Math.min(655,pos[0])),y=pos[1]>650?Math.max(8,pos[1]-150):pos[1]+34;action.style.left=x+'px';action.style.top=y+'px';
+  }else action.classList.remove('open');
+  renderResearchTree(info);
+}
+function renderPlan(){if(!document.getElementById('panel-plan'))return;renderPlanArea();renderPlanCurrency();renderPlanResearch();}
+
+function renderAll(){renderBonus();renderTables();renderWonder();renderSleepReserve();renderPower();renderConversion();renderWonderContext();renderDetailLaunchers();renderPlan();postSize();}
 function incrementStepInput(input,delta){let cur=parseFloat(input.value);if(isNaN(cur))cur=0;let next=Math.round((cur+delta)*1000000)/1000000;const min=input.min!==''?parseFloat(input.min):null,max=input.max!==''?parseFloat(input.max):null;if(min!==null&&!isNaN(min))next=Math.max(min,next);if(max!==null&&!isNaN(max))next=Math.min(max,next);input.value=String(next);input.dispatchEvent(new Event('change',{bubbles:true}));}
+
+document.getElementById('panel-plan').addEventListener('change',e=>{
+  const field=e.target.dataset.planField;
+  if(field==='currencyHours'){
+    const raw=String(e.target.value??'').trim();planState.currencyHoursManual=raw!=='';planState.currencyHours=raw===''?'':Math.max(0,parseFloat(raw)||0);
+  }else if(field==='currencyStock'){
+    const parsed=parseCompactNumber(e.target.value);planState.currencyStock=Math.max(0,Number.isFinite(parsed)?Math.round(parsed):0);
+  }else if(field)planState[field]=Math.max(0,parseFloat(e.target.value)||0);
+  const homeCount=e.target.dataset.planHomeCount;if(homeCount&&planState.homes[homeCount])planState.homes[homeCount].count=Math.max(0,Math.floor(parseFloat(e.target.value)||0));
+  const homeLv=e.target.dataset.planHomeLv;if(homeLv)planState.homes[homeLv].lv=clamp(parseInt(e.target.value)||1,1,6);
+  const countKey=e.target.dataset.planCount;
+  if(countKey){
+    const item=CITY_PLAN_DATA.areaBuildings.find(x=>x.key===countKey),raw=String(e.target.value??'').trim();
+    if((item?.sync||item?.providesWorkers)&&raw==='')delete planState.buildingOverrides[countKey];
+    else{
+      const count=Math.max(0,Math.floor(parseFloat(raw)||0));planState.buildingOverrides[countKey]=count;
+      if(countKey==='premiumRice')planState.premiumRice=count;
+    }
+  }
+  const cRow=e.target.closest('[data-construction-row]');
+  const cField=e.target.dataset.constructionField;
+  if(cRow&&cField){
+    const row=planState.constructionRows.find(r=>r.id===cRow.dataset.constructionRow);
+    if(row){if(cField==='key')row.key=e.target.value;else if(cField==='lv')row.lv=clamp(parseInt(e.target.value)||1,1,6);else if(cField==='count')row.count=Math.max(0,Math.floor(parseFloat(e.target.value)||0));}
+    setTimeout(()=>{renderPlanConstruction();saveState();postSize();},0);return;
+  }
+  normalizeState();renderPlan();saveState();postSize();
+});
+
+document.getElementById('panel-plan').addEventListener('click',e=>{
+  if(e.target.closest('#cityDetailsToggle')){planState.cityDetailsVisible=planState.cityDetailsVisible!==true;renderPlan();saveState();postSize();return;}
+  if(e.target.closest('#buildingReset')){planState.buildingOverrides={};planState.premiumRice=0;normalizeState();renderPlan();saveState();postSize();const status=document.getElementById('buildingResetStatus');status.textContent='초기화 완료';setTimeout(()=>{status.textContent='';},1800);return;}
+  if(e.target.closest('#constructionAdd')){const id='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);planState.constructionRows.push({id,key:'',lv:1,count:0});renderPlan();saveState();postSize();return;}
+  const remove=e.target.closest('[data-construction-remove]');if(remove){planState.constructionRows=planState.constructionRows.filter(r=>r.id!==remove.dataset.constructionRemove);renderPlan();saveState();postSize();return;}
+  if(e.target.closest('#researchReset')){planState.currentTechs=[];planState.targetTech='';planResearchActionId='';normalizeState();renderPlan();saveState();postSize();return;}
+  if(e.target.closest('#researchActionClose')){planResearchActionId='';renderPlan();postSize();return;}
+  if(e.target.closest('#researchToggleCurrent')){
+    if(!planResearchActionId)return;const id=planResearchActionId;planResearchActionId='';planToggleCurrentTech(id);normalizeState();renderPlan();saveState();postSize();return;
+  }
+  if(e.target.closest('#researchSetTarget')){if(!planResearchActionId)return;planState.targetTech=planResearchActionId;planResearchActionId='';normalizeState();renderPlan();saveState();postSize();return;}
+  const node=e.target.closest('[data-research-id]');
+  if(node){planResearchActionId=node.dataset.researchId;renderPlan();postSize();return;}
+});
+
+document.getElementById('panel-plan').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input')){e.preventDefault();e.target.blur();}});
+
 document.addEventListener('click',e=>{const btn=e.target.closest('.step-btn');if(!btn)return;const wrap=btn.closest('.step-wrap'),input=wrap&&wrap.querySelector('input');if(!input)return;incrementStepInput(input,parseFloat(btn.dataset.delta)||0);});
 document.addEventListener('keydown',e=>{if(!e.target.classList||!e.target.classList.contains('step-one'))return;if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.preventDefault();incrementStepInput(e.target,e.key==='ArrowUp'?1:-1);}});
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));t.classList.add('active');document.getElementById('panel-'+t.dataset.tab).classList.add('active');postSize();}));
