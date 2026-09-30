@@ -507,6 +507,176 @@ body.detail-modal-open{overflow:hidden}
   #tw td:nth-child(6)::before{content:"예상 생산량"}
   #tw td:nth-child(7)::before{content:"예상 보유량"}
 }
+
+
+/* 건물 건설 비용: 모바일 카드형 입력 */
+@media(max-width:720px){
+  #tConstruction{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    table-layout:auto!important;
+  }
+  #tConstruction thead{display:none!important}
+  #tConstruction tbody{display:block!important;width:100%!important}
+  #tConstruction tbody tr[data-construction-row]{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    width:100%!important;
+    margin:0 0 10px!important;
+    border:1px solid #e7b7b7!important;
+    border-radius:9px!important;
+    overflow:hidden!important;
+    background:#fffaf0!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td{
+    position:static!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    gap:4px!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    min-height:64px!important;
+    padding:8px!important;
+    border:0!important;
+    border-right:1px solid #e7b7b7!important;
+    border-bottom:1px solid #e7b7b7!important;
+    box-shadow:none!important;
+    background:#fffaf0!important;
+    text-align:center!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td::before{
+    display:block!important;
+    margin-bottom:2px!important;
+    color:#6b7280!important;
+    font-size:10px!important;
+    font-weight:800!important;
+    line-height:1.2!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td:nth-child(1){
+    grid-column:1/-1!important;
+    min-height:68px!important;
+    border-right:0!important;
+    background:#fff7ed!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td:nth-child(1)::before{content:"건물 종류"}
+  #tConstruction tbody tr[data-construction-row] td:nth-child(2)::before{content:"목표 레벨"}
+  #tConstruction tbody tr[data-construction-row] td:nth-child(3){
+    border-right:0!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td:nth-child(3)::before{content:"건설 수"}
+  #tConstruction tbody tr[data-construction-row] td:nth-child(4){
+    grid-column:1/-1!important;
+    min-height:58px!important;
+    border-right:0!important;
+    border-bottom:0!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td:nth-child(4)::before{content:"필요 오수전"}
+
+  #tConstruction .construction-building-cell,
+  #tConstruction .construction-cost-cell{
+    width:100%!important;
+  }
+  #tConstruction select,
+  #tConstruction input{
+    width:100%!important;
+    min-width:0!important;
+    height:40px!important;
+    min-height:40px!important;
+    padding:5px 8px!important;
+    font-size:16px!important;
+  }
+  #tConstruction .construction-cost-cell{
+    display:flex!important;
+    flex-direction:row!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:8px!important;
+  }
+  #tConstruction .construction-cost-cell span{
+    flex:1 1 auto!important;
+    min-width:0!important;
+    font-size:15px!important;
+    font-weight:900!important;
+  }
+  #tConstruction .construction-remove{
+    flex:0 0 34px!important;
+    width:34px!important;
+    height:34px!important;
+    min-width:34px!important;
+    padding:0!important;
+    border:1px solid #fca5a5!important;
+    border-radius:50%!important;
+    background:#fee2e2!important;
+    color:#991b1b!important;
+    font-size:0!important;
+    line-height:34px!important;
+  }
+  #tConstruction .construction-remove::before{
+    content:"×";
+    display:block;
+    font-size:20px;
+    font-weight:900;
+    line-height:32px;
+  }
+
+  #tConstruction tbody tr:not([data-construction-row]){
+    display:block!important;
+    width:100%!important;
+  }
+  #tConstruction tbody tr:not([data-construction-row]) td{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    min-height:52px!important;
+    padding:12px 10px!important;
+    box-sizing:border-box!important;
+    position:static!important;
+    box-shadow:none!important;
+  }
+
+  #tConstruction tfoot{
+    display:block!important;
+    width:100%!important;
+    margin-top:4px!important;
+  }
+  #tConstruction tfoot tr{
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+    width:100%!important;
+    border:1px solid #e7b7b7!important;
+    border-radius:7px!important;
+    overflow:hidden!important;
+  }
+  #tConstruction tfoot th{
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:44px!important;
+    min-height:44px!important;
+    padding:6px 8px!important;
+    border:0!important;
+  }
+  #tConstruction tfoot th+th{border-left:1px solid #e7b7b7!important}
+  .construction-toolbar{
+    width:100%!important;
+    max-width:100%!important;
+  }
+  .construction-add{
+    width:100%!important;
+    min-height:44px!important;
+    font-size:13px!important;
+  }
+}
 </style>
 </head>
 <body>
