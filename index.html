@@ -115,7 +115,9 @@ body.detail-modal-open{overflow:hidden}
 .convert-toggle{padding:7px 11px;background:#fef2f2;color:#7a4b4b;border:1px solid #e7b7b7;border-radius:6px;cursor:pointer;font:700 12px var(--wrks-viz-font-family);min-height:36px;white-space:nowrap}
 .convert-toggle:hover{background:#f6d9d5}
 .wonder-context{display:inline-flex;align-items:center;min-height:36px;padding:0 2px;font-size:12px;font-weight:800;color:#7a4b4b;white-space:nowrap}
-.wonder-settings .setting-value{width:92px;min-width:92px;min-height:30px;padding:4px 6px}
+.wonder-context .wonder-context-value{color:var(--wrks-viz-primary)}
+.wonder-settings .setting-value{width:92px;min-width:92px;min-height:30px;padding:4px 6px;font-family:var(--wrks-viz-font-family);font-size:12px;font-weight:800;line-height:20px;color:#7a4b4b;font-variant-numeric:tabular-nums}
+.wonder-settings .wonder-inline-value{font-family:var(--wrks-viz-font-family);font-size:12px;font-weight:800;color:var(--wrks-viz-primary);font-variant-numeric:tabular-nums;white-space:nowrap}
 .sleep-settings{margin:0 0 8px;width:700px;max-width:100%;min-height:48px}
 .sleep-settings .sleep-time-wrap{width:92px}.sleep-settings .sleep-time-wrap input{width:72px;min-width:0}
 .power-settings{width:400px;max-width:100%;min-height:44px;margin:0 0 8px}.power-settings select{min-width:90px}
@@ -155,6 +157,7 @@ body.detail-modal-open{overflow:hidden}
   #panel-prod>.settings label,.wonder-settings label,.sleep-settings label,.power-settings label{white-space:normal}
   #panel-prod>.settings>select,#panel-prod>.settings>.step-wrap,.wonder-settings>.step-wrap,.sleep-settings>.step-wrap,.sleep-settings>select,.power-settings>select{width:100%!important;min-width:0}
   .wonder-settings>.setting-value{width:100%!important;min-width:0!important;min-height:44px}
+  .wonder-settings>.wonder-inline-value{display:flex;align-items:center;min-height:44px;width:100%}
   #panel-prod>.settings .step-wrap input,.wonder-settings .step-wrap input,.sleep-settings .step-wrap input{width:100%!important;min-width:0;font-size:16px;min-height:44px}
   #panel-prod>.settings select,.sleep-settings select,.power-settings select{width:100%;font-size:16px;min-height:44px}
   #panel-prod>.settings .save-default-btn,#panel-prod>.settings .reset-btn{min-height:44px}.reset-status{align-self:center}
@@ -218,9 +221,9 @@ body.detail-modal-open{overflow:hidden}
   <div class="settings wonder-settings">
     <label>현재 레벨</label><div class="step-wrap settings-step"><input type="number" id="curLv" class="step-one" min="0" max="50" step="1" value="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
     <label>목표 레벨</label><div class="step-wrap settings-step"><input type="number" id="tgtLv" class="step-one" min="0" max="50" step="1" value="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
-    <label>기본 운영 시간(h)</label><span id="wonderBaseHDisplay" class="setting-value">0 h</span>
+    <label>최대 도달 레벨(고령토)</label><span id="maxLv" class="setting-value">Lv—</span>
     <button id="convertToggle" class="convert-toggle" type="button" aria-expanded="false">생산력 환산표 보기</button>
-    <label>최대 도달 레벨(고령토)</label><span id="maxLv" style="font-size:12px;font-weight:800;color:var(--wrks-viz-primary);">Lv—</span>
+    <label>기본 운영 시간(h)</label><span id="wonderBaseHDisplay" class="wonder-inline-value">0 h</span>
     <span id="wonderContext" class="wonder-context" aria-live="polite"></span>
   </div>
   <h2>목표 달성 현황</h2>
@@ -414,7 +417,7 @@ function conversionModes(building){if(isContinuousBuilding(building))return ['�
 function conversionRatio(building,lv,mode){const realMode=isContinuousBuilding(building)?'연속(6시간 기준)':mode,base=powerBenchmarkRate(building),rate=powerConfigRate(building,lv,realMode);return base>0&&rate>0?rate/base:null;}
 function conversionRow(building,mode,rowCls='',rowspan=1,showName=true){const shownMode=isContinuousBuilding(building)?'연속':mode,ratios=[1,2,3,4,5,6].map(lv=>conversionRatio(building,lv,mode)),classes=[rowCls,!showName?'conversion-continuation':''].filter(Boolean).join(' '),nameCell=showName?'<td'+(rowspan>1?' rowspan="'+rowspan+'"':'')+'>'+displayName(building)+'</td>':'';return '<tr'+(classes?' class="'+classes+'"':'')+'>'+nameCell+'<td class="calc">'+shownMode+'</td>'+ratios.map(r=>'<td class="num calc">'+(r===null?'—':fmtPower(r*100))+'</td>').join('')+'</tr>';}
 function renderConversion(){const order=['쌀 농장','누에 숲','고령토 채석장','실 가공소','점토 가공소','비단 작업장','도자기 작업장'],rows=[];order.forEach((b,i)=>{const modes=conversionModes(b);modes.forEach((m,j)=>rows.push(conversionRow(b,m,(i===3||i===5)&&j===0?'divider-top':'',modes.length,j===0)));});document.querySelector('#tConvert tbody').innerHTML=rows.join('');}
-function renderWonderContext(){const base=document.getElementById('wonderBaseHDisplay'),ctx=document.getElementById('wonderContext');if(base)base.textContent=fmtHours(settings.baseH)+' h';if(ctx)ctx.textContent='불가사의: '+settings.wonder+' · 보너스 Lv.'+settings.wLv;}
+function renderWonderContext(){const base=document.getElementById('wonderBaseHDisplay'),ctx=document.getElementById('wonderContext');if(base)base.textContent=fmtHours(settings.baseH)+' h';if(ctx)ctx.innerHTML='<span>불가사의:</span>&nbsp;<span class="wonder-context-value">'+settings.wonder+' · 보너스 Lv.'+settings.wLv+'</span>'; }
 function finalRequiredHours(building,need,stock){const shortfall=Math.max(0,need-stock);if(shortfall<=0)return 0;if(detailEnabled(building))return timeToProduceAmount(building,shortfall);const s=state[building],p=baseOutput(building);if(!p||s.bldgs<=0||p.out<=0)return null;const perCycle=p.out*s.bldgs;const cycles=Math.ceil(shortfall/perCycle-1e-12);return cycles*p.min/60;}
 function renderWonder(){const cur=wLvSet.cur,tgt=wLvSet.tgt;const wcCur=DATA.wc[cur]||{cs:0,cp:0},wcTgt=DATA.wc[tgt]||{cs:0,cp:0};const silkNeed=wcTgt.cs-wcCur.cs,porcNeed=wcTgt.cp-wcCur.cp;const silkProd=totalOutput('비단 작업장'),porcProd=totalOutput('도자기 작업장');const silkStock=wStock.silk||0,porcStock=wStock.porc||0;const silkRemain=silkStock+silkProd-silkNeed,porcRemain=porcStock+porcProd-porcNeed;const silkH=finalRequiredHours('비단 작업장',silkNeed,silkStock),porcH=finalRequiredHours('도자기 작업장',porcNeed,porcStock);const kaolinNow=state['고령토 채석장'].stock||0,kaolinProd=totalOutput('고령토 채석장');const clayNow=state['점토 가공소'].stock||0,porcNow=porcStock;const clayP=prodInfo('점토 가공소',6,'30분'),porcP=prodInfo('도자기 작업장',6,'30분');let maxLv=cur;if(clayP&&porcP){const kaolinTotal=kaolinNow+kaolinProd;const clayFromKaolin=kaolinTotal*clayP.out/clayP.sub;const clayTotal=clayNow+clayFromKaolin;const porcTotal=porcNow+clayTotal*porcP.out/porcP.sub;for(let n=50;n>=cur;n--){if(DATA.wc[n]&&(DATA.wc[n].cp-wcCur.cp)<=porcTotal){maxLv=n;break;}}}document.getElementById('maxLv').textContent='Lv'+maxLv;document.querySelector('#tw tbody').innerHTML='<tr><td>비단</td><td class="num calc '+remainClass(silkRemain)+'">'+fmtQty(silkRemain)+'</td><td class="num calc">'+fmtQty(silkNeed)+'</td><td class="num calc">'+fmtQty(silkStock)+'</td><td class="num calc">'+fmtQty(silkProd)+'</td><td class="num calc">'+fmtQty(silkStock+silkProd)+'</td><td class="num calc">'+fmtHours(silkH)+'</td></tr><tr><td>도자기</td><td class="num calc '+remainClass(porcRemain)+'">'+fmtQty(porcRemain)+'</td><td class="num calc">'+fmtQty(porcNeed)+'</td><td class="num calc">'+fmtQty(porcStock)+'</td><td class="num calc">'+fmtQty(porcProd)+'</td><td class="num calc">'+fmtQty(porcStock+porcProd)+'</td><td class="num calc">'+fmtHours(porcH)+'</td></tr>';}
 function renderAll(){renderBonus();renderTables();renderWonder();renderSleepReserve();renderPower();renderConversion();renderWonderContext();renderDetailLaunchers();postSize();}
