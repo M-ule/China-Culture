@@ -700,9 +700,9 @@ body.detail-modal-open{overflow:hidden}
     <label>불가사의</label><select id="wonder"><option>자금성</option><option>병마용</option><option>만리장성</option></select>
     <label>보너스 적용 레벨</label><div class="step-wrap settings-step"><input type="number" id="wLv" class="step-one" min="0" max="50" step="1" value="0"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
     <label>기본 운영 시간(h)</label><div class="step-wrap"><input type="number" id="baseH" class="step-one" min="0" step="any" value="0"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
+    <button id="prodViewToggle" type="button" class="save-default-btn view-toggle-btn" aria-expanded="false">상세 보기</button>
     <button id="saveDefaultBtn" class="save-default-btn" type="button">입력값 저장</button>
-    <button id="resetBtn" type="button" class="reset-btn">초기화</button>
-    <button id="prodViewToggle" type="button" class="save-default-btn view-toggle-btn" aria-expanded="false">상세 보기</button><span id="resetStatus" class="reset-status" role="status" aria-live="polite"></span>
+    <button id="resetBtn" type="button" class="reset-btn">초기화</button><span id="resetStatus" class="reset-status" role="status" aria-live="polite"></span>
   </div>
   <div class="bonus-box" id="bonusBox"></div>
   <div class="section-title-row"><h2>기초 자원 (쌀 · 누에고치 · 고령토)</h2><div class="detail-actions"><button id="baseResourceDetailOpen" class="detail-open-btn" type="button">기초 자원 상세 설정</button><span id="baseResourceDetailSummary" class="detail-summary">상세 설정 미사용</span></div></div>
@@ -723,9 +723,9 @@ body.detail-modal-open{overflow:hidden}
     <label>현재 레벨</label><div class="step-wrap settings-step"><input type="number" id="curLv" class="step-one" min="0" max="50" step="1" value="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
     <label>목표 레벨</label><div class="step-wrap settings-step"><input type="number" id="tgtLv" class="step-one" min="0" max="50" step="1" value="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
     <label>최대 도달 레벨(고령토)</label><span id="maxLv" class="setting-value">Lv—</span>
+    <button id="wonderViewToggle" type="button" class="save-default-btn view-toggle-btn" aria-expanded="false">상세 보기</button>
     <button id="convertToggle" class="convert-toggle" type="button" aria-expanded="false">생산력 환산표 보기</button>
     <label>기본 운영 시간(h)</label><span id="wonderBaseHDisplay" class="wonder-inline-value">0 h</span>
-    <button id="wonderViewToggle" type="button" class="save-default-btn view-toggle-btn" aria-expanded="false">상세 보기</button>
     <span id="wonderContext" class="wonder-context" aria-live="polite"></span>
   </div>
   <div class="section-title-row"><h2>목표 달성 현황</h2></div>
