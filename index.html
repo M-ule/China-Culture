@@ -452,7 +452,7 @@ body.detail-modal-open{overflow:hidden}
 }
 
 /* 생산 계산기 · 불가사의 목표 시트별 요약/상세 보기 */
-.sheet-view-toggle{min-width:86px;white-space:nowrap}
+.view-toggle-row{width:var(--main-width);max-width:100%;display:flex;justify-content:flex-end;margin:0 0 7px}\n.view-toggle-btn{min-width:86px;white-space:nowrap}
 
 /* 생산 계산기: 입력란은 유지하고, 요약에서는 핵심 결과만 표시 */
 #t1:not(.details-visible) th:nth-child(n+9),
@@ -477,8 +477,7 @@ body.detail-modal-open{overflow:hidden}
 
 @media(max-width:720px){
   #panel-prod .section-title-row,#panel-wonder .section-title-row{align-items:center;gap:7px}
-  #panel-prod .section-title-row .detail-actions{display:flex;flex-wrap:wrap;gap:6px;width:100%}
-  .sheet-view-toggle{min-width:96px;min-height:40px;font-size:12px}
+  .view-toggle-row{width:100%!important;margin-bottom:8px}\n  .view-toggle-btn{min-width:96px;min-height:40px;font-size:12px}
 
   #t1:not(.details-visible),#t2:not(.details-visible),#t3:not(.details-visible),
   #tw:not(.details-visible),#tSleep:not(.details-visible),#tPower:not(.details-visible){
@@ -684,6 +683,7 @@ body.detail-modal-open{overflow:hidden}
 <div class="legend"><div class="legend-item"><span class="legend-box legend-input"></span>입력 가능 (노란색)</div><div class="legend-item"><span class="legend-box legend-calc"></span>자동 계산</div></div>
 <div class="tabs"><button class="tab active" data-tab="prod">생산 계산기</button><button class="tab" data-tab="wonder">불가사의 목표</button><button class="tab" data-tab="plan">영토 및 연구</button></div>
 <div id="panel-prod" class="panel active">
+  <div class="view-toggle-row"><button id="prodViewToggle" type="button" class="save-default-btn view-toggle-btn" aria-expanded="false">상세 보기</button></div>
   <div class="settings">
     <label>불가사의</label><select id="wonder"><option>자금성</option><option>병마용</option><option>만리장성</option></select>
     <label>보너스 적용 레벨</label><div class="step-wrap settings-step"><input type="number" id="wLv" class="step-one" min="0" max="50" step="1" value="0"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
@@ -692,11 +692,11 @@ body.detail-modal-open{overflow:hidden}
     <button id="resetBtn" type="button" class="reset-btn">초기화</button><span id="resetStatus" class="reset-status" role="status" aria-live="polite"></span>
   </div>
   <div class="bonus-box" id="bonusBox"></div>
-  <div class="section-title-row"><h2>기초 자원 (쌀 · 누에고치 · 고령토)</h2><div class="detail-actions"><button id="baseViewToggle" type="button" class="save-default-btn sheet-view-toggle" aria-expanded="false" aria-controls="t1">상세 보기</button><button id="baseResourceDetailOpen" class="detail-open-btn" type="button">기초 자원 상세 설정</button><span id="baseResourceDetailSummary" class="detail-summary">상세 설정 미사용</span></div></div>
+  <div class="section-title-row"><h2>기초 자원 (쌀 · 누에고치 · 고령토)</h2><div class="detail-actions"><button id="baseResourceDetailOpen" class="detail-open-btn" type="button">기초 자원 상세 설정</button><span id="baseResourceDetailSummary" class="detail-summary">상세 설정 미사용</span></div></div>
   <div class="table-wrap"><table id="t1"><thead><tr><th>자원</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>잔여/부족</th><th>소요 시간(h)</th><th>예상 생산량</th><th>필요량</th></tr></thead><tbody></tbody></table></div>
-  <div class="section-title-row"><h2>중간 자원 (실 · 점토)</h2><div class="detail-actions"><button id="intermediateViewToggle" type="button" class="save-default-btn sheet-view-toggle" aria-expanded="false" aria-controls="t2">상세 보기</button><button id="intermediateDetailOpen" class="detail-open-btn" type="button">중간 자원 상세 설정</button><span id="intermediateDetailSummary" class="detail-summary">상세 설정 미사용</span></div></div>
+  <div class="section-title-row"><h2>중간 자원 (실 · 점토)</h2><div class="detail-actions"><button id="intermediateDetailOpen" class="detail-open-btn" type="button">중간 자원 상세 설정</button><span id="intermediateDetailSummary" class="detail-summary">상세 설정 미사용</span></div></div>
   <div class="table-wrap"><table id="t2"><thead><tr><th>자원</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>잔여/부족</th><th>소요 시간(h)</th><th>예상 생산량</th><th>원재료 사용량</th><th>쌀 사용량</th><th>필요량</th></tr></thead><tbody></tbody></table></div>
-  <div class="section-title-row"><h2>상품 (비단 · 도자기)</h2><div class="detail-actions"><button id="productViewToggle" type="button" class="save-default-btn sheet-view-toggle" aria-expanded="false" aria-controls="t3">상세 보기</button><button id="productDetailOpen" class="detail-open-btn" type="button">상품 상세 설정</button><span id="productDetailSummary" class="detail-summary">상세 설정 미사용</span></div></div>
+  <div class="section-title-row"><h2>상품 (비단 · 도자기)</h2><div class="detail-actions"><button id="productDetailOpen" class="detail-open-btn" type="button">상품 상세 설정</button><span id="productDetailSummary" class="detail-summary">상세 설정 미사용</span></div></div>
   <div class="table-wrap"><table id="t3"><thead><tr><th>상품</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>예상 생산량</th><th>원재료 사용량</th><th>쌀 사용량</th></tr></thead><tbody></tbody></table></div>
   <div class="note">
     1. <b>불가사의</b>와 <b>보너스 적용 레벨</b>을 입력하면 선택한 불가사의의 생산 보너스가 자동 반영됩니다. <b>기본 운영 시간(h)</b>은 개별 운영 시간이 입력되지 않은 항목에 적용됩니다.<br>
@@ -706,6 +706,7 @@ body.detail-modal-open{overflow:hidden}
   </div>
 </div>
 <div id="panel-wonder" class="panel">
+  <div class="view-toggle-row"><button id="wonderViewToggle" type="button" class="save-default-btn view-toggle-btn" aria-expanded="false">상세 보기</button></div>
   <div class="settings wonder-settings">
     <label>현재 레벨</label><div class="step-wrap settings-step"><input type="number" id="curLv" class="step-one" min="0" max="50" step="1" value="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
     <label>목표 레벨</label><div class="step-wrap settings-step"><input type="number" id="tgtLv" class="step-one" min="0" max="50" step="1" value="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
@@ -714,9 +715,9 @@ body.detail-modal-open{overflow:hidden}
     <label>기본 운영 시간(h)</label><span id="wonderBaseHDisplay" class="wonder-inline-value">0 h</span>
     <span id="wonderContext" class="wonder-context" aria-live="polite"></span>
   </div>
-  <div class="section-title-row"><h2>목표 달성 현황</h2><button id="goalViewToggle" type="button" class="save-default-btn sheet-view-toggle" aria-expanded="false" aria-controls="tw">상세 보기</button></div>
+  <div class="section-title-row"><h2>목표 달성 현황</h2></div>
   <div class="table-wrap"><table id="tw"><thead><tr><th>상품</th><th>잔여/부족</th><th>소요 시간(h)</th><th>구간 필요량</th><th>현재 보유량</th><th>예상 생산량</th><th>예상 보유량</th></tr></thead><tbody></tbody></table></div>
-  <div class="section-title-row"><h2>수면 대비 자원 확보</h2><button id="sleepViewToggle" type="button" class="save-default-btn sheet-view-toggle" aria-expanded="false" aria-controls="tSleep">상세 보기</button></div>
+  <div class="section-title-row"><h2>수면 대비 자원 확보</h2></div>
   <div class="settings sleep-settings">
     <label for="sleepPrepH">수면까지 남은 시간(h)</label>
     <div class="step-wrap sleep-time-wrap"><input id="sleepPrepH" class="step-one" type="number" min="0" step="any" placeholder="기본"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
@@ -726,7 +727,7 @@ body.detail-modal-open{overflow:hidden}
     <div class="step-wrap"><input id="sleepCount" class="step-one" type="number" min="0" step="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>
   </div>
   <div class="table-wrap"><table id="tSleep"><thead><tr><th>자원</th><th>생산력 차이</th><th>현재 생산력</th><th>필요 생산력</th><th>필요량</th><th>예상 확보량</th><th>잔여/부족</th></tr></thead><tbody></tbody></table></div>
-  <div class="section-title-row"><h2>목표 레벨 생산력 비교</h2><button id="powerViewToggle" type="button" class="save-default-btn sheet-view-toggle" aria-expanded="false" aria-controls="tPower">상세 보기</button></div>
+  <div class="section-title-row"><h2>목표 레벨 생산력 비교</h2></div>
   <div class="settings power-settings">
     <label for="productRawCycle">상품 생산의 자원 소비 주기</label>
     <select id="productRawCycle"><option value="30분">30분</option><option value="1시간">1시간</option><option value="2시간">2시간</option></select>
@@ -869,7 +870,7 @@ body.detail-modal-open{overflow:hidden}
 </div>
 
 <script>
-const INITIAL_STATE={prod:{'쌀 농장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'누에 숲':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'고령토 채석장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'실 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'점토 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'비단 작업장':{lv:1,mode:'1분',bldgs:1,hours:''},'도자기 작업장':{lv:1,mode:'1분',bldgs:1,hours:''}},settings:{wonder:'자금성',wLv:0,baseH:0,productRawCycle:'30분',sleepPrepH:'',sleepCycle:'최장',sleepCount:3,prodBaseDetailsVisible:false,prodIntermediateDetailsVisible:false,prodProductDetailsVisible:false,wonderGoalDetailsVisible:false,wonderSleepDetailsVisible:false,wonderPowerDetailsVisible:false},wStock:{silk:0,porc:0},wLvSet:{cur:1,tgt:1}};
+const INITIAL_STATE={prod:{'쌀 농장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'누에 숲':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'고령토 채석장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'실 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'점토 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'비단 작업장':{lv:1,mode:'1분',bldgs:1,hours:''},'도자기 작업장':{lv:1,mode:'1분',bldgs:1,hours:''}},settings:{wonder:'자금성',wLv:0,baseH:0,productRawCycle:'30분',sleepPrepH:'',sleepCycle:'최장',sleepCount:3,prodDetailsVisible:false,wonderDetailsVisible:false},wStock:{silk:0,porc:0},wLvSet:{cur:1,tgt:1}};
 const STORAGE_KEY='chinaCalcState';
 const DEFAULT_STORAGE_KEY='chinaCultureSimulator_savedDefault_v1';
 let resetStatusTimer=null;
@@ -1008,7 +1009,7 @@ function snapshotState(){return {state:JSON.parse(JSON.stringify(state)),setting
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(snapshotState()));}catch(e){}}
 function showResetStatus(message){const status=document.getElementById('resetStatus');if(!status)return;status.textContent=message;if(resetStatusTimer)clearTimeout(resetStatusTimer);resetStatusTimer=setTimeout(()=>{status.textContent='';},1800);}
 function hasSavedDefault(){try{return !!localStorage.getItem(DEFAULT_STORAGE_KEY);}catch(e){return false;}}
-function normalizeState(){Object.keys(state).forEach(b=>{const s=state[b];s.lv=clamp(parseInt(s.lv)||1,1,6);s.bldgs=Math.max(0,parseFloat(s.bldgs)||0);if(Object.prototype.hasOwnProperty.call(s,'stock'))s.stock=Math.round(parseFloat(s.stock)||0);if(s.hours!==''&&s.hours!==null&&s.hours!==undefined){const h=parseFloat(s.hours);s.hours=Number.isFinite(h)?Math.max(0,h):'';}const modes=DATA.lm[b+'|'+s.lv]||[];if(modes.length&&!modes.includes(s.mode))s.mode=modes[0];});if(!['자금성','병마용','만리장성'].includes(settings.wonder))settings.wonder='자금성';settings.wLv=clamp(parseInt(settings.wLv)||0,0,50);settings.baseH=Math.max(0,parseFloat(settings.baseH)||0);if(!['30분','1시간','2시간'].includes(settings.productRawCycle))settings.productRawCycle='30분';settings.prodBaseDetailsVisible=settings.prodBaseDetailsVisible===true;settings.prodIntermediateDetailsVisible=settings.prodIntermediateDetailsVisible===true;settings.prodProductDetailsVisible=settings.prodProductDetailsVisible===true;settings.wonderGoalDetailsVisible=settings.wonderGoalDetailsVisible===true;settings.wonderSleepDetailsVisible=settings.wonderSleepDetailsVisible===true;settings.wonderPowerDetailsVisible=settings.wonderPowerDetailsVisible===true;settings.sleepPrepH=settings.sleepPrepH===''?'':Math.max(0,parseFloat(settings.sleepPrepH)||0);if(!['최장','30분','1시간','2시간'].includes(settings.sleepCycle))settings.sleepCycle='최장';settings.sleepCount=Math.max(0,Math.floor(parseFloat(settings.sleepCount)||0));wStock.silk=Math.round(parseFloat(wStock.silk)||0);wStock.porc=Math.round(parseFloat(wStock.porc)||0);wLvSet.cur=clamp(parseInt(wLvSet.cur)||0,0,50);wLvSet.tgt=clamp(parseInt(wLvSet.tgt)||0,0,50);if(wLvSet.tgt<wLvSet.cur)wLvSet.tgt=wLvSet.cur;planState.progressOverride=Math.max(0,Math.floor(parseFloat(planState.progressOverride)||0));planState.gemExpansions=Math.max(0,Math.floor(parseFloat(planState.gemExpansions)||0));planState.premiumRice=Math.max(0,parseFloat(planState.premiumRice)||0);if(!planState.homes||typeof planState.homes!=='object')planState.homes={};['smallHome','mediumHome','premiumHome'].forEach(k=>{const h=planState.homes[k]||(planState.homes[k]={lv:1,count:0});h.lv=clamp(parseInt(h.lv)||1,1,6);h.count=Math.max(0,parseFloat(h.count)||0);});planState.currencyStock=Math.max(0,Math.round(parseFloat(planState.currencyStock)||0));planState.currencyPerHour=Math.max(0,parseFloat(planState.currencyPerHour)||0);if(planState.currencyHoursManual!==true&&planState.currencyHoursManual!==false){const legacyCh=parseFloat(planState.currencyHours);planState.currencyHoursManual=Number.isFinite(legacyCh)&&legacyCh>0;}if(planState.currencyHoursManual!==true){planState.currencyHours='';planState.currencyHoursManual=false;}else{const ch=parseFloat(planState.currencyHours);planState.currencyHours=Number.isFinite(ch)?Math.max(0,ch):'';}const techIds=new Set(CITY_PLAN_DATA.research.map(t=>t.id));if(!Array.isArray(planState.currentTechs))planState.currentTechs=[];if(planState.currentTech&&techIds.has(planState.currentTech)&&!planState.currentTechs.includes(planState.currentTech))planState.currentTechs.push(planState.currentTech);delete planState.currentTech;planState.currentTechs=[...new Set(planState.currentTechs.filter(id=>techIds.has(id)))];if(planState.targetTech&&!techIds.has(planState.targetTech))planState.targetTech='';normalizeDetails();
+function normalizeState(){Object.keys(state).forEach(b=>{const s=state[b];s.lv=clamp(parseInt(s.lv)||1,1,6);s.bldgs=Math.max(0,parseFloat(s.bldgs)||0);if(Object.prototype.hasOwnProperty.call(s,'stock'))s.stock=Math.round(parseFloat(s.stock)||0);if(s.hours!==''&&s.hours!==null&&s.hours!==undefined){const h=parseFloat(s.hours);s.hours=Number.isFinite(h)?Math.max(0,h):'';}const modes=DATA.lm[b+'|'+s.lv]||[];if(modes.length&&!modes.includes(s.mode))s.mode=modes[0];});if(!['자금성','병마용','만리장성'].includes(settings.wonder))settings.wonder='자금성';settings.wLv=clamp(parseInt(settings.wLv)||0,0,50);settings.baseH=Math.max(0,parseFloat(settings.baseH)||0);if(!['30분','1시간','2시간'].includes(settings.productRawCycle))settings.productRawCycle='30분';settings.prodDetailsVisible=settings.prodDetailsVisible===true;settings.wonderDetailsVisible=settings.wonderDetailsVisible===true;settings.sleepPrepH=settings.sleepPrepH===''?'':Math.max(0,parseFloat(settings.sleepPrepH)||0);if(!['최장','30분','1시간','2시간'].includes(settings.sleepCycle))settings.sleepCycle='최장';settings.sleepCount=Math.max(0,Math.floor(parseFloat(settings.sleepCount)||0));wStock.silk=Math.round(parseFloat(wStock.silk)||0);wStock.porc=Math.round(parseFloat(wStock.porc)||0);wLvSet.cur=clamp(parseInt(wLvSet.cur)||0,0,50);wLvSet.tgt=clamp(parseInt(wLvSet.tgt)||0,0,50);if(wLvSet.tgt<wLvSet.cur)wLvSet.tgt=wLvSet.cur;planState.progressOverride=Math.max(0,Math.floor(parseFloat(planState.progressOverride)||0));planState.gemExpansions=Math.max(0,Math.floor(parseFloat(planState.gemExpansions)||0));planState.premiumRice=Math.max(0,parseFloat(planState.premiumRice)||0);if(!planState.homes||typeof planState.homes!=='object')planState.homes={};['smallHome','mediumHome','premiumHome'].forEach(k=>{const h=planState.homes[k]||(planState.homes[k]={lv:1,count:0});h.lv=clamp(parseInt(h.lv)||1,1,6);h.count=Math.max(0,parseFloat(h.count)||0);});planState.currencyStock=Math.max(0,Math.round(parseFloat(planState.currencyStock)||0));planState.currencyPerHour=Math.max(0,parseFloat(planState.currencyPerHour)||0);if(planState.currencyHoursManual!==true&&planState.currencyHoursManual!==false){const legacyCh=parseFloat(planState.currencyHours);planState.currencyHoursManual=Number.isFinite(legacyCh)&&legacyCh>0;}if(planState.currencyHoursManual!==true){planState.currencyHours='';planState.currencyHoursManual=false;}else{const ch=parseFloat(planState.currencyHours);planState.currencyHours=Number.isFinite(ch)?Math.max(0,ch):'';}const techIds=new Set(CITY_PLAN_DATA.research.map(t=>t.id));if(!Array.isArray(planState.currentTechs))planState.currentTechs=[];if(planState.currentTech&&techIds.has(planState.currentTech)&&!planState.currentTechs.includes(planState.currentTech))planState.currentTechs.push(planState.currentTech);delete planState.currentTech;planState.currentTechs=[...new Set(planState.currentTechs.filter(id=>techIds.has(id)))];if(planState.targetTech&&!techIds.has(planState.targetTech))planState.targetTech='';normalizeDetails();
 if(!planState.buildingCounts||typeof planState.buildingCounts!=='object')planState.buildingCounts={};
 if(!planState.buildingOverrides||typeof planState.buildingOverrides!=='object')planState.buildingOverrides={};
 /* v28 주택 수를 일꾼 현황으로 한 번만 승계하고 기본 연동으로 전환한다. */
@@ -1292,19 +1293,11 @@ function renderPlanResearch(){
 function renderPlan(){if(!document.getElementById('panel-plan'))return;renderPlanArea();renderPlanCurrency();renderPlanResearch();}
 
 function renderViewModes(){
-  const sheets=[
-    {table:'t1',button:'baseViewToggle',key:'prodBaseDetailsVisible'},
-    {table:'t2',button:'intermediateViewToggle',key:'prodIntermediateDetailsVisible'},
-    {table:'t3',button:'productViewToggle',key:'prodProductDetailsVisible'},
-    {table:'tw',button:'goalViewToggle',key:'wonderGoalDetailsVisible'},
-    {table:'tSleep',button:'sleepViewToggle',key:'wonderSleepDetailsVisible'},
-    {table:'tPower',button:'powerViewToggle',key:'wonderPowerDetailsVisible'}
-  ];
-  sheets.forEach(({table,button,key})=>{
-    const open=settings[key]===true,t=document.getElementById(table),b=document.getElementById(button);
-    if(t)t.classList.toggle('details-visible',open);
-    if(b){b.textContent=open?'상세 숨기기':'상세 보기';b.setAttribute('aria-expanded',String(open));}
-  });
+  const prodOpen=settings.prodDetailsVisible===true,wonderOpen=settings.wonderDetailsVisible===true;
+  ['t1','t2','t3'].forEach(id=>{const t=document.getElementById(id);if(t)t.classList.toggle('details-visible',prodOpen);});
+  ['tw','tSleep','tPower'].forEach(id=>{const t=document.getElementById(id);if(t)t.classList.toggle('details-visible',wonderOpen);});
+  const pb=document.getElementById('prodViewToggle');if(pb){pb.textContent=prodOpen?'상세 숨기기':'상세 보기';pb.setAttribute('aria-expanded',String(prodOpen));}
+  const wb=document.getElementById('wonderViewToggle');if(wb){wb.textContent=wonderOpen?'상세 숨기기':'상세 보기';wb.setAttribute('aria-expanded',String(wonderOpen));}
 }
 function renderAll(){renderBonus();renderTables();renderWonder();renderSleepReserve();renderPower();renderConversion();renderWonderContext();renderDetailLaunchers();renderPlan();renderViewModes();postSize();}
 function incrementStepInput(input,delta){let cur=parseFloat(input.value);if(isNaN(cur))cur=0;let next=Math.round((cur+delta)*1000000)/1000000;const min=input.min!==''?parseFloat(input.min):null,max=input.max!==''?parseFloat(input.max):null;if(min!==null&&!isNaN(min))next=Math.max(min,next);if(max!==null&&!isNaN(max))next=Math.min(max,next);input.value=String(next);input.dispatchEvent(new Event('change',{bubbles:true}));}
@@ -1368,8 +1361,8 @@ document.getElementById('sleepCount').addEventListener('change',e=>{settings.sle
 document.getElementById('productRawCycle').addEventListener('change',e=>{settings.productRawCycle=['30분','1시간','2시간'].includes(e.target.value)?e.target.value:'30분';e.target.value=settings.productRawCycle;renderPower();renderConversion();saveState();postSize();});
 document.getElementById('convertToggle').addEventListener('click',()=>{const panel=document.getElementById('convertPanel'),btn=document.getElementById('convertToggle'),open=panel.hasAttribute('hidden');if(open)panel.removeAttribute('hidden');else panel.setAttribute('hidden','');btn.setAttribute('aria-expanded',open?'true':'false');btn.textContent=open?'생산력 환산표 닫기':'생산력 환산표 보기';postSize();});
 ['wLv','baseH','curLv','tgtLv','sleepPrepH','sleepCount'].forEach(id=>document.getElementById(id).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();e.target.blur();}}));
-const SHEET_VIEW_TOGGLES={baseViewToggle:'prodBaseDetailsVisible',intermediateViewToggle:'prodIntermediateDetailsVisible',productViewToggle:'prodProductDetailsVisible',goalViewToggle:'wonderGoalDetailsVisible',sleepViewToggle:'wonderSleepDetailsVisible',powerViewToggle:'wonderPowerDetailsVisible'};
-Object.entries(SHEET_VIEW_TOGGLES).forEach(([id,key])=>document.getElementById(id).addEventListener('click',()=>{settings[key]=settings[key]!==true;renderViewModes();saveState();postSize();}));
+document.getElementById('prodViewToggle').addEventListener('click',()=>{settings.prodDetailsVisible=settings.prodDetailsVisible!==true;renderViewModes();saveState();postSize();});
+document.getElementById('wonderViewToggle').addEventListener('click',()=>{settings.wonderDetailsVisible=settings.wonderDetailsVisible!==true;renderViewModes();saveState();postSize();});
 document.getElementById('saveDefaultBtn').addEventListener('click',saveUserDefault);
 document.getElementById('resetBtn').addEventListener('click',openResetChoiceModal);
 document.getElementById('resetChoiceModal').addEventListener('click',e=>{if(e.target.closest('[data-reset-close]')){closeResetChoiceModal();return;}if(e.target.closest('#restoreSavedBtn')){if(restoreSavedDefault())closeResetChoiceModal();return;}if(e.target.closest('#restoreFactoryBtn')){restoreFactoryDefault();closeResetChoiceModal();}});
