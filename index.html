@@ -819,6 +819,111 @@ body.detail-modal-open{overflow:hidden}
     min-width:0!important;
   }
 }
+
+
+/* 건물 구성 모바일: 각 값을 알아볼 수 있는 카드형 라벨 */
+.area-mobile-label{display:none}
+@media(max-width:720px){
+  #buildingComposition .table-wrap{
+    overflow:visible!important;
+  }
+  #tArea{
+    display:block!important;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    table-layout:auto!important;
+  }
+  #tArea thead{display:none!important}
+  #tArea tbody{display:block!important;width:100%!important}
+  #tArea tbody tr{
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    width:100%!important;
+    margin:0 0 10px!important;
+    border:1px solid #e7b7b7!important;
+    border-radius:9px!important;
+    overflow:hidden!important;
+    background:#fffaf0!important;
+  }
+  #tArea tbody td,
+  #tArea tbody td:first-child{
+    position:static!important;
+    display:flex!important;
+    flex-direction:column!important;
+    justify-content:center!important;
+    width:auto!important;
+    min-width:0!important;
+    max-width:none!important;
+    height:auto!important;
+    min-height:70px!important;
+    padding:8px!important;
+    border:0!important;
+    border-right:1px solid #e7b7b7!important;
+    border-bottom:1px solid #e7b7b7!important;
+    box-shadow:none!important;
+    background:#fffaf0!important;
+    text-align:center!important;
+    font-size:13px!important;
+  }
+  #tArea tbody td:first-child{
+    grid-column:1/-1!important;
+    min-height:52px!important;
+    align-items:flex-start!important;
+    padding:10px 12px!important;
+    border-right:0!important;
+    background:#f3c7c0!important;
+    color:#7f1d1d!important;
+    font-size:14px!important;
+    font-weight:900!important;
+  }
+  #tArea tbody td:nth-child(3),
+  #tArea tbody td:nth-child(5){border-right:0!important}
+  #tArea tbody td:nth-child(4),
+  #tArea tbody td:nth-child(5){border-bottom:0!important}
+  #tArea .area-mobile-label{
+    display:block!important;
+    width:100%!important;
+    box-sizing:border-box!important;
+    margin:0 0 6px!important;
+    padding:6px 7px!important;
+    border:1px solid #e7b7b7!important;
+    border-radius:5px!important;
+    background:#fef2f2!important;
+    color:#7f1d1d!important;
+    font-size:12px!important;
+    font-weight:900!important;
+    line-height:1.25!important;
+    text-align:center!important;
+    white-space:normal!important;
+    word-break:keep-all!important;
+  }
+  #tArea td.input-cell::before{
+    content:none!important;
+    display:none!important;
+  }
+  #tArea .input-cell input{
+    width:100%!important;
+    min-width:0!important;
+    height:40px!important;
+    min-height:40px!important;
+    padding:5px 8px!important;
+    font-size:16px!important;
+  }
+
+  /* 환산표는 가로표 구조를 유지하되 헤더 식별성을 강화 */
+  #tConvert thead th{
+    background:#f3c7c0!important;
+    color:#7f1d1d!important;
+    font-size:12px!important;
+    font-weight:900!important;
+    line-height:1.25!important;
+  }
+  #tConvert tbody td:first-child{
+    font-size:12px!important;
+    font-weight:900!important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1368,7 +1473,7 @@ function renderPlanArea(){
     }
     const workerTotalCell=workerNeed===null?'—':fmtPower(workerNeed);
     const areaCell=area===0?'0':item.w+'×'+item.l+' · '+area;
-    return '<tr><td>'+item.name+'</td><td class="input-cell">'+countCell+'</td><td class="num calc">'+workerTotalCell+'</td><td class="num calc">'+areaCell+'</td><td class="num calc">'+fmtQty(total)+'</td></tr>';
+    return '<tr><td>'+item.name+'</td><td class="input-cell"><span class="area-mobile-label">건물 수</span>'+countCell+'</td><td class="num calc"><span class="area-mobile-label">필요 일꾼</span>'+workerTotalCell+'</td><td class="num calc"><span class="area-mobile-label">1채 면적</span>'+areaCell+'</td><td class="num calc"><span class="area-mobile-label">사용 면적</span>'+fmtQty(total)+'</td></tr>';
   }).join('');
   renderPlanConstruction();
 }
