@@ -296,17 +296,18 @@ body.detail-modal-open{overflow:hidden}
 .plan-overview-grid tr.plan-key-row td{border-bottom-width:2px}
 .plan-overview-grid tr.plan-key-row td.calc{font-size:12px;font-weight:900;white-space:nowrap}
 .plan-overview-grid tr.plan-secondary-start td{border-top-width:2px}
-#tConstruction{width:500px!important;min-width:500px!important}
+#tConstruction{width:600px!important;min-width:600px!important}
 #tConstruction th,#tConstruction td{height:30px!important;min-height:30px!important;padding:3px 5px!important}
 #tConstruction th:nth-child(1),#tConstruction td:nth-child(1){width:170px!important;min-width:170px!important;max-width:170px!important}
 #tConstruction th:nth-child(2),#tConstruction td:nth-child(2){width:100px!important;min-width:100px!important;max-width:100px!important}
 #tConstruction th:nth-child(3),#tConstruction td:nth-child(3){width:100px!important;min-width:100px!important;max-width:100px!important}
-#tConstruction th:nth-child(4),#tConstruction td:nth-child(4){width:130px!important;min-width:130px!important;max-width:130px!important}
+#tConstruction th:nth-child(4),#tConstruction td:nth-child(4){width:100px!important;min-width:100px!important;max-width:100px!important}
+#tConstruction th:nth-child(5),#tConstruction td:nth-child(5){width:130px!important;min-width:130px!important;max-width:130px!important}
 #tConstruction .construction-building-cell{display:flex;align-items:center;gap:4px;width:100%}
 #tConstruction .construction-building-cell select{flex:1 1 auto;min-width:0}
 #tConstruction .construction-remove{flex:0 0 24px;width:24px;height:24px;border:0;border-radius:50%;background:transparent;color:#991b1b;font:900 16px/24px var(--wrks-viz-font-family);padding:0;cursor:pointer}
 #tConstruction .construction-remove:hover{background:#fee2e2}
-.construction-toolbar{width:500px;max-width:100%}
+.construction-toolbar{width:600px;max-width:100%}
 .research-tree-toolbar{position:absolute;z-index:4;left:10px;right:10px;top:8px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;pointer-events:none}
 .research-tree-toolbar>*{pointer-events:auto}
 .research-tree-toolbar .research-legend{position:static;width:auto;max-width:none;margin:0;gap:9px;font-size:10px;line-height:1.2}
@@ -393,7 +394,7 @@ body.detail-modal-open{overflow:hidden}
     -webkit-overflow-scrolling:touch;
   }
   #tArea{min-width:500px!important}
-  #tConstruction{min-width:500px!important}
+  #tConstruction{min-width:600px!important}
   #tArea th:first-child,#tArea td:first-child,
   #tConstruction th:first-child,#tConstruction td:first-child{
     position:sticky;
@@ -563,18 +564,21 @@ body.detail-modal-open{overflow:hidden}
     background:#fff7ed!important;
   }
   #tConstruction tbody tr[data-construction-row] td:nth-child(1)::before{content:"건물 종류"}
-  #tConstruction tbody tr[data-construction-row] td:nth-child(2)::before{content:"목표 레벨"}
+  #tConstruction tbody tr[data-construction-row] td:nth-child(2)::before{content:"현재 레벨"}
   #tConstruction tbody tr[data-construction-row] td:nth-child(3){
     border-right:0!important;
   }
-  #tConstruction tbody tr[data-construction-row] td:nth-child(3)::before{content:"건설 수"}
+  #tConstruction tbody tr[data-construction-row] td:nth-child(3)::before{content:"목표 레벨"}
   #tConstruction tbody tr[data-construction-row] td:nth-child(4){
-    grid-column:1/-1!important;
+    border-bottom:0!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td:nth-child(4)::before{content:"건설 수"}
+  #tConstruction tbody tr[data-construction-row] td:nth-child(5){
     min-height:58px!important;
     border-right:0!important;
     border-bottom:0!important;
   }
-  #tConstruction tbody tr[data-construction-row] td:nth-child(4)::before{content:"필요 오수전"}
+  #tConstruction tbody tr[data-construction-row] td:nth-child(5)::before{content:"필요 오수전"}
 
   #tConstruction .construction-building-cell,
   #tConstruction .construction-cost-cell{
@@ -809,7 +813,7 @@ body.detail-modal-open{overflow:hidden}
   </section>
 
   <div class="section-title-row"><h2>건물 건설 비용</h2></div>
-  <div class="table-wrap"><table id="tConstruction"><thead><tr><th>건물 종류</th><th>목표 레벨</th><th>건설 수</th><th>필요 오수전</th></tr></thead><tbody></tbody><tfoot><tr><th colspan="3">총 필요 오수전</th><th class="num calc" id="planConstructionTotal">0</th></tr></tfoot></table></div>
+  <div class="table-wrap"><table id="tConstruction"><thead><tr><th>건물 종류</th><th>현재 레벨</th><th>목표 레벨</th><th>건설 수</th><th>필요 오수전</th></tr></thead><tbody></tbody><tfoot><tr><th colspan="4">총 필요 오수전</th><th class="num calc" id="planConstructionTotal">0</th></tr></tfoot></table></div>
   <div class="construction-toolbar"><button type="button" id="constructionAdd" class="construction-add">+ 건설 항목 추가</button></div>
 
   <div class="section-title-row"><h2>연구</h2></div>
@@ -838,9 +842,9 @@ body.detail-modal-open{overflow:hidden}
   </div>
 
   <div class="note plan-note">
-    1. <b>도시 현황</b>은 일꾼·영토·오수전의 현재 상태와 예상값을 확인합니다. <b>상세 보기</b>를 누르면 추가 계산 내역과 건물 구성이 함께 표시되며, 숨겨도 입력값과 계산 결과는 유지됩니다. 오수전 <b>예상 보유량</b>은 <b>현재 보유량</b> + <b>시간당 생산량</b> × <b>운영 시간(h)</b>으로 계산하며, <b>운영 시간(h)</b>을 비우면 생산 계산기의 <b>기본 운영 시간(h)</b>을 사용합니다.<br>
+    1. <b>도시 현황</b>은 일꾼·영토·오수전의 현재 상태와 예상값을 확인합니다. <b>상세 보기</b>를 누르면 추가 계산 내역과 건물 구성이 함께 표시되며, 숨겨도 입력값과 계산 결과는 유지됩니다. 오수전 <b>예상 보유량</b>은 <b>시간당 생산량</b> × <b>운영 시간(h)</b> + <b>현재 보유량</b>으로 계산하며, <b>운영 시간(h)</b>을 비우면 생산 계산기의 <b>기본 운영 시간(h)</b>을 사용합니다.<br>
     2. <b>건물 구성</b>의 주택 수는 <b>일꾼 현황</b>, 생산 건물 수는 <b>생산 계산기</b>의 값을 기본으로 사용합니다.<br>
-    3. <b>건물 건설 비용</b>은 <b>건물 종류</b>·<b>목표 레벨</b>·<b>건설 수</b>를 기준으로 Lv.1 건설부터 목표 레벨까지 필요한 오수전을 누적 계산합니다. 추가한 건설 항목은 비용 계산에만 사용되며 현재 건물 수에는 자동으로 반영되지 않습니다.<br>
+    3. <b>건물 건설 비용</b>은 <b>건물 종류</b>·<b>현재 레벨</b>·<b>목표 레벨</b>·<b>건설 수</b>를 기준으로 현재 레벨 다음 단계부터 목표 레벨까지 필요한 오수전을 누적 계산합니다. 예를 들어 현재 Lv.3에서 목표 Lv.6이면 Lv.4~6의 비용을 합산합니다. 추가한 건설 항목은 비용 계산에만 사용되며 현재 건물 수에는 자동으로 반영되지 않습니다.<br>
     4. <b>연구</b>는 연구 노드에서 <b>현재 연구</b>를 추가·해제하거나 <b>목표 연구</b>를 지정합니다. 현재 연구는 여러 개를 선택할 수 있습니다. <b>연구 비용</b>은 현재 연구부터 목표까지 필요한 연구 비용의 합계입니다.
   </div>
 </div>
@@ -1046,12 +1050,17 @@ for(const item of CITY_PLAN_DATA.areaBuildings){
   }
 }
 if(!Array.isArray(planState.constructionRows))planState.constructionRows=[];
-planState.constructionRows=planState.constructionRows.map((r,i)=>({
-  id:String(r?.id||('row'+(i+1))),
-  key:CITY_PLAN_DATA.constructionCatalog[r?.key]?r.key:'',
-  lv:clamp(parseInt(r?.lv)||1,1,6),
-  count:Math.max(0,Math.floor(parseFloat(r?.count)||0))
-}));
+planState.constructionRows=planState.constructionRows.map((r,i)=>{
+  const currentLv=clamp(parseInt(r?.currentLv)||0,0,6);
+  const lv=Math.max(currentLv,clamp(parseInt(r?.lv)||1,1,6));
+  return {
+    id:String(r?.id||('row'+(i+1))),
+    key:CITY_PLAN_DATA.constructionCatalog[r?.key]?r.key:'',
+    currentLv,
+    lv,
+    count:Math.max(0,Math.floor(parseFloat(r?.count)||0))
+  };
+});
 }
 function syncUIFromState(){document.getElementById('wonder').value=settings.wonder;document.getElementById('wLv').value=settings.wLv;document.getElementById('baseH').value=settings.baseH;document.getElementById('curLv').value=wLvSet.cur;document.getElementById('tgtLv').value=wLvSet.tgt;const prc=document.getElementById('productRawCycle');if(prc)prc.value=settings.productRawCycle;const sph=document.getElementById('sleepPrepH');if(sph)sph.value=settings.sleepPrepH;const sc=document.getElementById('sleepCycle');if(sc)sc.value=settings.sleepCycle;const sn=document.getElementById('sleepCount');if(sn)sn.value=settings.sleepCount;}
 function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);const saved=raw?JSON.parse(raw):null;if(saved){if(saved.state)Object.assign(state,saved.state);if(saved.settings)Object.assign(settings,saved.settings);if(saved.wStock)Object.assign(wStock,saved.wStock);if(saved.wLvSet)Object.assign(wLvSet,saved.wLvSet);if(saved.details)Object.assign(details,saved.details);if(saved.planState)Object.assign(planState,saved.planState);}}catch(e){console.error('loadState error:',e);}normalizeState();syncUIFromState();saveState();}
@@ -1150,26 +1159,28 @@ function planBuildingCount(item){
 function planUsedArea(){
   return CITY_PLAN_DATA.areaBuildings.reduce((sum,item)=>sum+Math.max(0,item.w*item.l)*planBuildingCount(item),0);
 }
-function constructionUnitCost(key,lv){
+function constructionUnitCost(key,currentLv,targetLv){
   const row=CITY_PLAN_DATA.constructionCatalog[key];if(!row)return 0;
-  const n=clamp(parseInt(lv)||1,1,6);
-  return row.costs.slice(0,n).reduce((a,b)=>a+(parseFloat(b)||0),0);
+  const cur=clamp(parseInt(currentLv)||0,0,6),tgt=clamp(parseInt(targetLv)||1,1,6);
+  if(tgt<=cur)return 0;
+  return row.costs.slice(cur,tgt).reduce((a,b)=>a+(parseFloat(b)||0),0);
 }
 function planConstructionCost(){
-  return (planState.constructionRows||[]).reduce((sum,r)=>sum+constructionUnitCost(r.key,r.lv)*Math.max(0,Math.floor(r.count||0)),0);
+  return (planState.constructionRows||[]).reduce((sum,r)=>sum+constructionUnitCost(r.key,r.currentLv,r.lv)*Math.max(0,Math.floor(r.count||0)),0);
 }
 function constructionBuildingOptions(selected){
   const opts=['<option value="">건물 선택</option>'];
   for(const [key,v] of Object.entries(CITY_PLAN_DATA.constructionCatalog))opts.push('<option value="'+key+'"'+(selected===key?' selected':'')+'>'+v.name+'</option>');
   return opts.join('');
 }
+function constructionCurrentLevelOptions(selected){return [0,1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+'>'+(lv===0?'미건설':'Lv.'+lv)+'</option>').join('');}
 function constructionLevelOptions(selected){return [1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+'>Lv.'+lv+'</option>').join('');}
 function renderPlanConstruction(){
   const tbody=document.querySelector('#tConstruction tbody');if(!tbody)return;
-  if(!(planState.constructionRows||[]).length){tbody.innerHTML='<tr><td colspan="4" class="calc" style="color:#9ca3af">+ 건설 항목 추가를 눌러 계산할 건물을 추가하세요.</td></tr>';}
+  if(!(planState.constructionRows||[]).length){tbody.innerHTML='<tr><td colspan="5" class="calc" style="color:#9ca3af">+ 건설 항목 추가를 눌러 계산할 건물을 추가하세요.</td></tr>';}
   else tbody.innerHTML=planState.constructionRows.map(r=>{
-    const unit=constructionUnitCost(r.key,r.lv),need=unit*Math.max(0,Math.floor(r.count||0));
-    return '<tr data-construction-row="'+r.id+'"><td class="input-cell"><div class="construction-building-cell"><select data-construction-field="key">'+constructionBuildingOptions(r.key)+'</select></div></td><td class="input-cell"><select data-construction-field="lv">'+constructionLevelOptions(r.lv)+'</select></td><td class="input-cell"><input type="number" min="0" step="1" data-construction-field="count" value="'+(r.count||'')+'" placeholder="0"></td><td class="num calc"><div class="construction-cost-cell"><span>'+fmtQty(need)+'</span><button type="button" class="construction-remove" data-construction-remove="'+r.id+'" aria-label="건설 항목 삭제" title="건설 항목 삭제">삭제</button></div></td></tr>';
+    const unit=constructionUnitCost(r.key,r.currentLv,r.lv),need=unit*Math.max(0,Math.floor(r.count||0));
+    return '<tr data-construction-row="'+r.id+'"><td class="input-cell"><div class="construction-building-cell"><select data-construction-field="key">'+constructionBuildingOptions(r.key)+'</select></div></td><td class="input-cell"><select data-construction-field="currentLv">'+constructionCurrentLevelOptions(r.currentLv)+'</select></td><td class="input-cell"><select data-construction-field="lv">'+constructionLevelOptions(r.lv)+'</select></td><td class="input-cell"><input type="number" min="0" step="1" data-construction-field="count" value="'+r.count+'" placeholder="1"></td><td class="num calc"><div class="construction-cost-cell"><span>'+fmtQty(need)+'</span><button type="button" class="construction-remove" data-construction-remove="'+r.id+'" aria-label="건설 항목 삭제" title="건설 항목 삭제">삭제</button></div></td></tr>';
   }).join('');
   const total=document.getElementById('planConstructionTotal');if(total)total.textContent=fmtQty(planConstructionCost());
 }
@@ -1333,7 +1344,7 @@ document.getElementById('panel-plan').addEventListener('change',e=>{
   const cField=e.target.dataset.constructionField;
   if(cRow&&cField){
     const row=planState.constructionRows.find(r=>r.id===cRow.dataset.constructionRow);
-    if(row){if(cField==='key')row.key=e.target.value;else if(cField==='lv')row.lv=clamp(parseInt(e.target.value)||1,1,6);else if(cField==='count')row.count=Math.max(0,Math.floor(parseFloat(e.target.value)||0));}
+    if(row){if(cField==='key')row.key=e.target.value;else if(cField==='currentLv'){row.currentLv=clamp(parseInt(e.target.value)||0,0,6);if(row.lv<row.currentLv)row.lv=row.currentLv;}else if(cField==='lv'){row.lv=Math.max(row.currentLv||0,clamp(parseInt(e.target.value)||1,1,6));}else if(cField==='count')row.count=Math.max(0,Math.floor(parseFloat(e.target.value)||0));}
     setTimeout(()=>{renderPlanConstruction();saveState();postSize();},0);return;
   }
   normalizeState();renderPlan();saveState();postSize();
@@ -1342,7 +1353,7 @@ document.getElementById('panel-plan').addEventListener('change',e=>{
 document.getElementById('panel-plan').addEventListener('click',e=>{
   if(e.target.closest('#cityDetailsToggle')){planState.cityDetailsVisible=planState.cityDetailsVisible!==true;renderPlan();saveState();postSize();return;}
   if(e.target.closest('#buildingReset')){planState.buildingOverrides={};planState.premiumRice=0;normalizeState();renderPlan();saveState();postSize();const status=document.getElementById('buildingResetStatus');status.textContent='초기화 완료';setTimeout(()=>{status.textContent='';},1800);return;}
-  if(e.target.closest('#constructionAdd')){const id='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);planState.constructionRows.push({id,key:'',lv:1,count:0});renderPlan();saveState();postSize();return;}
+  if(e.target.closest('#constructionAdd')){const id='c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);planState.constructionRows.push({id,key:'',currentLv:0,lv:1,count:1});renderPlan();saveState();postSize();return;}
   const remove=e.target.closest('[data-construction-remove]');if(remove){planState.constructionRows=planState.constructionRows.filter(r=>r.id!==remove.dataset.constructionRemove);renderPlan();saveState();postSize();return;}
   if(e.target.closest('#researchReset')){planState.currentTechs=[];planState.targetTech='';planResearchActionId='';normalizeState();renderPlan();saveState();postSize();return;}
   if(e.target.closest('#researchActionClose')){planResearchActionId='';renderPlan();postSize();return;}
