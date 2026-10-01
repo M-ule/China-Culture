@@ -693,6 +693,87 @@ body.detail-modal-open{overflow:hidden}
     font-size:12px!important;
   }
 }
+
+
+/* 모바일 열 제목 가시성 통일 */
+@media(max-width:720px){
+  /* 생산 계산기 · 불가사의 목표 카드의 항목 라벨 */
+  #t1 tbody td:not(:first-child)::before,
+  #t2 tbody td:not(:first-child)::before,
+  #t3 tbody td:not(:first-child)::before,
+  #tw tbody td:not(:first-child)::before,
+  #tSleep tbody td:not(:first-child)::before,
+  #tPower tbody td:not(:first-child)::before{
+    display:block!important;
+    align-self:stretch!important;
+    box-sizing:border-box!important;
+    margin:0 0 5px!important;
+    padding:4px 6px!important;
+    border:1px solid #e7b7b7!important;
+    border-radius:4px!important;
+    background:#fef2f2!important;
+    color:#7f1d1d!important;
+    font-size:12px!important;
+    font-weight:900!important;
+    line-height:1.25!important;
+    text-align:center!important;
+  }
+
+  /* 건물 건설 비용 카드의 열 제목 */
+  #tConstruction tbody tr[data-construction-row] td::before{
+    display:block!important;
+    align-self:stretch!important;
+    box-sizing:border-box!important;
+    margin:0 0 5px!important;
+    padding:4px 6px!important;
+    border:1px solid #e7b7b7!important;
+    border-radius:4px!important;
+    background:#f3c7c0!important;
+    color:#7f1d1d!important;
+    font-size:12px!important;
+    font-weight:900!important;
+    line-height:1.25!important;
+    text-align:center!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td{
+    gap:2px!important;
+    min-height:70px!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td:nth-child(1){
+    min-height:74px!important;
+  }
+
+  /* 건물 구성처럼 가로 스크롤을 유지하는 표의 실제 헤더도 강화 */
+  #tArea thead th{
+    position:sticky!important;
+    top:0!important;
+    z-index:4!important;
+    padding:6px 5px!important;
+    background:#f3c7c0!important;
+    color:#7f1d1d!important;
+    font-size:12px!important;
+    font-weight:900!important;
+    line-height:1.25!important;
+    white-space:normal!important;
+  }
+  #tArea thead th:first-child{z-index:5!important}
+
+  /* 도시 현황의 왼쪽 항목명도 같은 계열로 강조 */
+  #tTerritory td:first-child,
+  #tCurrency td:first-child,
+  #tWorkers td:first-child{
+    color:#7f1d1d!important;
+    font-size:12px!important;
+    font-weight:900!important;
+  }
+
+  /* 연구 선택 영역의 필드명 */
+  .research-selection-group .label{
+    color:#7f1d1d!important;
+    font-size:12px!important;
+    font-weight:900!important;
+  }
+}
 </style>
 </head>
 <body>
