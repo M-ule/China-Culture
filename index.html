@@ -774,6 +774,51 @@ body.detail-modal-open{overflow:hidden}
     font-weight:900!important;
   }
 }
+
+
+/* 건물 건설 비용 모바일: 실제 열 라벨 사용 */
+.construction-mobile-label{display:none}
+@media(max-width:720px){
+  #tConstruction tbody tr[data-construction-row] td::before{
+    content:none!important;
+    display:none!important;
+  }
+  #tConstruction .construction-mobile-label{
+    display:block!important;
+    position:static!important;
+    width:100%!important;
+    min-width:0!important;
+    box-sizing:border-box!important;
+    margin:0 0 7px!important;
+    padding:7px 8px!important;
+    border:1px solid #e7b7b7!important;
+    border-radius:5px!important;
+    background:#fef2f2!important;
+    color:#7f1d1d!important;
+    font-size:13px!important;
+    font-weight:900!important;
+    line-height:1.25!important;
+    text-align:center!important;
+    white-space:normal!important;
+    word-break:keep-all!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td{
+    gap:0!important;
+    padding:8px!important;
+    min-height:82px!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td:nth-child(1){
+    min-height:88px!important;
+  }
+  #tConstruction tbody tr[data-construction-row] td:nth-child(5){
+    min-height:82px!important;
+  }
+  #tConstruction .construction-building-cell,
+  #tConstruction .construction-cost-cell{
+    width:100%!important;
+    min-width:0!important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1261,7 +1306,7 @@ function renderPlanConstruction(){
   if(!(planState.constructionRows||[]).length){tbody.innerHTML='<tr><td colspan="5" class="calc" style="color:#9ca3af">+ 건설 항목 추가를 눌러 계산할 건물을 추가하세요.</td></tr>';}
   else tbody.innerHTML=planState.constructionRows.map(r=>{
     const unit=constructionUnitCost(r.key,r.currentLv,r.lv),need=unit*Math.max(0,Math.floor(r.count||0));
-    return '<tr data-construction-row="'+r.id+'"><td class="input-cell"><div class="construction-building-cell"><select data-construction-field="key">'+constructionBuildingOptions(r.key)+'</select></div></td><td class="input-cell"><select data-construction-field="currentLv">'+constructionCurrentLevelOptions(r.currentLv)+'</select></td><td class="input-cell"><select data-construction-field="lv">'+constructionLevelOptions(r.lv)+'</select></td><td class="input-cell"><input type="number" min="0" step="1" data-construction-field="count" value="'+r.count+'" placeholder="1"></td><td class="num calc"><div class="construction-cost-cell"><span>'+fmtQty(need)+'</span><button type="button" class="construction-remove" data-construction-remove="'+r.id+'" aria-label="건설 항목 삭제" title="건설 항목 삭제">삭제</button></div></td></tr>';
+    return '<tr data-construction-row="'+r.id+'"><td class="input-cell"><span class="construction-mobile-label">건물 종류</span><div class="construction-building-cell"><select data-construction-field="key">'+constructionBuildingOptions(r.key)+'</select></div></td><td class="input-cell"><span class="construction-mobile-label">현재 레벨</span><select data-construction-field="currentLv">'+constructionCurrentLevelOptions(r.currentLv)+'</select></td><td class="input-cell"><span class="construction-mobile-label">목표 레벨</span><select data-construction-field="lv">'+constructionLevelOptions(r.lv)+'</select></td><td class="input-cell"><span class="construction-mobile-label">건설 수</span><input type="number" min="0" step="1" data-construction-field="count" value="'+r.count+'" placeholder="1"></td><td class="num calc"><span class="construction-mobile-label">필요 오수전</span><div class="construction-cost-cell"><span>'+fmtQty(need)+'</span><button type="button" class="construction-remove" data-construction-remove="'+r.id+'" aria-label="건설 항목 삭제" title="건설 항목 삭제">삭제</button></div></td></tr>';
   }).join('');
   const total=document.getElementById('planConstructionTotal');if(total)total.textContent=fmtQty(planConstructionCost());
 }
