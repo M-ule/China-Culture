@@ -111,3 +111,5 @@ document.getElementById('detailRows').addEventListener('change',e=>{const el=e.t
           fi
           git commit -m '입력값 즉시 반영 및 계산 갱신 최적화'
           git push origin HEAD:main
+
+# trigger run
