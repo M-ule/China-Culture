@@ -1652,5 +1652,5 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElemen
 function postSize(){try{const h=document.documentElement.scrollHeight;parent.postMessage({type:'wrks:viz:resize',height:h},'*');}catch(e){}}
 window.addEventListener('load',()=>{loadState();renderAll();postSize();});if('ResizeObserver'in window)new ResizeObserver(postSize).observe(document.body);
 </script>
-</body>
+<script src="update-check.js?v=20261102"></script></body>
 </html>
