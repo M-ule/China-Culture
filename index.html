@@ -20,6 +20,11 @@
 .research-action.open{position:fixed!important;left:50%!important;top:50%!important;width:min(360px,calc(100vw - 32px));transform:translate(-50%,-50%);z-index:1001;box-shadow:0 0 0 100vmax #48252080}.research-tree-toolbar{height:0;padding:0}.research-tree{height:820px}.research-tree-lines,.research-tree-nodes{top:20px}.research-legend{margin:12px 0}.research-cost-chip{margin-left:auto}.metric .support{line-height:1.6}
 @media(max-width:480px){.section-title-row .title-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}.section-title-row .title-actions button{width:100%;padding:8px;min-height:44px;font-size:14px}.research-mobile-list{grid-template-columns:1fr}.metric:last-child:nth-child(odd){grid-column:1/-1}.research-selection-group{min-width:100%}}
 @media(min-width:901px){#t1,#t2,#t3,#t1.details-visible,#t2.details-visible,#t3.details-visible{min-width:0;width:100%}}
+/* Comparison pass: actionable summaries, exact input feedback and consistent controls. */
+.production-summary,#goalSummary{grid-template-columns:repeat(2,minmax(0,1fr))}.metric strong{font-size:17px;font-weight:700}.metric .support{display:block;margin-top:6px;font-size:13px;color:#827069;line-height:1.6}.metric .support:empty{display:none}#resetStatus{display:block;margin-top:10px}#resetStatus:empty{display:none}.amount-error{display:block;margin-top:6px;color:#ad2634;font-size:12px;line-height:1.5;font-weight:400;text-align:left}.input-cell:has([aria-invalid=true]),.control-field:has([aria-invalid=true]){background:#fff1f2}.step-wrap:has([aria-invalid=true]),input[aria-invalid=true]{border-color:#ad2634;outline:2px solid #ad2634;outline-offset:1px}.control-field:has(.amount-error){flex-wrap:wrap}.control-field>.amount-error{flex-basis:100%}.detail-row:has(input:disabled){opacity:.7}.detail-config-status{font-size:13px;color:#827069;margin:10px 0}.detail-row button:disabled{background:#f2eeeb}.composition-shortcut{border-style:dashed;min-width:52px;min-height:36px;background:#fffaf7;padding:6px 9px}.city-sync-actions{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:5px;margin-top:6px}.city-sync-status{font-size:12px;line-height:1.5;font-weight:400;color:#827069}.city-sync-actions button{min-height:30px;font-size:12px;padding:4px 6px}.research-action p{margin:0;text-align:center}.sync-goal-level{font-size:14px}.tabs .tab[aria-selected=true]{background:var(--primary);border-color:var(--primary);color:white}
+@media(max-width:900px){.production-summary,#goalSummary{grid-template-columns:1fr}.summary .metric:last-child:nth-child(odd){grid-column:auto}#prodSettings .section-title-row{display:grid;grid-template-columns:1fr auto}#prodSettings .section-title-row h2{grid-column:1;grid-row:1;justify-self:start}#prodSettings .title-actions{display:contents}#prodSettings #prodViewToggle{grid-column:2;grid-row:1;min-height:44px;font-size:14px}#prodSettings #saveDefaultBtn{grid-column:1;grid-row:2;width:100%;font-size:14px}#prodSettings #loadSavedBtn{grid-column:2;grid-row:2;width:100%;font-size:14px}#prodSettings #resetBtn{grid-column:1;grid-row:3;justify-self:start;font-size:14px}#wonderSettings .section-title-row{flex-wrap:nowrap}#wonderSettings .title-actions{display:flex;width:auto;margin-left:auto}#wonderSettings #wonderViewToggle{width:auto;white-space:nowrap;font-size:14px}.composition-shortcut{min-height:40px}.city-sync-actions button{min-height:36px}}
+#researchAction::backdrop{background:#48252080}#researchAction.open{box-shadow:0 12px 36px #48252030;margin:0;border:1px solid var(--line)}#researchAction:not([open]){display:none!important}
+@media(max-width:900px){#tConstruction tfoot tr{grid-template-columns:repeat(2,minmax(0,1fr))}#tConstruction tfoot th:first-child,#tConstruction tfoot th:last-child{width:auto;min-width:0;max-width:100%;overflow-wrap:anywhere}}
 
 </style>
 </head>
@@ -36,12 +41,12 @@
     <button id="saveDefaultBtn" class="save-default-btn" type="button">입력값 저장</button>
     <button id="resetBtn" type="button" class="reset-btn">초기화</button><span id="resetStatus" class="reset-status" role="status" aria-live="polite"></span>
   </div>
-  <div class="bonus-box" id="bonusBox"></div>
+  <div id="bonusSummary" class="summary production-summary"></div><div class="bonus-box" id="bonusBox" hidden></div>
 </section>
 <section class="card" id="resourceCard">  <div class="section-title-row"><div class="production-section-title"><h2>기초 자원</h2><span id="baseResourceDetailSummary" class="detail-summary">상세 설정 미사용</span></div><div class="detail-actions"><button id="baseResourceDetailOpen" class="detail-open-btn" type="button">기초 자원 상세 설정</button></div></div>
-  <div class="table-wrap"><table id="t1"><thead><tr><th>자원</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>잔여/부족</th><th>소요 시간(h)</th><th>예상 생산량</th><th>필요량</th></tr></thead><tbody></tbody></table></div></section>
+  <div class="table-wrap"><table id="t1"><thead><tr><th>자원</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>잔여/부족</th><th>소요 시간</th><th>예상 생산량</th><th>필요량</th></tr></thead><tbody></tbody></table></div></section>
 <section class="card" id="intermediateCard">  <div class="section-title-row"><div class="production-section-title"><h2>중간 자원</h2><span id="intermediateDetailSummary" class="detail-summary">상세 설정 미사용</span></div><div class="detail-actions"><button id="intermediateDetailOpen" class="detail-open-btn" type="button">중간 자원 상세 설정</button></div></div>
-  <div class="table-wrap"><table id="t2"><thead><tr><th>자원</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>잔여/부족</th><th>소요 시간(h)</th><th>예상 생산량</th><th>원재료 사용량</th><th>쌀 사용량</th><th>필요량</th></tr></thead><tbody></tbody></table></div></section>
+  <div class="table-wrap"><table id="t2"><thead><tr><th>자원</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>잔여/부족</th><th>소요 시간</th><th>예상 생산량</th><th>원재료 사용량</th><th>쌀 사용량</th><th>필요량</th></tr></thead><tbody></tbody></table></div></section>
 <section class="card" id="productCard">  <div class="section-title-row"><div class="production-section-title"><h2>상품</h2><span id="productDetailSummary" class="detail-summary">상세 설정 미사용</span></div><div class="detail-actions"><button id="productDetailOpen" class="detail-open-btn" type="button">상품 상세 설정</button></div></div>
   <div class="table-wrap"><table id="t3"><thead><tr><th>상품</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>예상 생산량</th><th>원재료 사용량</th><th>쌀 사용량</th></tr></thead><tbody></tbody></table></div></section>
 </div>
@@ -57,7 +62,7 @@
   </div>
 <div id="goalSummary" class="summary"><div class="metric"><span>최대 도달 레벨(고령토)</span><strong id="maxLv">Lv—</strong></div></div></section>
 <section class="card" id="goalCard">  <div class="section-title-row"><h2>목표 달성 현황</h2></div>
-  <div class="table-wrap"><table id="tw"><thead><tr><th>상품</th><th>잔여/부족</th><th>소요 시간(h)</th><th>구간 필요량</th><th>현재 보유량</th><th>예상 생산량</th><th>예상 보유량</th></tr></thead><tbody></tbody></table></div></section>
+  <div class="table-wrap"><table id="tw"><thead><tr><th>상품</th><th>잔여/부족</th><th>소요 시간</th><th>구간 필요량</th><th>현재 보유량</th><th>예상 생산량</th><th>예상 보유량</th></tr></thead><tbody></tbody></table></div></section>
 <section class="card" id="sleepCard">  <div class="section-title-row"><h2>수면 대비 자원 확보</h2></div>
   <div class="settings sleep-settings">
     <label for="sleepPrepH">수면까지 남은 시간(h)</label>
@@ -154,7 +159,7 @@
     </div>
   </div>
 
-<div id="researchMobile" class="research-mobile"></div></section>
+<p id="researchSummary" class="note" role="status"></p><div id="researchMobile" class="research-mobile"></div></section>
 </div>
 
 <footer>제작자 Mule · 수정일 2026. 11. 3.</footer></main>
@@ -170,7 +175,7 @@
       <div class="detail-field"><label>상세 설정</label><div class="detail-toggle-wrap"><input type="checkbox" id="detailEnabled"><label for="detailEnabled">이 항목에 상세 설정 적용</label></div></div>
     </div>
     <div id="detailHelp" class="detail-help"></div>
-    <div id="detailResult" class="detail-result"></div>
+    <div id="detailResult" class="detail-result" role="status" aria-live="polite"></div>
     <div id="detailRows" class="detail-rows"></div>
     <div class="detail-footer"><button id="detailAdd" type="button" class="detail-add">+ 건물 구성 추가</button></div>
   </section>
@@ -275,7 +280,7 @@ function fmtQty(n){
   const v=Number(n),a=Math.abs(v),sign=v<0?'-':'';
   if(a>=1000000){const m=Math.round(a/10000)/100;return sign+m.toLocaleString('ko-KR',{maximumFractionDigits:2})+'M';}
   if(a>=100000){const k=Math.floor(a/100)/10;return sign+k.toLocaleString('ko-KR',{maximumFractionDigits:1})+'K';}
-  return Math.round(v).toLocaleString('ko-KR',{maximumFractionDigits:0});
+  return (Math.round(v)||0).toLocaleString('ko-KR',{maximumFractionDigits:0});
 }
 function parseCompactNumber(value){
   if(typeof value==='number')return Number.isFinite(value)?value:NaN;
@@ -290,11 +295,11 @@ function fmtCompactInput(n){
   const v=Math.max(0,Number(n)||0),a=Math.abs(v);
   if(a>=1000000){const m=Math.round(a/10000)/100;return m.toLocaleString('ko-KR',{maximumFractionDigits:2})+'M';}
   if(a>=100000){const k=Math.floor(a/100)/10;return k.toLocaleString('ko-KR',{maximumFractionDigits:1})+'K';}
-  return Math.round(v).toLocaleString('ko-KR',{maximumFractionDigits:0});
+  return (Math.round(v)||0).toLocaleString('ko-KR',{maximumFractionDigits:0});
 }
 function fmtHours(n){if(n===null||n===undefined||isNaN(n))return '—';const rounded=n>0?Math.max(0.01,Math.ceil(n*100-1e-8)/100):0;return rounded.toLocaleString('ko-KR',{minimumFractionDigits:0,maximumFractionDigits:2});}
-function fmtPower(n){if(n===null||n===undefined||!Number.isFinite(n))return '—';const r=Math.round(n*10)/10;return r.toLocaleString('ko-KR',{maximumFractionDigits:1});}
-function fmtSignedPower(n){if(n===null||n===undefined||!Number.isFinite(n))return '—';const r=Math.round(n*10)/10;return r>0?'+'+fmtPower(r):fmtPower(r);}
+function fmtPower(n){if(n===null||n===undefined||!Number.isFinite(n))return '—';const r=Math.round(n*10)/10||0;return r.toLocaleString('ko-KR',{maximumFractionDigits:1});}
+function fmtSignedPower(n){if(n===null||n===undefined||!Number.isFinite(n))return '—';const r=Math.round(n*10)/10||0;return r>0?'+'+fmtPower(r):fmtPower(r);}
 function clamp(n,min,max){return Math.min(max,Math.max(min,n));}
 function getBonus(){return DATA.bonus[settings.wonder+'|'+settings.wLv]||{r:0,g:0,w:0};}
 function getNextWorker(){const cur=getBonus().w;for(let l=settings.wLv+1;l<=50;l++){const b=DATA.bonus[settings.wonder+'|'+l];if(b&&b.w!==cur)return l;}return null;}
@@ -308,7 +313,7 @@ function normalizeDetail(building){const d=details[building]||(details[building]
 function normalizeDetails(){Object.values(DETAIL_GROUPS).flat().forEach(normalizeDetail);}
 function detailEnabled(building){const d=details[building];return !!(d&&d.enabled&&Array.isArray(d.rows));}
 function seedDetailFromLegacy(building){const d=details[building];if(d.rows.length)return;const s=state[building];d.rows=[{lv:s.lv,mode:normalizedDetailMode(building,s.lv,s.mode),count:Math.max(0,parseFloat(s.bldgs)||0),hours:normalizedDetailHours(s.hours)}];}
-function detailHours(building,row){const h=normalizedDetailHours(row?.hours);return h===''?Math.max(0,parseFloat(settings.baseH)||0):h;}
+function detailHours(building,row){const h=normalizedDetailHours(row?.hours);return h===''?getHours(building):h;}
 function detailActualBuildings(building){return detailEnabled(building)?details[building].rows.reduce((sum,row)=>sum+Math.max(0,parseFloat(row.count)||0),0):state[building].bldgs;}
 function detailLevelText(building){if(!detailEnabled(building))return String(state[building].lv);const levels=[...new Set(details[building].rows.filter(r=>(parseFloat(r.count)||0)>0).map(r=>r.lv))].sort((a,b)=>b-a);return !levels.length?'—':levels.length===1?String(levels[0]):levels.join('·');}
 function baseOutput(building){const s=state[building],p=prodInfo(building,s.lv,s.mode);return p?{out:p.out,min:p.min,rice:p.rice,sub:p.sub}:null;}
@@ -318,11 +323,18 @@ function productionCycles(building){const p=baseOutput(building);return p?config
 function configOutput(building,lv,mode,count,hours){const p=prodInfo(building,lv,mode);if(!p||count<=0||hours<=0)return 0;const mult=building==='쌀 농장'?1+getBonus().r:1;return p.out*configCycles(mode,p,hours)*count*mult;}
 function configRiceUse(building,lv,mode,count,hours){const p=prodInfo(building,lv,mode);if(!p||count<=0||hours<=0)return 0;return (p.rice||0)*configCycles(mode,p,hours)*count;}
 function configSubUse(building,lv,mode,count,hours){const p=prodInfo(building,lv,mode);if(!p||count<=0||hours<=0)return 0;return (p.sub||0)*configCycles(mode,p,hours)*count;}
-function totalOutput(building){if(detailEnabled(building))return Math.round(details[building].rows.reduce((sum,row)=>sum+configOutput(building,row.lv,row.mode,Math.max(0,parseFloat(row.count)||0),detailHours(building,row)),0));const s=state[building],p=baseOutput(building);if(!p)return 0;const mult=building==='쌀 농장'?1+getBonus().r:1;return Math.round(p.out*productionCycles(building)*s.bldgs*mult);}
-function totalRiceUse(building){if(detailEnabled(building))return Math.round(details[building].rows.reduce((sum,row)=>sum+configRiceUse(building,row.lv,row.mode,Math.max(0,parseFloat(row.count)||0),detailHours(building,row)),0));const s=state[building],p=baseOutput(building);if(!p)return 0;return Math.round((p.rice||0)*productionCycles(building)*s.bldgs);}
-function totalSubUse(building){if(detailEnabled(building))return Math.round(details[building].rows.reduce((sum,row)=>sum+configSubUse(building,row.lv,row.mode,Math.max(0,parseFloat(row.count)||0),detailHours(building,row)),0));const s=state[building],p=baseOutput(building);if(!p)return 0;return Math.round((p.sub||0)*productionCycles(building)*s.bldgs);}
+function availableQuantity(n){return Number.isFinite(Number(n))?Math.floor(Math.max(0,Number(n))+1e-8):0;}
+function requiredQuantity(n){return Number.isFinite(Number(n))?Math.max(0,Math.ceil(Math.max(0,Number(n))-1e-8)):0;}
+function productionConfigs(building){return detailEnabled(building)?details[building].rows:[{lv:state[building].lv,mode:state[building].mode,count:state[building].bldgs,hours:state[building].hours}];}
+function rawPlannedAmount(building,kind='output'){const fn=kind==='rice'?configRiceUse:kind==='sub'?configSubUse:configOutput;return productionConfigs(building).reduce((sum,row)=>sum+fn(building,row.lv,row.mode,Math.max(0,Number(row.count)||0),detailHours(building,row)),0);}
+function formatDuration(hours){if(hours===null||!Number.isFinite(hours))return '—';const minutes=Math.ceil(Math.max(0,hours)*60-1e-7);return minutes>=60?Math.floor(minutes/60)+'시간'+(minutes%60?' '+minutes%60+'분':''):minutes+'분';}
+function fmtCount(n){return Number(n).toLocaleString('ko-KR',{maximumFractionDigits:6});}
+function fmtPowerDifference(n){if(n===null||!Number.isFinite(n))return '—';if(Math.abs(n)>1e-8&&Math.abs(n)<0.05)return n<0?'0.1 미만 부족':'0.1 미만 잔여';return fmtSignedPower(n);}
+function totalOutput(building){return availableQuantity(rawPlannedAmount(building));}
+function totalRiceUse(building){return requiredQuantity(rawPlannedAmount(building,'rice'));}
+function totalSubUse(building){return requiredQuantity(rawPlannedAmount(building,'sub'));}
 function outputForHours(building,hours){hours=Math.max(0,parseFloat(hours)||0);if(detailEnabled(building))return details[building].rows.reduce((sum,row)=>sum+configOutput(building,row.lv,row.mode,Math.max(0,parseFloat(row.count)||0),hours),0);const s=state[building],p=baseOutput(building);if(!p)return 0;const mult=building==='쌀 농장'?1+getBonus().r:1;return p.out*configCycles(s.mode,p,hours)*s.bldgs*mult;}
-function timeToProduceAmount(building,amount){amount=Math.max(0,parseFloat(amount)||0);if(amount<=1e-10)return 0;if(outputForHours(building,1000000)<amount)return null;let lo=0,hi=1/60;while(outputForHours(building,hi)<amount&&hi<1000000)hi*=2;if(hi>=1000000&&outputForHours(building,hi)<amount)return null;for(let i=0;i<60;i++){const mid=(lo+hi)/2;if(outputForHours(building,mid)>=amount)hi=mid;else lo=mid;}return hi;}
+function timeToProduceAmount(building,amount){amount=requiredQuantity(amount);if(amount===0)return 0;const rows=productionConfigs(building).map(row=>({...row,p:prodInfo(building,row.lv,row.mode)})).filter(r=>r.count>0&&r.p?.out>0&&r.p?.min>0);if(!rows.length)return null;let lo=0,hi=Math.min(...rows.map(r=>{const perCycle=r.p.out*r.count*(building==='쌀 농장'?1+getBonus().r:1);return (isContinuousBuilding(building)?amount/perCycle:Math.ceil(amount/perCycle-1e-12))*r.p.min/60;}));if(!Number.isFinite(hi))return null;hi=Math.max(hi,1/3600);for(let i=0;i<64;i++){const mid=(lo+hi)/2;if(outputForHours(building,mid)+1e-8>=amount)hi=mid;else lo=mid;}return hi;}
 function resourceRequiredHours(building,cons){const stock=state[building].stock||0;if(cons<=stock)return 0;const shortfall=cons-stock;if(detailEnabled(building)){const perHour=outputForHours(building,1);return perHour>0?shortfall/perHour:null;}const s=state[building],p=baseOutput(building);if(!p||s.bldgs<=0)return null;const mult=building==='쌀 농장'?1+getBonus().r:1;const perHour=p.out/p.min*60*s.bldgs*mult;return perHour>0?shortfall/perHour:null;}
 function intermediateRequiredHours(building,cons){const s=state[building],p=baseOutput(building),stock=s.stock||0;if(cons<=stock)return 0;if(detailEnabled(building))return timeToProduceAmount(building,cons-stock);if(!p||s.bldgs<=0||p.out<=0)return null;const perCycle=p.out*s.bldgs;const cycles=Math.ceil((cons-stock)/perCycle-1e-12);return cycles*p.min/60;}
 function riceConsumption(){return totalRiceUse('실 가공소')+totalRiceUse('점토 가공소')+totalRiceUse('비단 작업장')+totalRiceUse('도자기 작업장');}
@@ -331,7 +343,7 @@ function snapshotState(){return {state:JSON.parse(JSON.stringify(state)),setting
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(snapshotState()));}catch(e){}}
 function showResetStatus(message){const status=document.getElementById('resetStatus');if(!status)return;status.textContent=message;if(resetStatusTimer)clearTimeout(resetStatusTimer);resetStatusTimer=setTimeout(()=>{status.textContent='';},1800);}
 function hasSavedDefault(){try{return !!localStorage.getItem(DEFAULT_STORAGE_KEY);}catch(e){return false;}}
-function normalizeState(){Object.keys(state).forEach(b=>{const s=state[b];s.lv=clamp(parseInt(s.lv)||1,1,6);s.bldgs=Math.max(0,parseFloat(s.bldgs)||0);if(Object.prototype.hasOwnProperty.call(s,'stock'))s.stock=Math.round(parseFloat(s.stock)||0);if(s.hours!==''&&s.hours!==null&&s.hours!==undefined){const h=parseFloat(s.hours);s.hours=Number.isFinite(h)?Math.max(0,h):'';}const modes=DATA.lm[b+'|'+s.lv]||[];if(modes.length&&!modes.includes(s.mode))s.mode=modes[0];});if(!['자금성','병마용','만리장성'].includes(settings.wonder))settings.wonder='자금성';settings.wLv=clamp(parseInt(settings.wLv)||0,0,50);settings.baseH=Math.max(0,parseFloat(settings.baseH)||0);if(!['생산 계산기값','30분','1시간','2시간'].includes(settings.productRawCycle))settings.productRawCycle='생산 계산기값';settings.prodDetailsVisible=settings.prodDetailsVisible===true;settings.wonderDetailsVisible=settings.wonderDetailsVisible===true;settings.sleepPrepH=settings.sleepPrepH===''?'':Math.max(0,parseFloat(settings.sleepPrepH)||0);if(!['최장','30분','1시간','2시간'].includes(settings.sleepCycle))settings.sleepCycle='최장';settings.sleepCount=Math.max(0,Math.floor(parseFloat(settings.sleepCount)||0));wStock.silk=Math.round(parseFloat(wStock.silk)||0);wStock.porc=Math.round(parseFloat(wStock.porc)||0);wLvSet.cur=clamp(parseInt(wLvSet.cur)||0,0,50);wLvSet.tgt=clamp(parseInt(wLvSet.tgt)||0,0,50);if(wLvSet.tgt<wLvSet.cur)wLvSet.tgt=wLvSet.cur;planState.progressOverride=Math.max(0,Math.floor(parseFloat(planState.progressOverride)||0));planState.gemExpansions=Math.max(0,Math.floor(parseFloat(planState.gemExpansions)||0));planState.premiumRice=Math.max(0,parseFloat(planState.premiumRice)||0);if(!planState.homes||typeof planState.homes!=='object')planState.homes={};['smallHome','mediumHome','premiumHome'].forEach(k=>{const h=planState.homes[k]||(planState.homes[k]={lv:1,count:0});h.lv=clamp(parseInt(h.lv)||1,1,6);h.count=Math.max(0,parseFloat(h.count)||0);});planState.currencyStock=Math.max(0,Math.round(parseFloat(planState.currencyStock)||0));planState.currencyPerHour=Math.max(0,parseFloat(planState.currencyPerHour)||0);if(planState.currencyHoursManual!==true&&planState.currencyHoursManual!==false){const legacyCh=parseFloat(planState.currencyHours);planState.currencyHoursManual=Number.isFinite(legacyCh)&&legacyCh>0;}if(planState.currencyHoursManual!==true){planState.currencyHours='';planState.currencyHoursManual=false;}else{const ch=parseFloat(planState.currencyHours);planState.currencyHours=Number.isFinite(ch)?Math.max(0,ch):'';}const techIds=new Set(CITY_PLAN_DATA.research.map(t=>t.id));if(!Array.isArray(planState.currentTechs))planState.currentTechs=[];if(planState.currentTech&&techIds.has(planState.currentTech)&&!planState.currentTechs.includes(planState.currentTech))planState.currentTechs.push(planState.currentTech);delete planState.currentTech;planState.currentTechs=[...new Set(planState.currentTechs.filter(id=>techIds.has(id)))];if(planState.targetTech&&!techIds.has(planState.targetTech))planState.targetTech='';normalizeDetails();
+function normalizeState(){Object.keys(state).forEach(b=>{const s=state[b];s.lv=clamp(parseInt(s.lv)||1,1,6);s.bldgs=Math.max(0,parseFloat(s.bldgs)||0);if(Object.prototype.hasOwnProperty.call(s,'stock'))s.stock=availableQuantity(s.stock);if(s.hours!==''&&s.hours!==null&&s.hours!==undefined){const h=parseFloat(s.hours);s.hours=Number.isFinite(h)?Math.max(0,h):'';}const modes=DATA.lm[b+'|'+s.lv]||[];if(modes.length&&!modes.includes(s.mode))s.mode=modes[0];});if(!['자금성','병마용','만리장성'].includes(settings.wonder))settings.wonder='자금성';settings.wLv=clamp(parseInt(settings.wLv)||0,0,50);settings.baseH=Math.max(0,parseFloat(settings.baseH)||0);if(!['생산 계산기값','30분','1시간','2시간'].includes(settings.productRawCycle))settings.productRawCycle='생산 계산기값';settings.prodDetailsVisible=settings.prodDetailsVisible===true;settings.wonderDetailsVisible=settings.wonderDetailsVisible===true;settings.sleepPrepH=settings.sleepPrepH===''?'':Math.max(0,parseFloat(settings.sleepPrepH)||0);if(!['최장','30분','1시간','2시간'].includes(settings.sleepCycle))settings.sleepCycle='최장';settings.sleepCount=Math.max(0,Math.floor(parseFloat(settings.sleepCount)||0));wStock.silk=availableQuantity(wStock.silk);wStock.porc=availableQuantity(wStock.porc);wLvSet.cur=clamp(parseInt(wLvSet.cur)||0,0,50);wLvSet.tgt=clamp(parseInt(wLvSet.tgt)||0,0,50);if(wLvSet.tgt<wLvSet.cur)wLvSet.tgt=wLvSet.cur;planState.progressOverride=Math.max(0,Math.floor(parseFloat(planState.progressOverride)||0));planState.gemExpansions=Math.max(0,Math.floor(parseFloat(planState.gemExpansions)||0));planState.premiumRice=Math.max(0,parseFloat(planState.premiumRice)||0);if(!planState.homes||typeof planState.homes!=='object')planState.homes={};['smallHome','mediumHome','premiumHome'].forEach(k=>{const h=planState.homes[k]||(planState.homes[k]={lv:1,count:0});h.lv=clamp(parseInt(h.lv)||1,1,6);h.count=Math.max(0,parseFloat(h.count)||0);});planState.currencyStock=availableQuantity(planState.currencyStock);planState.currencyPerHour=Math.max(0,parseFloat(planState.currencyPerHour)||0);if(planState.currencyHoursManual!==true&&planState.currencyHoursManual!==false){const legacyCh=parseFloat(planState.currencyHours);planState.currencyHoursManual=Number.isFinite(legacyCh)&&legacyCh>0;}if(planState.currencyHoursManual!==true){planState.currencyHours='';planState.currencyHoursManual=false;}else{const ch=parseFloat(planState.currencyHours);planState.currencyHours=Number.isFinite(ch)?Math.max(0,ch):'';}const techIds=new Set(CITY_PLAN_DATA.research.map(t=>t.id));if(!Array.isArray(planState.currentTechs))planState.currentTechs=[];if(planState.currentTech&&techIds.has(planState.currentTech)&&!planState.currentTechs.includes(planState.currentTech))planState.currentTechs.push(planState.currentTech);delete planState.currentTech;planState.currentTechs=[...new Set(planState.currentTechs.filter(id=>techIds.has(id)))];if(planState.targetTech&&!techIds.has(planState.targetTech))planState.targetTech='';normalizeDetails();
 if(!planState.buildingCounts||typeof planState.buildingCounts!=='object')planState.buildingCounts={};
 if(!planState.buildingOverrides||typeof planState.buildingOverrides!=='object')planState.buildingOverrides={};
 /* v28 주택 수를 일꾼 현황으로 한 번만 승계하고 기본 연동으로 전환한다. */
@@ -347,7 +359,7 @@ for(const item of CITY_PLAN_DATA.areaBuildings){
   if(item.fixed!==undefined)continue;
   if(item.sync||item.providesWorkers){
     if(Object.prototype.hasOwnProperty.call(planState.buildingOverrides,item.key)){
-      planState.buildingOverrides[item.key]=Math.max(0,Math.floor(parseFloat(planState.buildingOverrides[item.key])||0));
+      planState.buildingOverrides[item.key]=Math.max(0,parseFloat(planState.buildingOverrides[item.key])||0);
     }
   }else{
     let seed=Object.prototype.hasOwnProperty.call(planState.buildingOverrides,item.key)?planState.buildingOverrides[item.key]:null;
@@ -355,7 +367,7 @@ for(const item of CITY_PLAN_DATA.areaBuildings){
       if(item.key==='premiumRice')seed=Math.max(0,parseFloat(planState.premiumRice)||0);
       else seed=Math.max(0,parseFloat(planState.homes[item.key]?.count)||0);
     }
-    planState.buildingOverrides[item.key]=Math.max(0,Math.floor(parseFloat(seed)||0));
+    planState.buildingOverrides[item.key]=Math.max(0,parseFloat(seed)||0);
   }
 }
 if(!Array.isArray(planState.constructionRows))planState.constructionRows=[];
@@ -379,7 +391,7 @@ function restoreSavedDefault(){try{const raw=localStorage.getItem(DEFAULT_STORAG
 function restoreFactoryDefault(){applySnapshot({state:INITIAL_STATE.prod,settings:INITIAL_STATE.settings,wStock:INITIAL_STATE.wStock,wLvSet:INITIAL_STATE.wLvSet,details:DETAIL_DEFAULTS,planState:INITIAL_PLAN_STATE},'초기화 완료');}
 function openResetChoiceModal(){const modal=document.getElementById('resetChoiceModal');document.getElementById('restoreSavedBtn').disabled=!hasSavedDefault();modal.removeAttribute('hidden');modal.setAttribute('aria-hidden','false');document.body.classList.add('detail-modal-open');postSize();}
 function closeResetChoiceModal(){const modal=document.getElementById('resetChoiceModal');modal.setAttribute('hidden','');modal.setAttribute('aria-hidden','true');document.body.classList.remove('detail-modal-open');document.getElementById('resetBtn')?.focus();postSize();}
-function renderBonus(){const b=getBonus(),next=getNextWorker(),w=settings.wonder;let txt;if(w==='자금성')txt='쌀 +'+(b.r*100).toFixed(1)+'% / 금화 +'+(b.g*100).toFixed(1)+'%';else if(w==='병마용')txt='금화 +'+(b.g*100).toFixed(1)+'%';else txt='쌀 +'+(b.r*100).toFixed(1)+'%';document.getElementById('bonusBox').innerHTML='<div class="bonus-item"><span>생산 보너스</span><b>'+txt+'</b></div><div class="bonus-item"><span>추가 일꾼 수</span><b>'+b.w+'명</b></div><div class="bonus-item"><span>다음 일꾼 증가</span><b>'+(next?next+'레벨':'최대 레벨')+'</b></div>';}
+function renderBonus(){const b=getBonus(),next=getNextWorker(),w=settings.wonder;let txt;if(w==='자금성')txt='쌀 +'+(b.r*100).toFixed(1)+'% / 오수전 +'+(b.g*100).toFixed(1)+'%';else if(w==='병마용')txt='오수전 +'+(b.g*100).toFixed(1)+'%';else txt='쌀 +'+(b.r*100).toFixed(1)+'%';document.getElementById('bonusBox').innerHTML='<div class="bonus-item"><span>생산 보너스</span><b>'+txt+'</b></div><div class="bonus-item"><span>추가 일꾼 수</span><b>'+b.w+'명</b></div><div class="bonus-item"><span>다음 일꾼 증가</span><b>'+(next?next+'레벨':'최대 레벨')+'</b></div>';}
 function displayName(building){
   const names={
     '쌀 농장':'쌀',
@@ -400,7 +412,7 @@ function detailCountStepper(index,value){return '<div class="step-wrap"><input t
 function detailLevelStepper(index,value){return '<div class="step-wrap"><input type="number" class="step-one" min="1" max="6" step="1" data-detail-k="lv" value="'+value+'"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>';}
 function detailHoursStepper(index,value){const v=normalizedDetailHours(value);return '<div class="step-wrap"><input type="number" class="step-one" min="0" step="any" data-detail-k="hours" value="'+v+'" placeholder="기본"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>';}
 function detailRowHtml(building,row,index){const continuous=isContinuousBuilding(building);const modeField=continuous?'':'<div class="detail-field"><label>생산 방식</label><select data-detail-k="mode">'+modeOptions(building,row.lv,row.mode)+'</select></div>';return '<div class="detail-row'+(continuous?' base-detail-row':'')+'" data-detail-row="'+index+'"><div class="detail-field"><label>레벨</label>'+detailLevelStepper(index,row.lv)+'</div>'+modeField+'<div class="detail-field"><label>건물 수</label>'+detailCountStepper(index,row.count)+'</div><div class="detail-field"><label>운영 시간(h)</label>'+detailHoursStepper(index,row.hours)+'</div><button type="button" class="detail-remove" data-detail-remove="'+index+'" aria-label="구성 삭제">×</button></div>';}
-function renderDetailModal(){const meta=DETAIL_GROUP_META[activeDetailGroup],names=DETAIL_GROUPS[activeDetailGroup];if(!names.includes(activeDetailBuilding))activeDetailBuilding=names[0];const d=details[activeDetailBuilding];document.getElementById('detailTitle').textContent=meta.title;document.getElementById('detailSubtitle').textContent=meta.subtitle;document.getElementById('detailTabs').style.gridTemplateColumns='repeat('+names.length+',1fr)';document.getElementById('detailTabs').innerHTML=names.map(b=>'<button type="button" class="detail-tab'+(b===activeDetailBuilding?' active':'')+'" data-detail-building="'+b+'">'+displayName(b)+(detailEnabled(b)?'<span class="dot"></span>':'')+'</button>').join('');document.getElementById('detailEnabled').checked=!!d.enabled;const continuous=isContinuousBuilding(activeDetailBuilding);document.getElementById('detailHelp').innerHTML=continuous?'레벨·건물 수·운영 시간을 실제 구성대로 입력합니다.':'레벨·생산 방식·건물 수·운영 시간을 실제 구성대로 입력합니다. 생산 주기가 완전히 끝난 횟수만 생산량과 사용량에 반영됩니다.';const activeRows=d.rows.filter(r=>(parseFloat(r.count)||0)>0);const total=activeRows.reduce((sum,r)=>sum+(parseFloat(r.count)||0),0);document.getElementById('detailResult').textContent=d.enabled?(d.rows.length?'구성 '+d.rows.length+'개 · 총 건물 수 '+(Math.round(total*100)/100).toLocaleString('ko-KR',{maximumFractionDigits:2}):'구성이 없습니다. 건물 구성을 추가하세요.'):'상세 설정을 켜면 이 항목의 생산 계산에 상세 구성이 적용됩니다.';document.getElementById('detailRows').innerHTML=d.rows.map((row,i)=>detailRowHtml(activeDetailBuilding,row,i)).join('');document.getElementById('detailAdd').disabled=!d.enabled;}
+function renderDetailModal(){const meta=DETAIL_GROUP_META[activeDetailGroup],names=DETAIL_GROUPS[activeDetailGroup];if(!names.includes(activeDetailBuilding))activeDetailBuilding=names[0];const d=details[activeDetailBuilding];document.getElementById('detailTitle').textContent=meta.title;document.getElementById('detailSubtitle').textContent=meta.subtitle;document.getElementById('detailTabs').style.gridTemplateColumns='repeat('+names.length+',1fr)';document.getElementById('detailTabs').innerHTML=names.map(b=>'<button type="button" class="detail-tab'+(b===activeDetailBuilding?' active':'')+'" data-detail-building="'+b+'">'+displayName(b)+(detailEnabled(b)?'<span class="dot"></span>':'')+'</button>').join('');document.getElementById('detailEnabled').checked=!!d.enabled;const continuous=isContinuousBuilding(activeDetailBuilding);document.getElementById('detailHelp').innerHTML=continuous?'레벨·건물 수·운영 시간을 실제 구성대로 입력합니다.':'레벨·생산 방식·건물 수·운영 시간을 실제 구성대로 입력합니다. 생산 주기가 완전히 끝난 횟수만 생산량과 사용량에 반영됩니다.';const activeRows=d.rows.filter(r=>(parseFloat(r.count)||0)>0);const total=activeRows.reduce((sum,r)=>sum+(parseFloat(r.count)||0),0);document.getElementById('detailResult').textContent=d.enabled?(d.rows.length?'구성 '+d.rows.length+'개 · 총 건물 수 '+(Math.round(total*100)/100).toLocaleString('ko-KR',{maximumFractionDigits:2}):'구성이 없습니다. 건물 구성을 추가하세요.'):'상세 설정을 켜면 이 항목의 생산 계산에 상세 구성이 적용됩니다.';document.getElementById('detailRows').innerHTML=d.rows.map((row,i)=>detailRowHtml(activeDetailBuilding,row,i)).join('');document.getElementById('detailAdd').disabled=!d.enabled;if(typeof syncChinaDetailControls==='function')syncChinaDetailControls();}
 function openDetailModal(group){activeDetailGroup=group;activeDetailBuilding=DETAIL_GROUPS[group][0];renderDetailModal();const modal=document.getElementById('detailModal');modal.removeAttribute('hidden');modal.setAttribute('aria-hidden','false');document.body.classList.add('detail-modal-open');postSize();}
 function closeDetailModal(){const modal=document.getElementById('detailModal');modal.setAttribute('hidden','');modal.setAttribute('aria-hidden','true');document.body.classList.remove('detail-modal-open');postSize();}
 function addDetailRow(){const d=details[activeDetailBuilding];if(!d.enabled)return;const s=state[activeDetailBuilding],lv=s.lv,mode=normalizedDetailMode(activeDetailBuilding,lv,s.mode);d.rows.push({lv,mode,count:1,hours:''});normalizeDetail(activeDetailBuilding);renderAll();renderDetailModal();saveState();}
@@ -409,10 +421,10 @@ function verdict(v){return v>=0?'<span class="badge badge-ok">잔여</span>':'<s
 function remainClass(v){return v>=0?'remain-ok':'remain-bad';}
 function stepper(k,value,placeholder=''){return '<div class="step-wrap"><input type="number" class="step-one" data-k="'+k+'" value="'+value+'" step="any" min="0"'+(placeholder?' placeholder="'+placeholder+'"':'')+'><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>';}
 function levelStepper(lv){return '<div class="step-wrap"><input type="number" class="step-one" data-k="lv" value="'+lv+'" min="1" max="6" step="1"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>';}
-function rowResource(b,extraConsFn){const s=state[b],prod=totalOutput(b),cons=extraConsFn(),remain=(s.stock||0)+prod-cons,needH=resourceRequiredHours(b,cons),detail=detailEnabled(b);const levelCell=detail?'<td class="calc detail-active-cell">'+detailLevelText(b)+'</td>':'<td class="input-cell">'+levelStepper(s.lv)+'</td>';const bldgCell=detail?'<td class="num calc detail-active-cell">'+fmtHours(detailActualBuildings(b))+'</td>':'<td class="input-cell">'+stepper('bldgs',s.bldgs)+'</td>';const hoursCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell">'+stepper('hours',s.hours,'기본')+'</td>';return '<tr data-b="'+b+'"><td>'+displayName(b)+(detail?'<span class="detail-badge">상세</span>':'')+'</td>'+levelCell+'<td class="input-cell"><span>연속</span></td>'+bldgCell+hoursCell+'<td class="input-cell"><input type="text" inputmode="decimal" autocomplete="off" data-k="stock" value="'+fmtCompactInput(s.stock)+'" step="1"></td><td class="num calc '+remainClass(remain)+'">'+fmtQty(remain)+'</td><td class="num calc">'+fmtHours(needH)+'</td><td class="num calc">'+fmtQty(prod)+'</td><td class="num calc">'+fmtQty(cons)+'</td></tr>';}
-function rowIntermediate(b,extraConsFn){const s=state[b],prod=totalOutput(b),rice=totalRiceUse(b),sub=totalSubUse(b),cons=extraConsFn(),remain=(s.stock||0)+prod-cons,needH=intermediateRequiredHours(b,cons),detail=detailEnabled(b);const levelCell=detail?'<td class="calc detail-active-cell">'+detailLevelText(b)+'</td>':'<td class="input-cell">'+levelStepper(s.lv)+'</td>';const modeCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell"><select class="w-mode" data-k="mode">'+modeOptions(b,s.lv,s.mode)+'</select></td>';const bldgCell=detail?'<td class="num calc detail-active-cell">'+fmtHours(detailActualBuildings(b))+'</td>':'<td class="input-cell">'+stepper('bldgs',s.bldgs)+'</td>';const hoursCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell">'+stepper('hours',s.hours,'기본')+'</td>';return '<tr data-b="'+b+'"><td>'+displayName(b)+(detail?'<span class="detail-badge">상세</span>':'')+'</td>'+levelCell+modeCell+bldgCell+hoursCell+'<td class="input-cell"><input type="text" inputmode="decimal" autocomplete="off" data-k="stock" value="'+fmtCompactInput(s.stock)+'" step="1"></td><td class="num calc '+remainClass(remain)+'">'+fmtQty(remain)+'</td><td class="num calc">'+fmtHours(needH)+'</td><td class="num calc">'+fmtQty(prod)+'</td><td class="num calc">'+fmtQty(sub)+'</td><td class="num calc">'+fmtQty(rice)+'</td><td class="num calc">'+fmtQty(cons)+'</td></tr>';}
-function rowFinal(b){const s=state[b],prod=totalOutput(b),rice=totalRiceUse(b),sub=totalSubUse(b),stock=b==='비단 작업장'?wStock.silk:wStock.porc,detail=detailEnabled(b);const levelCell=detail?'<td class="calc detail-active-cell">'+detailLevelText(b)+'</td>':'<td class="input-cell">'+levelStepper(s.lv)+'</td>';const modeCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell"><select class="w-mode" data-k="mode">'+modeOptions(b,s.lv,s.mode)+'</select></td>';const bldgCell=detail?'<td class="num calc detail-active-cell">'+fmtHours(detailActualBuildings(b))+'</td>':'<td class="input-cell">'+stepper('bldgs',s.bldgs)+'</td>';const hoursCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell">'+stepper('hours',s.hours,'기본')+'</td>';return '<tr data-b="'+b+'"><td>'+displayName(b)+(detail?'<span class="detail-badge">상세</span>':'')+'</td>'+levelCell+modeCell+bldgCell+hoursCell+'<td class="input-cell"><input type="text" inputmode="decimal" autocomplete="off" data-k="productStock" value="'+fmtCompactInput(stock)+'" step="1"></td><td class="num calc">'+fmtQty(prod)+'</td><td class="num calc">'+fmtQty(sub)+'</td><td class="num calc">'+fmtQty(rice)+'</td></tr>';}
-function commitRowControl(el,b){const k=el.dataset.k,v=el.value;if(k==='lv'){state[b][k]=clamp(parseInt(v)||1,1,6);const modes=DATA.lm[b+'|'+state[b].lv]||[];if(!modes.includes(state[b].mode))state[b].mode=modes[0]||state[b].mode;}else if(k==='mode'){const modes=DATA.lm[b+'|'+state[b].lv]||[];state[b][k]=modes.includes(v)?v:(modes[0]||state[b].mode);}else if(k==='bldgs'){state[b][k]=Math.max(0,parseFloat(v)||0);}else if(k==='stock'){state[b][k]=Math.max(0,Math.round(parseCompactNumber(v)||0));}else if(k==='productStock'){if(b==='비단 작업장')wStock.silk=Math.max(0,Math.round(parseCompactNumber(v)||0));else if(b==='도자기 작업장')wStock.porc=Math.max(0,Math.round(parseCompactNumber(v)||0));}else if(k==='hours'){const hours=parseFloat(v);state[b][k]=v===''?'':Math.max(0,Number.isFinite(hours)?hours:0);}return k;}
+function rowResource(b,extraConsFn){const s=state[b],prod=totalOutput(b),cons=extraConsFn(),remain=(s.stock||0)+prod-cons,needH=resourceRequiredHours(b,cons),detail=detailEnabled(b);const levelCell=detail?'<td class="calc detail-active-cell">'+detailLevelText(b)+'</td>':'<td class="input-cell">'+levelStepper(s.lv)+'</td>';const bldgCell=detail?'<td class="num calc detail-active-cell">'+fmtCount(detailActualBuildings(b))+'</td>':'<td class="input-cell">'+stepper('bldgs',s.bldgs)+'</td>';const hoursCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell">'+stepper('hours',s.hours,'기본')+'</td>';return '<tr data-b="'+b+'"><td>'+displayName(b)+(detail?'<span class="detail-badge">상세</span>':'')+'</td>'+levelCell+'<td class="input-cell"><span>연속</span></td>'+bldgCell+hoursCell+'<td class="input-cell"><input type="text" inputmode="decimal" autocomplete="off" data-k="stock" data-exact="'+s.stock+'" value="'+fmtCompactInput(s.stock)+'" step="1"></td><td class="num calc '+remainClass(remain)+'">'+fmtQty(remain)+'</td><td class="num calc">'+formatDuration(needH)+'</td><td class="num calc">'+fmtQty(prod)+'</td><td class="num calc">'+fmtQty(cons)+'</td></tr>';}
+function rowIntermediate(b,extraConsFn){const s=state[b],prod=totalOutput(b),rice=totalRiceUse(b),sub=totalSubUse(b),cons=extraConsFn(),remain=(s.stock||0)+prod-cons,needH=intermediateRequiredHours(b,cons),detail=detailEnabled(b);const levelCell=detail?'<td class="calc detail-active-cell">'+detailLevelText(b)+'</td>':'<td class="input-cell">'+levelStepper(s.lv)+'</td>';const modeCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell"><select class="w-mode" data-k="mode">'+modeOptions(b,s.lv,s.mode)+'</select></td>';const bldgCell=detail?'<td class="num calc detail-active-cell">'+fmtCount(detailActualBuildings(b))+'</td>':'<td class="input-cell">'+stepper('bldgs',s.bldgs)+'</td>';const hoursCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell">'+stepper('hours',s.hours,'기본')+'</td>';return '<tr data-b="'+b+'"><td>'+displayName(b)+(detail?'<span class="detail-badge">상세</span>':'')+'</td>'+levelCell+modeCell+bldgCell+hoursCell+'<td class="input-cell"><input type="text" inputmode="decimal" autocomplete="off" data-k="stock" data-exact="'+s.stock+'" value="'+fmtCompactInput(s.stock)+'" step="1"></td><td class="num calc '+remainClass(remain)+'">'+fmtQty(remain)+'</td><td class="num calc">'+formatDuration(needH)+'</td><td class="num calc">'+fmtQty(prod)+'</td><td class="num calc">'+fmtQty(sub)+'</td><td class="num calc">'+fmtQty(rice)+'</td><td class="num calc">'+fmtQty(cons)+'</td></tr>';}
+function rowFinal(b){const s=state[b],prod=totalOutput(b),rice=totalRiceUse(b),sub=totalSubUse(b),stock=b==='비단 작업장'?wStock.silk:wStock.porc,detail=detailEnabled(b);const levelCell=detail?'<td class="calc detail-active-cell">'+detailLevelText(b)+'</td>':'<td class="input-cell">'+levelStepper(s.lv)+'</td>';const modeCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell"><select class="w-mode" data-k="mode">'+modeOptions(b,s.lv,s.mode)+'</select></td>';const bldgCell=detail?'<td class="num calc detail-active-cell">'+fmtCount(detailActualBuildings(b))+'</td>':'<td class="input-cell">'+stepper('bldgs',s.bldgs)+'</td>';const hoursCell=detail?'<td class="calc detail-active-cell">상세</td>':'<td class="input-cell">'+stepper('hours',s.hours,'기본')+'</td>';return '<tr data-b="'+b+'"><td>'+displayName(b)+(detail?'<span class="detail-badge">상세</span>':'')+'</td>'+levelCell+modeCell+bldgCell+hoursCell+'<td class="input-cell"><input type="text" inputmode="decimal" autocomplete="off" data-k="productStock" data-exact="'+stock+'" value="'+fmtCompactInput(stock)+'" step="1"></td><td class="num calc">'+fmtQty(prod)+'</td><td class="num calc">'+fmtQty(sub)+'</td><td class="num calc">'+fmtQty(rice)+'</td></tr>';}
+function commitRowControl(el,b){const k=el.dataset.k,v=el.value;if(k==='lv'){state[b][k]=clamp(parseInt(v)||1,1,6);const modes=DATA.lm[b+'|'+state[b].lv]||[];if(!modes.includes(state[b].mode))state[b].mode=modes[0]||state[b].mode;}else if(k==='mode'){const modes=DATA.lm[b+'|'+state[b].lv]||[];state[b][k]=modes.includes(v)?v:(modes[0]||state[b].mode);}else if(k==='bldgs'){state[b][k]=Math.max(0,parseFloat(v)||0);}else if(k==='stock'){state[b][k]=availableQuantity(parseCompactNumber(v));}else if(k==='productStock'){if(b==='비단 작업장')wStock.silk=availableQuantity(parseCompactNumber(v));else if(b==='도자기 작업장')wStock.porc=availableQuantity(parseCompactNumber(v));}else if(k==='hours'){const hours=parseFloat(v);state[b][k]=v===''?'':Math.max(0,Number.isFinite(hours)?hours:0);}return k;}
 function renderTables(){document.querySelector('#t1 tbody').innerHTML=rowResource('쌀 농장',riceConsumption)+rowResource('누에 숲',silkwormConsumption)+rowResource('고령토 채석장',kaolinConsumption);document.querySelector('#t2 tbody').innerHTML=rowIntermediate('실 가공소',threadConsumption)+rowIntermediate('점토 가공소',clayConsumption);document.querySelector('#t3 tbody').innerHTML=rowFinal('비단 작업장')+rowFinal('도자기 작업장');}
 function refreshProductionCalcCells(){const html=rowResource('쌀 농장',riceConsumption)+rowResource('누에 숲',silkwormConsumption)+rowResource('고령토 채석장',kaolinConsumption)+rowIntermediate('실 가공소',threadConsumption)+rowIntermediate('점토 가공소',clayConsumption)+rowFinal('비단 작업장')+rowFinal('도자기 작업장');const box=document.createElement('tbody');box.innerHTML=html;box.querySelectorAll('tr[data-b]').forEach(src=>{const dst=[...document.querySelectorAll('#panel-prod tr[data-b]')].find(r=>r.dataset.b===src.dataset.b);if(!dst)return;const sc=[...src.children],dc=[...dst.children];sc.forEach((cell,i)=>{if(!cell.classList.contains('calc')||!dc[i])return;dc[i].className=cell.className;dc[i].innerHTML=cell.innerHTML;});});}
 let liveSaveTimer=null;
@@ -426,12 +438,12 @@ function cappedConfigHours(building,row,limit){return Math.min(Math.max(0,limit)
 function prepOutput(building){const h=sleepPrepHours();if(!(h>0))return 0;if(detailEnabled(building))return details[building].rows.reduce((sum,row)=>sum+configOutput(building,row.lv,row.mode,Math.max(0,parseFloat(row.count)||0),cappedConfigHours(building,row,h)),0);const st=state[building],rowH=Math.min(h,getHours(building));return configOutput(building,st.lv,st.mode,Math.max(0,parseFloat(st.bldgs)||0),rowH);}
 function prepUse(building,kind){const h=sleepPrepHours();if(!(h>0))return 0;const fn=kind==='rice'?configRiceUse:configSubUse;if(detailEnabled(building))return details[building].rows.reduce((sum,row)=>sum+fn(building,row.lv,row.mode,Math.max(0,parseFloat(row.count)||0),cappedConfigHours(building,row,h)),0);const st=state[building],rowH=Math.min(h,getHours(building));return fn(building,st.lv,st.mode,Math.max(0,parseFloat(st.bldgs)||0),rowH);}
 function sleepUse(building,kind){if(isContinuousBuilding(building))return 0;const count=Math.max(0,Math.floor(parseFloat(settings.sleepCount)||0));if(!count)return 0;const fn=kind==='rice'?'rice':'sub';if(detailEnabled(building))return details[building].rows.reduce((sum,row)=>{const mode=closestSleepMode(building,row.lv),p=mode?prodInfo(building,row.lv,mode):null,b=Math.max(0,parseFloat(row.count)||0);return sum+(p?((p[fn]||0)*count*b):0);},0);const st=state[building],mode=closestSleepMode(building,st.lv),p=mode?prodInfo(building,st.lv,mode):null;return p?((p[fn]||0)*count*Math.max(0,parseFloat(st.bldgs)||0)):0;}
-function sleepNeed(building){if(building==='쌀 농장')return sleepUse('실 가공소','rice')+sleepUse('점토 가공소','rice')+sleepUse('비단 작업장','rice')+sleepUse('도자기 작업장','rice');if(building==='누에 숲')return sleepUse('실 가공소','sub');if(building==='고령토 채석장')return sleepUse('점토 가공소','sub');if(building==='실 가공소')return sleepUse('비단 작업장','sub');if(building==='점토 가공소')return sleepUse('도자기 작업장','sub');return 0;}
-function prepConsumption(building){if(building==='쌀 농장')return prepUse('실 가공소','rice')+prepUse('점토 가공소','rice')+prepUse('비단 작업장','rice')+prepUse('도자기 작업장','rice');if(building==='누에 숲')return prepUse('실 가공소','sub');if(building==='고령토 채석장')return prepUse('점토 가공소','sub');if(building==='실 가공소')return prepUse('비단 작업장','sub');if(building==='점토 가공소')return prepUse('도자기 작업장','sub');return 0;}
+function sleepNeed(building){const use=(b,k)=>requiredQuantity(sleepUse(b,k));if(building==='쌀 농장')return use('실 가공소','rice')+use('점토 가공소','rice')+use('비단 작업장','rice')+use('도자기 작업장','rice');if(building==='누에 숲')return use('실 가공소','sub');if(building==='고령토 채석장')return use('점토 가공소','sub');if(building==='실 가공소')return use('비단 작업장','sub');if(building==='점토 가공소')return use('도자기 작업장','sub');return 0;}
+function prepConsumption(building){const use=(b,k)=>requiredQuantity(prepUse(b,k));if(building==='쌀 농장')return use('실 가공소','rice')+use('점토 가공소','rice')+use('비단 작업장','rice')+use('도자기 작업장','rice');if(building==='누에 숲')return use('실 가공소','sub');if(building==='고령토 채석장')return use('점토 가공소','sub');if(building==='실 가공소')return use('비단 작업장','sub');if(building==='점토 가공소')return use('도자기 작업장','sub');return 0;}
 function resourceStock(building){return parseFloat(state[building]?.stock)||0;}
 function sleepCurrentPower(building){const h=sleepPrepHours(),base=powerBenchmarkRate(building);if(!(base>0))return null;if(!(h>0))return 0;return prepOutput(building)/(base*h)*100;}
-function sleepResourcePower(building){const h=sleepPrepHours(),need=sleepNeed(building),stock=resourceStock(building),beforeUse=prepConsumption(building),produced=prepOutput(building),projected=stock+produced-beforeUse,remain=projected-need,base=powerBenchmarkRate(building),current=sleepCurrentPower(building),requiredProduction=Math.max(0,beforeUse+need-stock);let needed;if(requiredProduction<=1e-10)needed=0;else if(!(h>0&&base>0))needed=null;else needed=requiredProduction/(base*h)*100;const diff=Number.isFinite(current)&&Number.isFinite(needed)?current-needed:null;return {building,current,needed,diff,need,projected,remain};}
-function sleepRow(building,index){const a=sleepResourcePower(building),shown=a.diff===null?null:Math.round(a.diff*10)/10,cls=shown===null?'':(shown<0?'remain-bad':'remain-ok'),divider=index===3?' class="divider-top"':'';return '<tr'+divider+'><td>'+displayName(building)+'</td><td class="num calc '+cls+'">'+(a.diff===null?'운영 시간 확인':fmtSignedPower(a.diff))+'</td><td class="num calc">'+fmtPower(a.current)+'</td><td class="num calc">'+(a.needed===null?'—':fmtPower(a.needed))+'</td><td class="num calc">'+fmtQty(a.need)+'</td><td class="num calc">'+fmtQty(a.projected)+'</td><td class="num calc">'+fmtQty(a.remain)+'</td></tr>';}
+function sleepResourcePower(building){const h=sleepPrepHours(),need=sleepNeed(building),stock=resourceStock(building),beforeUse=prepConsumption(building),produced=availableQuantity(prepOutput(building)),projected=stock+produced-beforeUse,remain=projected-need,base=powerBenchmarkRate(building),current=sleepCurrentPower(building),requiredProduction=Math.max(0,beforeUse+need-stock);let needed;if(requiredProduction<=1e-10)needed=0;else if(!(h>0&&base>0))needed=null;else needed=requiredProduction/(base*h)*100;const diff=Number.isFinite(current)&&Number.isFinite(needed)?current-needed:null;return {building,current,needed,diff,need,projected,remain};}
+function sleepRow(building,index){const a=sleepResourcePower(building),shown=a.diff===null?null:Math.round(a.diff*10)/10,cls=shown===null?'':(a.diff<-1e-8?'remain-bad':'remain-ok'),divider=index===3?' class="divider-top"':'';return '<tr'+divider+'><td>'+displayName(building)+'</td><td class="num calc '+cls+'">'+(a.diff===null?'운영 시간 확인':fmtPowerDifference(a.diff))+'</td><td class="num calc">'+fmtPower(a.current)+'</td><td class="num calc">'+(a.needed===null?'—':fmtPower(a.needed))+'</td><td class="num calc">'+fmtQty(a.need)+'</td><td class="num calc">'+fmtQty(a.projected)+'</td><td class="num calc">'+fmtQty(a.remain)+'</td></tr>';}
 function renderSleepReserve(){const order=['쌀 농장','누에 숲','고령토 채석장','실 가공소','점토 가공소'];document.querySelector('#tSleep tbody').innerHTML=order.map(sleepRow).join('');}
 function powerBenchmarkRate(building){const mode=isContinuousBuilding(building)?'연속(6시간 기준)':'30분',p=prodInfo(building,6,mode);if(!p)return 0;const mult=building==='쌀 농장'?1+getBonus().r:1;return (p.out/(p.min/60))*mult;}
 function powerConfigRate(building,lv,mode){const p=prodInfo(building,lv,mode);if(!p)return 0;const mult=building==='쌀 농장'?1+getBonus().r:1;return (p.out/(p.min/60))*mult;}
@@ -441,7 +453,7 @@ function safeRatio(num,den){num=parseFloat(num)||0;den=parseFloat(den)||0;return
 function targetProductionNeeds(){const mode=['생산 계산기값','30분','1시간','2시간'].includes(settings.productRawCycle)?settings.productRawCycle:'생산 계산기값';const silk=finalTargetNeed('비단 작업장'),porc=finalTargetNeed('도자기 작업장');const silkP=prodInfo('비단 작업장',6,mode),porcP=prodInfo('도자기 작업장',6,mode),threadP=prodInfo('실 가공소',6,'30분'),clayP=prodInfo('점토 가공소',6,'30분');const threadGross=silkP?silk*safeRatio(silkP.sub,silkP.out):0,clayGross=porcP?porc*safeRatio(porcP.sub,porcP.out):0;const directRice=(silkP?silk*safeRatio(silkP.rice,silkP.out):0)+(porcP?porc*safeRatio(porcP.rice,porcP.out):0);const threadNeed=Math.max(0,threadGross-(state['실 가공소'].stock||0)),clayNeed=Math.max(0,clayGross-(state['점토 가공소'].stock||0));const silkwormGross=threadP?threadNeed*safeRatio(threadP.sub,threadP.out):0,kaolinGross=clayP?clayNeed*safeRatio(clayP.sub,clayP.out):0;const intermediateRice=(threadP?threadNeed*safeRatio(threadP.rice,threadP.out):0)+(clayP?clayNeed*safeRatio(clayP.rice,clayP.out):0);return {'비단 작업장':silk,'도자기 작업장':porc,'실 가공소':threadNeed,'점토 가공소':clayNeed,'쌀 농장':Math.max(0,directRice+intermediateRice-(state['쌀 농장'].stock||0)),'누에 숲':Math.max(0,silkwormGross-(state['누에 숲'].stock||0)),'고령토 채석장':Math.max(0,kaolinGross-(state['고령토 채석장'].stock||0))};}
 function requiredPowerFromAmount(building,amount){amount=Math.max(0,parseFloat(amount)||0);if(amount<=1e-10)return 0;const h=detailEnabled(building)?Math.max(0,parseFloat(settings.baseH)||0):getHours(building),base=powerBenchmarkRate(building);if(!(h>0&&base>0))return null;return amount/(base*h)*100;}
 function powerAdjustment(building,needs){const current=currentPower(building),needed=requiredPowerFromAmount(building,needs[building]||0),diff=Number.isFinite(current)&&Number.isFinite(needed)?current-needed:null;return {building,current,needed,diff};}
-function powerRow(a,index){const shown=a.diff===null?null:Math.round(a.diff*10)/10,cls=shown===null?'':(shown<0?'remain-bad':'remain-ok'),divider=(index===3||index===5)?' class="divider-top"':'';return '<tr'+divider+'><td>'+displayName(a.building)+'</td><td class="num calc '+cls+'">'+(a.diff===null?'—':fmtSignedPower(a.diff))+'</td><td class="num calc">'+fmtPower(a.current)+'</td><td class="num calc">'+fmtPower(a.needed)+'</td></tr>';}
+function powerRow(a,index){const shown=a.diff===null?null:Math.round(a.diff*10)/10,cls=shown===null?'':(a.diff<-1e-8?'remain-bad':'remain-ok'),divider=(index===3||index===5)?' class="divider-top"':'';return '<tr'+divider+'><td>'+displayName(a.building)+'</td><td class="num calc '+cls+'">'+(a.diff===null?'운영 시간 확인':fmtPowerDifference(a.diff))+'</td><td class="num calc">'+fmtPower(a.current)+'</td><td class="num calc">'+fmtPower(a.needed)+'</td></tr>';}
 function renderPower(){const order=['쌀 농장','누에 숲','고령토 채석장','실 가공소','점토 가공소','비단 작업장','도자기 작업장'],needs=targetProductionNeeds();document.querySelector('#tPower tbody').innerHTML=order.map((b,i)=>powerRow(powerAdjustment(b,needs),i)).join('');}
 function conversionModes(building){if(isContinuousBuilding(building))return ['연속'];if(detailEnabled(building)){const modes=[...new Set(details[building].rows.filter(r=>(parseFloat(r.count)||0)>0&&r.mode).map(r=>r.mode))];if(modes.length)return modes.sort((a,b)=>({'1분':1,'5분':5,'30분':30,'1시간':60,'2시간':120}[a]||999)-({'1분':1,'5분':5,'30분':30,'1시간':60,'2시간':120}[b]||999));}return [state[building].mode];}
 function conversionRatio(building,lv,mode){const realMode=isContinuousBuilding(building)?'연속(6시간 기준)':mode,base=powerBenchmarkRate(building),rate=powerConfigRate(building,lv,realMode);return base>0&&rate>0?rate/base:null;}
@@ -449,7 +461,7 @@ function conversionRow(building,mode,rowCls='',rowspan=1,showName=true){const sh
 function renderConversion(){const order=['쌀 농장','누에 숲','고령토 채석장','실 가공소','점토 가공소','비단 작업장','도자기 작업장'],rows=[];order.forEach((b,i)=>{const modes=conversionModes(b);modes.forEach((m,j)=>rows.push(conversionRow(b,m,(i===3||i===5)&&j===0?'divider-top':'',modes.length,j===0)));});document.querySelector('#tConvert tbody').innerHTML=rows.join('');}
 function renderWonderContext(){const base=document.getElementById('wonderBaseHDisplay'),ctx=document.getElementById('wonderContext');if(base)base.textContent=fmtHours(settings.baseH)+' h';if(ctx)ctx.innerHTML='<span>불가사의</span><span class="wonder-context-value">'+settings.wonder+'</span><span>보너스</span><span class="wonder-context-value">Lv.'+settings.wLv+'</span>'; }
 function finalRequiredHours(building,need,stock){const shortfall=Math.max(0,need-stock);if(shortfall<=0)return 0;if(detailEnabled(building))return timeToProduceAmount(building,shortfall);const s=state[building],p=baseOutput(building);if(!p||s.bldgs<=0||p.out<=0)return null;const perCycle=p.out*s.bldgs;const cycles=Math.ceil(shortfall/perCycle-1e-12);return cycles*p.min/60;}
-function renderWonder(){const cur=wLvSet.cur,tgt=wLvSet.tgt;const wcCur=DATA.wc[cur]||{cs:0,cp:0},wcTgt=DATA.wc[tgt]||{cs:0,cp:0};const silkNeed=wcTgt.cs-wcCur.cs,porcNeed=wcTgt.cp-wcCur.cp;const silkProd=totalOutput('비단 작업장'),porcProd=totalOutput('도자기 작업장');const silkStock=wStock.silk||0,porcStock=wStock.porc||0;const silkRemain=silkStock+silkProd-silkNeed,porcRemain=porcStock+porcProd-porcNeed;const silkH=finalRequiredHours('비단 작업장',silkNeed,silkStock),porcH=finalRequiredHours('도자기 작업장',porcNeed,porcStock);const kaolinNow=state['고령토 채석장'].stock||0,kaolinProd=totalOutput('고령토 채석장');const clayNow=state['점토 가공소'].stock||0,porcNow=porcStock;const clayP=prodInfo('점토 가공소',6,'30분'),porcP=prodInfo('도자기 작업장',6,'30분');let maxLv=cur;if(clayP&&porcP){const kaolinTotal=kaolinNow+kaolinProd;const clayFromKaolin=kaolinTotal*clayP.out/clayP.sub;const clayTotal=clayNow+clayFromKaolin;const porcTotal=porcNow+clayTotal*porcP.out/porcP.sub;for(let n=50;n>=cur;n--){if(DATA.wc[n]&&(DATA.wc[n].cp-wcCur.cp)<=porcTotal){maxLv=n;break;}}}document.getElementById('maxLv').textContent='Lv'+maxLv;document.querySelector('#tw tbody').innerHTML='<tr><td>비단</td><td class="num calc '+remainClass(silkRemain)+'">'+fmtQty(silkRemain)+'</td><td class="num calc">'+fmtHours(silkH)+'</td><td class="num calc">'+fmtQty(silkNeed)+'</td><td class="num calc">'+fmtQty(silkStock)+'</td><td class="num calc">'+fmtQty(silkProd)+'</td><td class="num calc">'+fmtQty(silkStock+silkProd)+'</td></tr><tr><td>도자기</td><td class="num calc '+remainClass(porcRemain)+'">'+fmtQty(porcRemain)+'</td><td class="num calc">'+fmtHours(porcH)+'</td><td class="num calc">'+fmtQty(porcNeed)+'</td><td class="num calc">'+fmtQty(porcStock)+'</td><td class="num calc">'+fmtQty(porcProd)+'</td><td class="num calc">'+fmtQty(porcStock+porcProd)+'</td></tr>';}
+function renderWonder(){const cur=wLvSet.cur,tgt=wLvSet.tgt;const wcCur=DATA.wc[cur]||{cs:0,cp:0},wcTgt=DATA.wc[tgt]||{cs:0,cp:0};const silkNeed=wcTgt.cs-wcCur.cs,porcNeed=wcTgt.cp-wcCur.cp;const silkProd=totalOutput('비단 작업장'),porcProd=totalOutput('도자기 작업장');const silkStock=wStock.silk||0,porcStock=wStock.porc||0;const silkRemain=silkStock+silkProd-silkNeed,porcRemain=porcStock+porcProd-porcNeed;const silkH=finalRequiredHours('비단 작업장',silkNeed,silkStock),porcH=finalRequiredHours('도자기 작업장',porcNeed,porcStock);const kaolinNow=state['고령토 채석장'].stock||0,kaolinProd=totalOutput('고령토 채석장');const clayNow=state['점토 가공소'].stock||0,porcNow=porcStock;const clayP=prodInfo('점토 가공소',6,'30분'),porcP=prodInfo('도자기 작업장',6,'30분');let maxLv=cur;if(clayP&&porcP){const kaolinTotal=kaolinNow+kaolinProd;const clayFromKaolin=kaolinTotal*clayP.out/clayP.sub;const clayTotal=clayNow+clayFromKaolin;const porcTotal=porcNow+clayTotal*porcP.out/porcP.sub;for(let n=50;n>=cur;n--){if(DATA.wc[n]&&(DATA.wc[n].cp-wcCur.cp)<=porcTotal){maxLv=n;break;}}}document.getElementById('maxLv').textContent='Lv'+maxLv;document.querySelector('#tw tbody').innerHTML='<tr><td>비단</td><td class="num calc '+remainClass(silkRemain)+'">'+fmtQty(silkRemain)+'</td><td class="num calc">'+formatDuration(silkH)+'</td><td class="num calc">'+fmtQty(silkNeed)+'</td><td class="num calc">'+fmtQty(silkStock)+'</td><td class="num calc">'+fmtQty(silkProd)+'</td><td class="num calc">'+fmtQty(silkStock+silkProd)+'</td></tr><tr><td>도자기</td><td class="num calc '+remainClass(porcRemain)+'">'+fmtQty(porcRemain)+'</td><td class="num calc">'+formatDuration(porcH)+'</td><td class="num calc">'+fmtQty(porcNeed)+'</td><td class="num calc">'+fmtQty(porcStock)+'</td><td class="num calc">'+fmtQty(porcProd)+'</td><td class="num calc">'+fmtQty(porcStock+porcProd)+'</td></tr>';}
 
 function planProgressionInfo(){
   const rewards=CITY_PLAN_DATA.progressionRewards[settings.wonder];
@@ -465,9 +477,9 @@ function planSyncedCount(key){
 function planBuildingCount(item){
   if(item.fixed!==undefined)return item.fixed;
   if((item.sync||item.providesWorkers)&&!Object.prototype.hasOwnProperty.call(planState.buildingOverrides||{},item.key)){
-    return Math.max(0,Math.floor(item.providesWorkers?planState.homes[item.key].count:planSyncedCount(item.key)));
+    return Math.max(0,item.providesWorkers?planState.homes[item.key].count:planSyncedCount(item.key));
   }
-  return Math.max(0,Math.floor(parseFloat(planState.buildingOverrides?.[item.key])||0));
+  return Math.max(0,parseFloat(planState.buildingOverrides?.[item.key])||0);
 }
 function planUsedArea(){
   return CITY_PLAN_DATA.areaBuildings.reduce((sum,item)=>sum+Math.max(0,item.w*item.l)*planBuildingCount(item),0);
@@ -539,23 +551,23 @@ function renderPlanArea(){
   document.getElementById('planGemExpansions').value=planState.gemExpansions;
   document.getElementById('planTotalExpansionsTable').textContent=fmtQty(totalExp)+'칸';
   document.getElementById('planTotalAreaTable').textContent=fmtQty(totalArea);
-  document.getElementById('planUsedAreaTable').textContent=fmtQty(used);
+  document.getElementById('planUsedAreaTable').textContent=fmtCount(used);
   const rate=document.getElementById('planAreaUsageRate');if(rate)rate.textContent=fmtPower(usageRate)+'%';
-  const remainCell=document.getElementById('planRemainAreaTable'),remainCells=remain/16;remainCell.textContent=fmtQty(remain)+' ('+remainCells.toLocaleString('ko-KR',{minimumFractionDigits:1,maximumFractionDigits:1})+'칸)';remainCell.classList.toggle('remain-ok',remain>=0);remainCell.classList.toggle('remain-bad',remain<0);
+  const remainCell=document.getElementById('planRemainAreaTable'),remainCells=remain/16;remainCell.textContent=fmtCount(remain)+' ('+remainCells.toLocaleString('ko-KR',{minimumFractionDigits:1,maximumFractionDigits:1})+'칸)';remainCell.classList.toggle('remain-ok',remain>=0);remainCell.classList.toggle('remain-bad',remain<0);
   document.querySelector('#tArea tbody').innerHTML=CITY_PLAN_DATA.areaBuildings.map(item=>{
     const count=planBuildingCount(item),area=Math.max(0,item.w*item.l),total=area*count;
     const workerNeed=typeof item.workers==='number'?item.workers*count:null;
     let countCell;
     if(item.fixed!==undefined)countCell=fmtPower(count);
     else if((item.sync||item.providesWorkers)&&!Object.prototype.hasOwnProperty.call(planState.buildingOverrides||{},item.key)){
-      countCell='<input type="number" min="0" step="1" data-plan-count="'+item.key+'" value="" placeholder="기본" title="'+(item.providesWorkers?'일꾼 현황':'생산 계산기')+' 기준 '+fmtPower(count)+'채" aria-label="'+item.name+' 수">';
+      countCell='<input type="number" min="0" step="any" data-plan-count="'+item.key+'" value="" placeholder="기본 '+fmtCount(count)+'" title="'+(item.providesWorkers?'일꾼 현황':'생산 계산기')+' 기준 '+fmtPower(count)+'채" aria-label="'+item.name+' 수">';
     }else{
-      const manual=Math.max(0,Math.floor(parseFloat(planState.buildingOverrides?.[item.key])||0));
-      countCell='<input type="number" min="0" step="1" data-plan-count="'+item.key+'" value="'+manual+'">';
+      const manual=Math.max(0,parseFloat(planState.buildingOverrides?.[item.key])||0);
+      countCell='<input type="number" min="0" step="any" data-plan-count="'+item.key+'" value="'+manual+'">';
     }
     const workerTotalCell=workerNeed===null?'—':fmtPower(workerNeed);
     const areaCell=area===0?'0':item.w+'×'+item.l+' · '+area;
-    return '<tr><td>'+item.name+'</td><td class="input-cell"><span class="area-mobile-label">건물 수</span>'+countCell+'</td><td class="num calc"><span class="area-mobile-label">필요 일꾼</span>'+workerTotalCell+'</td><td class="num calc"><span class="area-mobile-label">1채 면적</span>'+areaCell+'</td><td class="num calc"><span class="area-mobile-label">사용 면적</span>'+fmtQty(total)+'</td></tr>';
+    return '<tr data-area-key="'+item.key+'"><td>'+item.name+'</td><td class="input-cell"><span class="area-mobile-label">건물 수</span>'+countCell+'</td><td class="num calc"><span class="area-mobile-label">필요 일꾼</span>'+workerTotalCell+'</td><td class="num calc"><span class="area-mobile-label">1채 면적</span>'+areaCell+'</td><td class="num calc"><span class="area-mobile-label">사용 면적</span>'+fmtCount(total)+'</td></tr>';
   }).join('');
   renderPlanConstruction();
 }
@@ -567,7 +579,7 @@ function renderPlanCurrency(){
   document.getElementById('planCurrencyStock').value=fmtCompactInput(stock);
   document.getElementById('planCurrencyPerHourInput').value=perHour;
   const hInput=document.getElementById('planCurrencyHours');hInput.value=manual?String(planState.currencyHours):'';hInput.placeholder='기본';hInput.title='비워두면 생산 계산기의 기본 운영 시간 '+fmtHours(settings.baseH)+' h를 사용합니다.';
-  const projected=stock+perHour*hours;
+  const projected=availableQuantity(stock+perHour*hours);
   const projectedEl=document.getElementById('planCurrencyProjected');if(projectedEl)projectedEl.textContent=fmtQty(projected);
   return {perHour,hours,projected};
 }
@@ -655,7 +667,7 @@ document.getElementById('panel-plan').addEventListener('change',e=>{
     const item=CITY_PLAN_DATA.areaBuildings.find(x=>x.key===countKey),raw=String(e.target.value??'').trim();
     if((item?.sync||item?.providesWorkers)&&raw==='')delete planState.buildingOverrides[countKey];
     else{
-      const count=Math.max(0,Math.floor(parseFloat(raw)||0));planState.buildingOverrides[countKey]=count;
+      const count=Math.max(0,parseFloat(raw)||0);planState.buildingOverrides[countKey]=count;
       if(countKey==='premiumRice')planState.premiumRice=count;
     }
   }
@@ -679,7 +691,7 @@ document.getElementById('panel-plan').addEventListener('click',e=>{
   if(e.target.closest('#researchToggleCurrent')){
     if(!planResearchActionId)return;const id=planResearchActionId;planResearchActionId='';planToggleCurrentTech(id);normalizeState();renderPlan();saveState();postSize();return;
   }
-  if(e.target.closest('#researchSetTarget')){if(!planResearchActionId)return;planState.targetTech=planResearchActionId;planResearchActionId='';normalizeState();renderPlan();saveState();postSize();return;}
+  if(e.target.closest('#researchSetTarget')){if(!planResearchActionId)return;planState.targetTech=planState.targetTech===planResearchActionId?'':planResearchActionId;planResearchActionId='';normalizeState();renderPlan();saveState();postSize();return;}
   const node=e.target.closest('[data-research-id]');
   if(node){planResearchActionId=node.dataset.researchId;renderPlan();postSize();return;}
 });
@@ -749,18 +761,18 @@ cityOverviewCard:'주택과 불가사의가 제공하는 일꾼을 건물의 필
 currencyCard:'예상 보유량은 현재 보유량 + 시간당 생산량 × 운영 시간입니다. 운영 시간을 비우면 생산 계산기의 기본 운영 시간을 사용합니다. 사용 계획 잔액에서는 건설과 목표 연구 비용을 차감합니다. 계획한 건설과 연구를 완료 처리하지는 않습니다.',
 buildingComposition:'주택 수는 일꾼 현황, 생산 건물 수는 생산 계산기에서 가져옵니다. 빈칸은 기본 연동이며 직접 입력한 값이 우선합니다. 누에 숲·고령토 채석장은 면적을 사용하지 않습니다. 초기화하면 직접 입력한 건물 수를 기본 연동으로 되돌립니다.',
 constructionCard:'현재 레벨부터 목표 레벨까지 건설·업그레이드 비용을 합산합니다. 미건설은 새 건물입니다. 계산한 건물은 도시 구성에 자동 추가되지 않습니다.',
-researchCard:'연구를 눌러 현재 완료 상태나 목표를 지정하세요. 병렬로 진행한 현재 연구를 여러 개 선택할 수 있습니다. 목표의 선행 연구를 자동 포함하고, 이미 완료한 연구의 비용은 제외합니다.'};
+researchCard:'연구를 눌러 현재 완료 상태나 목표를 지정하거나 해제하세요. 병렬로 진행한 현재 연구를 여러 개 선택할 수 있습니다. 목표의 선행 연구를 자동 포함하고, 이미 완료한 연구의 비용은 제외합니다.'};
 const COLUMN_HELP={
 '레벨':'생산 건물의 현재 레벨입니다.',
 '건물 수':'소수점 입력이 가능합니다. 0.5채는 생산량과 소비량을 절반으로 계산합니다.',
 '운영 시간(h)':'비우면 기본 운영 시간을 사용합니다. 상세 구성의 시간을 우선하며, 0은 해당 구성의 생산을 중지합니다.',
 '현재 보유량':'현재 가진 정수 수량입니다. K·M 단위로 입력할 수 있습니다.',
 '잔여/부족':'현재 보유량 + 예상 생산량 − 필요량입니다. 양수는 잔여, 음수는 부족입니다.',
-'소요 시간(h)':'부족한 양을 현재 구성으로 확보하는 시간입니다. 운영 시간을 넘어도 계산하며 생산 가능한 건물이 없으면 —로 표시합니다.',
+'소요 시간':'부족한 양을 현재 구성으로 확보하는 시간입니다. 운영 시간을 넘어도 계산하며 생산 가능한 건물이 없으면 —로 표시합니다.',
 '예상 생산량':'현재 구성과 운영 시간에 따른 생산량입니다.',
 '생산력 차이':'현재 생산력 − 필요 생산력입니다. 음수이면 생산력이 부족합니다.',
 '필요 생산력':'보유량을 차감한 필요량을 비교 시간 안에 생산하기 위한 생산력입니다.',
-'현재 생산력':'비교 시간 동안의 생산량을 Lv6 기준 생산량으로 환산합니다.',
+'현재 생산력':'비교 시간 동안의 실제 생산량을 Lv6 기준 생산량으로 환산합니다. 생산 주기가 끝나지 않으면 그 주기의 생산량은 포함하지 않습니다.',
 '구간 필요량':'현재 레벨 다음부터 목표 레벨까지 요구하는 상품량입니다.'};
 const TABLE_SECONDARY={t1:[8,9],t2:[8,9,10,11],t3:[7,8],tw:[3,4,5,6],tSleep:[2,3,4,5,6],tPower:[2,3],tArea:[]};
 let uiReady=false,researchFilter='all';
@@ -777,8 +789,8 @@ function setupUI(){
   buttonIds.forEach(id=>{const b=byId(id);if(b)actions.append(b);});
  }
  const load=document.createElement('button');load.type='button';load.id='loadSavedBtn';load.textContent='저장값 불러오기';load.addEventListener('click',()=>{if(hasSavedDefault())restoreSavedDefault();else showResetStatus('저장값 없음');});byId('saveDefaultBtn').after(load);
- byId('resetBtn').textContent='생산 초기화';
- byId('resetChoiceTitle').textContent='생산 계산기 초기화';byId('resetChoiceTitle').nextElementSibling.textContent='생산 설정과 보유량을 초기화합니다.';
+ byId('resetBtn').replaceWith(byId('resetBtn').cloneNode(true));byId('resetBtn').addEventListener('click',()=>openResetChoiceModal());byId('resetBtn').textContent='생산 초기화';
+ byId('restoreSavedBtn').hidden=true;byId('resetChoiceTitle').textContent='생산 계산기 초기화';byId('resetChoiceTitle').nextElementSibling.textContent='생산 설정과 보유량을 초기화합니다.';
  for(const [id,help]of Object.entries(SECTION_HELP)){
   const title=byId(id)?.querySelector('h2');if(!title)continue;const button=document.createElement('button');button.type='button';button.className='info-tip';button.dataset.tip=help;button.setAttribute('aria-label',title.textContent+' 설명');button.textContent='i';title.append(' ',button);
  }
@@ -789,13 +801,19 @@ function setupUI(){
  byId('cityDetailsToggle').setAttribute('aria-controls','cityOverview');
  const research=byId('researchCard'),filters=document.createElement('div');filters.className='research-filter';filters.setAttribute('aria-label','연구 표시');filters.innerHTML=['전체','완료','목표까지 필요'].map((t,i)=>'<button type="button" data-research-filter="'+['all','done','needed'][i]+'" aria-pressed="'+(i===0)+'">'+t+'</button>').join('');research.querySelector('.research-tree-scroll').before(filters);
  document.querySelectorAll('.tabs .tab').forEach(b=>{b.setAttribute('aria-controls','panel-'+b.dataset.tab);b.setAttribute('aria-pressed',String(b.classList.contains('active')));});
- byId('researchCard').append(byId('researchAction'));
+ const oldAction=byId('researchAction'),action=document.createElement('dialog');action.id=oldAction.id;action.className=oldAction.className;action.append(...oldAction.childNodes);oldAction.replaceWith(action);byId('researchCard').append(action);action.addEventListener('cancel',()=>{planResearchActionId='';action.classList.remove('open');});action.addEventListener('click',e=>{if(e.target!==action)return;const r=action.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom){planResearchActionId='';renderPlanResearch();}});
  byId('researchAction').setAttribute('role','dialog');byId('researchAction').setAttribute('aria-modal','true');byId('researchAction').setAttribute('aria-label','연구 선택');
  const cost=research.querySelector('.research-cost-chip');research.querySelector('.section-title-row').append(cost);
  const legend=research.querySelector('.research-legend');research.querySelector('.research-tree-scroll').before(legend);
  ['tWorkers','tTerritory','tCurrency'].forEach(id=>byId(id).querySelectorAll('tbody input').forEach(el=>el.setAttribute('aria-label',el.closest('tr').querySelector('td').textContent.trim())));
  byId('saveDefaultBtn').textContent='생산 입력값 저장';
  byId('convertPanel').hidden=false;
+ byId('resetStatus').remove();byId('prodSettings').append(Object.assign(document.createElement('span'),{id:'resetStatus',className:'reset-status'}));byId('resetStatus').setAttribute('role','status');byId('resetStatus').setAttribute('aria-live','polite');
+ const actions=byId('prodSettings').querySelector('.title-actions');actions.append(byId('saveDefaultBtn'),byId('loadSavedBtn'),byId('resetBtn'),byId('prodViewToggle'));
+ byId('buildingReset').textContent='건물 수 초기화';byId('researchReset').textContent='연구 초기화';
+ const sync=document.createElement('button');sync.type='button';sync.className='sync-goal-level';sync.textContent='보너스 레벨 사용';sync.addEventListener('click',()=>{wLvSet.cur=settings.wLv;wLvSet.tgt=Math.max(wLvSet.tgt,wLvSet.cur);syncUIFromState();renderAll();saveState();});byId('wonderSettings').querySelector('.settings').insertBefore(sync,byId('wonderContext'));
+ initializeChinaNavigation();
+
 }
 function labelUITables(){
  document.querySelectorAll('input[type=number]').forEach(input=>{
@@ -809,53 +827,74 @@ function labelUITables(){
   const headers=[...table.querySelectorAll('thead tr:first-child th')].map(th=>th.dataset.label||th.textContent.trim());
   table.querySelectorAll('thead th').forEach((th,i)=>{th.dataset.label=headers[i];th.scope='col';th.classList.toggle('column-secondary',(TABLE_SECONDARY[id]||[]).includes(i));});
   table.querySelectorAll('tbody tr').forEach(row=>{[...row.children].forEach((td,i)=>{td.dataset.label=headers[i]||'';td.classList.toggle('column-secondary',(TABLE_SECONDARY[id]||[]).includes(i));
-   td.querySelectorAll('input,select').forEach(el=>{el.setAttribute('aria-label',(row.dataset.b?displayName(row.dataset.b)+' ':'')+(headers[i]||'입력값'));});
+   td.querySelectorAll('input,select').forEach(el=>{el.setAttribute('aria-label',(row.dataset.b?displayName(row.dataset.b)+' ':row.dataset.areaKey?row.children[0].textContent.trim()+' ':'')+(headers[i]||'입력값'));});
    td.querySelectorAll('.step-btn').forEach(b=>b.setAttribute('aria-label',(headers[i]||'값')+(Number(b.dataset.delta)>0?' 늘리기':' 줄이기')));
   });});
  });
  document.querySelectorAll('.control-field .step-btn').forEach(b=>b.setAttribute('aria-label',b.closest('.control-field').querySelector('label').textContent+(Number(b.dataset.delta)>0?' 늘리기':' 줄이기')));
- document.querySelectorAll('input[placeholder="기본"],select').forEach(el=>el.classList.toggle('default-choice',el.tagName==='SELECT'?['생산 계산기값','최장'].includes(el.value):el.value===''));
+ document.querySelectorAll('input[placeholder^="기본"],select').forEach(el=>el.classList.toggle('default-choice',el.tagName==='SELECT'?['생산 계산기값','최장'].includes(el.value):el.value===''));
  document.querySelectorAll('.detail-summary').forEach(el=>el.classList.toggle('applied',!el.textContent.includes('미사용')));
 }
 function metricUI(label,value,cls='',support=''){return '<div class="metric"><span>'+label+'</span><strong class="'+cls+'">'+value+'</strong>'+(support?'<span class="support">'+support+'</span>':'')+'</div>';}
 function updateUISummaries(){
- const stock=planState.currencyStock||0,rate=planState.currencyPerHour||0,h=planState.currencyHoursManual&&planState.currencyHours!==''?Number(planState.currencyHours):settings.baseH,projected=stock+rate*h,cost=planConstructionCost(),research=planResearchCost(),remaining=projected-cost-research;
+ const stock=planState.currencyStock||0,rate=planState.currencyPerHour||0,h=planState.currencyHoursManual&&planState.currencyHours!==''?Number(planState.currencyHours):settings.baseH,projected=availableQuantity(stock+rate*h),cost=planConstructionCost(),research=planResearchCost(),remaining=projected-cost-research;
  const budget=metricUI('건설 비용',fmtQty(cost))+metricUI('연구 비용',fmtQty(research))+metricUI('사용 계획 잔액',fmtQty(remaining),remaining<0?'bad':'good');if(byId('budgetSummary').innerHTML!==budget)byId('budgetSummary').innerHTML=budget;
  const old=byId('maxLv').textContent;
- const goal=metricUI('최대 도달 레벨(고령토)','<span id="maxLv">'+old+'</span>')+metricUI('비단 목표 부족량',fmtQty(finalTargetNeed('비단 작업장')))+metricUI('도자기 목표 부족량',fmtQty(finalTargetNeed('도자기 작업장')));
- if(byId('goalSummary').innerHTML!==goal)byId('goalSummary').innerHTML=goal;
- const load=byId('loadSavedBtn');if(load)load.disabled=!hasSavedDefault();
+
+ const load=byId('loadSavedBtn');if(load){load.disabled=!hasSavedDefault();load.title=load.disabled?'저장한 생산 입력값이 없습니다.':'이 기기에 저장한 생산 입력값을 불러옵니다.';}
+ const bonus=getBonus(),next=getNextWorker(),bonusText=(bonus.r>0?'쌀 +'+fmtPower(bonus.r*100)+'% · ':'')+(bonus.g>0?'오수전 +'+fmtPower(bonus.g*100)+'% · ':'')+'일꾼 +'+bonus.w+'명';
+ const names=Object.keys(state),hasBuildings=names.some(b=>productionConfigs(b).some(r=>r.count>0)),operating=names.some(b=>productionConfigs(b).some(r=>r.count>0&&detailHours(b,r)>0));
+ const consumption={ '쌀 농장':riceConsumption(),'누에 숲':silkwormConsumption(),'고령토 채석장':kaolinConsumption(),'실 가공소':threadConsumption(),'점토 가공소':clayConsumption()};
+ const short=Object.keys(consumption).filter(b=>resourceStock(b)+totalOutput(b)<consumption[b]);
+ const production=metricUI('불가사의 보너스',escapeText(bonusText),'',next?'다음 일꾼 증가: Lv.'+next:'일꾼 보너스 최대')+metricUI(!hasBuildings||!operating?'생산 설정 확인':'조정 필요 생산 항목',!hasBuildings?'건물 수를 입력하세요.':!operating?'운영 시간을 입력하세요.':short.length?short.map(displayName).join(' · '):'없음',operating&&short.length?'bad':'');
+ if(byId('bonusSummary').innerHTML!==production)byId('bonusSummary').innerHTML=production;
+ const needs=targetProductionNeeds(),adjustments=names.map(b=>powerAdjustment(b,needs)),powerShort=adjustments.filter(a=>a.diff!==null&&a.diff<-1e-8).map(a=>displayName(a.building)),unknown=adjustments.filter(a=>a.diff===null).map(a=>displayName(a.building));
+ const goalValue=metricUI('최대 도달 레벨(고령토)','<span id="maxLv">'+old+'</span>','', '쌀·비단·생산 시간 제외')+metricUI('생산력 부족 항목',escapeText(powerShort.join(' · ')||(!unknown.length?'없음':''))+(unknown.length?(powerShort.length?'<br>':'')+'운영 시간 확인: '+escapeText(unknown.join(' · ')):''),powerShort.length||unknown.length?'bad':'');
+ if(byId('goalSummary').innerHTML!==goalValue)byId('goalSummary').innerHTML=goalValue;
+ prepareChinaAmountInputs();
+ const min=String(wLvSet.cur);if(byId('tgtLv').min!==min)byId('tgtLv').min=min;
+
 }
-function refreshUI(){if(!uiReady)return;labelUITables();updateUISummaries();document.querySelectorAll('.tabs .tab').forEach(b=>b.setAttribute('aria-pressed',String(b.classList.contains('active'))));}
+function refreshUI(){if(!uiReady)return;labelUITables();updateUISummaries();document.querySelectorAll('.tabs .tab').forEach(b=>b.setAttribute('aria-selected',String(b.classList.contains('active'))));}
 // Detailed configurations compare actual output over a common time window.
 function productionWindowChina(building){if(!detailEnabled(building))return getHours(building);const rows=details[building].rows.filter(r=>r.count>0);return rows.length?Math.max(0,...rows.map(r=>detailHours(building,r))):0;}
-currentPower=function(building){const base=powerBenchmarkRate(building),h=productionWindowChina(building);if(!(base>0))return null;if(!(h>0))return 0;return totalOutput(building)/(base*h)*100;};
+currentPower=function(building){const base=powerBenchmarkRate(building),h=productionWindowChina(building);if(!(base>0))return null;if(!(h>0))return 0;return rawPlannedAmount(building)/(base*h)*100;};
 requiredPowerFromAmount=function(building,amount){amount=Math.max(0,Number(amount)||0);if(amount<=1e-10)return 0;const h=productionWindowChina(building),base=powerBenchmarkRate(building);return h>0&&base>0?amount/(base*h)*100:null;};
 function referenceModeChina(building,mode){const modes=DATA.lm[building+'|6']||[];if(modes.includes(mode))return mode;const minutes=modeMinutesValue(mode)||0;return modes.reduce((best,m)=>Math.abs((modeMinutesValue(m)||0)-minutes)<Math.abs((modeMinutesValue(best)||0)-minutes)?m:best,modes[0]);}
 function referenceUseRatioChina(building,kind){
  const ratio=mode=>{const p=prodInfo(building,6,referenceModeChina(building,mode));return p&&p.out>0?(p[kind]||0)/p.out:0;};
  if(settings.productRawCycle!=='생산 계산기값')return ratio(settings.productRawCycle);
  if(!detailEnabled(building))return ratio(state[building].mode);
- const rows=details[building].rows.filter(r=>r.count>0);let weighted=0,total=0;
- for(const row of rows){const p=prodInfo(building,6,referenceModeChina(building,row.mode));const weight=p?configCycles(referenceModeChina(building,row.mode),p,detailHours(building,row))*p.out*row.count:0;weighted+=ratio(row.mode)*weight;total+=weight;}
- if(total>0)return weighted/total;
- for(const row of rows){const p=prodInfo(building,6,referenceModeChina(building,row.mode));const weight=p?p.out/p.min*row.count:0;weighted+=ratio(row.mode)*weight;total+=weight;}
+ const rows=details[building].rows.filter(r=>r.count>0),timed=rows.some(r=>detailHours(building,r)>0);let weighted=0,total=0;
+ for(const row of rows){const p=prodInfo(building,6,referenceModeChina(building,row.mode)),hours=timed?detailHours(building,row):1,weight=p?p.out/(p.min/60)*hours*row.count:0;weighted+=ratio(row.mode)*weight;total+=weight;}
  return total>0?weighted/total:ratio(state[building].mode);
 }
 targetProductionNeeds=function(){
  const silk=finalTargetNeed('비단 작업장'),porc=finalTargetNeed('도자기 작업장');
- const threadGross=silk*referenceUseRatioChina('비단 작업장','sub'),clayGross=porc*referenceUseRatioChina('도자기 작업장','sub');
+ const threadGross=requiredQuantity(silk*referenceUseRatioChina('비단 작업장','sub')),clayGross=requiredQuantity(porc*referenceUseRatioChina('도자기 작업장','sub'));
  const thread=Math.max(0,threadGross-resourceStock('실 가공소')),clay=Math.max(0,clayGross-resourceStock('점토 가공소'));
- const rice=silk*referenceUseRatioChina('비단 작업장','rice')+porc*referenceUseRatioChina('도자기 작업장','rice')+thread*referenceUseRatioChina('실 가공소','rice')+clay*referenceUseRatioChina('점토 가공소','rice');
- return {'비단 작업장':silk,'도자기 작업장':porc,'실 가공소':thread,'점토 가공소':clay,'쌀 농장':Math.max(0,rice-resourceStock('쌀 농장')),'누에 숲':Math.max(0,thread*referenceUseRatioChina('실 가공소','sub')-resourceStock('누에 숲')),'고령토 채석장':Math.max(0,clay*referenceUseRatioChina('점토 가공소','sub')-resourceStock('고령토 채석장'))};
+ const rice=requiredQuantity(silk*referenceUseRatioChina('비단 작업장','rice'))+requiredQuantity(porc*referenceUseRatioChina('도자기 작업장','rice'))+requiredQuantity(thread*referenceUseRatioChina('실 가공소','rice'))+requiredQuantity(clay*referenceUseRatioChina('점토 가공소','rice'));
+ return {'비단 작업장':silk,'도자기 작업장':porc,'실 가공소':thread,'점토 가공소':clay,'쌀 농장':Math.max(0,rice-resourceStock('쌀 농장')),'누에 숲':Math.max(0,requiredQuantity(thread*referenceUseRatioChina('실 가공소','sub'))-resourceStock('누에 숲')),'고령토 채석장':Math.max(0,requiredQuantity(clay*referenceUseRatioChina('점토 가공소','sub'))-resourceStock('고령토 채석장'))};
 };
 // Production reset restores production inputs; separate city/research plans stay intact.
-const saveUserDefaultBeforeUI=saveUserDefault;
-saveUserDefault=function(){saveUserDefaultBeforeUI();refreshUI();};
-const applySnapshotBeforeUI=applySnapshot;
-applySnapshot=function(snapshot,message){const city=JSON.parse(JSON.stringify(planState)),levels={...wLvSet},keep={...settings};applySnapshotBeforeUI(snapshot,message);Object.assign(planState,city);Object.assign(wLvSet,levels);for(const key of ['sleepPrepH','sleepCycle','sleepCount','productRawCycle','wonderDetailsVisible'])settings[key]=keep[key];normalizeState();syncUIFromState();renderAll();saveState();};
+function productionSnapshot(){return {state:JSON.parse(JSON.stringify(state)),settings:{wonder:settings.wonder,wLv:settings.wLv,baseH:settings.baseH},wStock:{...wStock},details:JSON.parse(JSON.stringify(details))};}
+applySnapshot=function(snapshot,message){
+ const src=snapshot||{},saved=src.settings||{};
+ for(const b of Object.keys(INITIAL_STATE.prod)){state[b]={...INITIAL_STATE.prod[b],...(src.state?.[b]||{})};details[b]=src.details?.[b]?JSON.parse(JSON.stringify(src.details[b])):{enabled:false,rows:[]};}
+ for(const k of ['wonder','wLv','baseH'])settings[k]=saved[k]??INITIAL_STATE.settings[k];
+ Object.assign(wStock,INITIAL_STATE.wStock,src.wStock||{});normalizeState();syncUIFromState();renderAll();saveState();showResetStatus(message);
+};
+restoreFactoryDefault=function(){applySnapshot({state:INITIAL_STATE.prod,settings:{...INITIAL_STATE.settings,wonder:settings.wonder},wStock:INITIAL_STATE.wStock,details:DETAIL_DEFAULTS},'생산 계산기 초기화 완료');};
+saveUserDefault=function(){
+ const invalid=document.querySelector('#panel-prod [aria-invalid="true"],#detailModal [aria-invalid="true"]');if(invalid){invalid.focus();showResetStatus('입력 오류를 수정한 후 저장하세요.');return;}
+ try{localStorage.setItem(DEFAULT_STORAGE_KEY,JSON.stringify(productionSnapshot()));showResetStatus('생산 입력값 저장 완료');refreshUI();}catch(e){showResetStatus('저장 실패');}
+};
+// Event references installed before this layer must point to the final production-only handler.
+byId('saveDefaultBtn').replaceWith(byId('saveDefaultBtn').cloneNode(true));byId('saveDefaultBtn').addEventListener('click',()=>saveUserDefault());
 const renderPlanResearchBeforeUI=renderPlanResearch;
-renderPlanResearch=function(){renderPlanResearchBeforeUI();renderResearchMobileChina();};
+let researchOpener=null;
+renderPlanResearch=function(){const dialog=byId('researchAction');if(planResearchActionId&&!dialog.open)researchOpener=document.activeElement;renderPlanResearchBeforeUI();renderResearchMobileChina();if(planResearchActionId){const info=planResearchInfo(),current=planState.currentTechs.includes(planResearchActionId),done=info.done.has(planResearchActionId);byId('researchToggleCurrent').disabled=false;byId('researchToggleCurrent').textContent=current||done?'완료 지정 해제':'현재 완료로 지정';byId('researchSetTarget').textContent=planState.targetTech===planResearchActionId?'목표 지정 해제':'목표 연구로 설정';if(!dialog.open)dialog.showModal();}else if(dialog.open){dialog.close();const id=researchOpener?.dataset.researchId,live=id?[...document.querySelectorAll('[data-research-id="'+id+'"]')].find(el=>el.getClientRects().length):researchOpener;(live||document.querySelector('[data-research-filter].active'))?.focus();}};
+planToggleCurrentTech=function(id){const info=planResearchInfo(),map=info.map;if(info.done.has(id)){planState.currentTechs=planState.currentTechs.filter(current=>current!==id&&!planAncestors(current,map,new Set()).has(id));return;}const ancestors=planAncestors(id,map,new Set());planState.currentTechs=planState.currentTechs.filter(current=>!ancestors.has(current));planState.currentTechs.push(id);};
 function renderResearchMobileChina(){
  const info=planResearchInfo();let nodes=CITY_PLAN_DATA.research.filter(t=>researchFilter==='done'?info.done.has(t.id):researchFilter==='needed'?info.needed.has(t.id):true);
  byId('researchMobile').innerHTML=nodes.length?'<div class="research-mobile-list">'+nodes.map(t=>{
@@ -864,7 +903,15 @@ function renderResearchMobileChina(){
   return '<button type="button" class="'+cls.join(' ')+'" data-research-id="'+t.id+'" aria-pressed="'+(planState.targetTech===t.id||planState.currentTechs.includes(t.id))+'">'+escapeText(t.name)+'<span>'+fmtQty(t.cost)+' 오수전 · '+status+'</span></button>';
  }).join('')+'</div>':'<p class="research-empty">'+(researchFilter==='needed'?'목표 연구를 선택하면 필요한 연구가 표시됩니다.':'표시할 연구가 없습니다.')+'</p>';
  // On desktop filtering dims unrelated nodes while preserving the tree topology.
- document.querySelectorAll('.research-tree-nodes [data-research-id]').forEach(el=>{const t=el.dataset.researchId;el.style.opacity=researchFilter==='all'||(researchFilter==='done'?info.done.has(t):info.needed.has(t))?'1':'.3';});
+ const selected=nodes.map(t=>RESEARCH_TREE_LAYOUT[t.id]).filter(Boolean),ys=[...new Set(selected.map(p=>p[1]))].sort((a,b)=>a-b),yMap=new Map(ys.map((y,i)=>[y,40+i*76]));
+ const filtered=researchFilter!=='all',positions=new Map();
+ document.querySelectorAll('.research-tree-nodes [data-research-id]').forEach(el=>{const id=el.dataset.researchId,show=nodes.some(t=>t.id===id);el.hidden=!show;el.style.opacity='1';const p=RESEARCH_TREE_LAYOUT[id];if(p){const y=filtered?yMap.get(p[1]):p[1];if(show){el.style.top=y+'px';positions.set(id,[p[0],y]);}}});
+ const svg=byId('researchTreeLines');svg.innerHTML=nodes.flatMap(t=>(t.parents||[]).filter(id=>positions.has(id)).map(id=>{const a=positions.get(id),b=positions.get(t.id);return '<line x1="'+a[0]+'" y1="'+(a[1]+29)+'" x2="'+b[0]+'" y2="'+(b[1]-29)+'" class="'+(info.done.has(t.id)?'completed':info.needed.has(t.id)?'needed':'')+'"/>';})).join('');
+ const height=filtered?Math.max(100,ys.length*76+30):790;svg.setAttribute('viewBox','0 0 760 '+height);svg.style.height=height+'px';byId('researchTree').style.height=(height+30)+'px';
+ let empty=byId('researchTreeEmpty');if(!empty){empty=document.createElement('p');empty.id='researchTreeEmpty';empty.className='research-empty';byId('researchTree').append(empty);}empty.hidden=nodes.length>0;empty.textContent=researchFilter==='done'?'완료로 선택한 연구가 없습니다.':'목표까지 추가로 필요한 연구가 없습니다.';
+ byId('researchSummary').textContent='현재 완료 '+info.done.size+'개 · 목표까지 추가 '+info.needed.size+'개';
+ if(planResearchActionId){byId('researchAction').setAttribute('aria-labelledby','researchActionName');byId('researchAction').setAttribute('aria-describedby','researchActionCost');let cost=byId('researchActionCost');if(!cost){cost=document.createElement('p');cost.id='researchActionCost';cost.className='note';byId('researchActionName').after(cost);}cost.textContent='연구 비용 '+fmtQty(info.map.get(planResearchActionId)?.cost||0)+' 오수전';}
+
  document.querySelectorAll('[data-research-filter]').forEach(b=>{b.classList.toggle('active',b.dataset.researchFilter===researchFilter);b.setAttribute('aria-pressed',String(b.dataset.researchFilter===researchFilter));});
 }
 document.addEventListener('click',e=>{if(e.target.closest('#saveDefaultBtn'))refreshUI();const filter=e.target.closest('[data-research-filter]');if(filter){researchFilter=filter.dataset.researchFilter;renderResearchMobileChina();}if(e.target.closest('.tabs .tab'))hideUIHelp();});
@@ -876,15 +923,90 @@ document.addEventListener('pointerout',e=>{const info=e.target.closest('.info-ti
 document.addEventListener('focusin',e=>{const info=e.target.closest('.info-tip');if(info)showUIHelp(info);});
 document.addEventListener('focusout',e=>{if(e.target.closest('.info-tip'))hideUIHelp();});
 document.addEventListener('scroll',hideUIHelp,true);window.addEventListener('resize',hideUIHelp);
-document.addEventListener('click',e=>{const info=e.target.closest('.info-tip');if(!info)return;hideUIHelp();let d=byId('termHelpDialog');if(!d){d=document.createElement('dialog');d.id='termHelpDialog';d.className='term-help-dialog';d.setAttribute('aria-labelledby','termHelpTitle');d.innerHTML='<div class="detail-head"><h3 id="termHelpTitle"></h3><button type="button">닫기</button></div><p></p>';document.body.append(d);d.querySelector('button').onclick=()=>d.close();}byId('termHelpTitle').textContent=info.getAttribute('aria-label');const fields=[...info.closest('.card').querySelectorAll('thead th')].map(x=>x.dataset.label||x.textContent.trim()).filter((x,i,a)=>COLUMN_HELP[x]&&a.indexOf(x)===i);d.querySelector('p').textContent=info.dataset.tip+(fields.length?'\n\n'+fields.map(x=>x+'\n'+COLUMN_HELP[x]).join('\n\n'):'');d.showModal();});
+document.addEventListener('click',e=>{const info=e.target.closest('.info-tip');if(!info)return;if(e.detail>0&&matchMedia('(hover: hover) and (pointer: fine)').matches){showUIHelp(info);return;}hideUIHelp();let d=byId('termHelpDialog');if(!d){d=document.createElement('dialog');d.id='termHelpDialog';d.className='term-help-dialog';d.setAttribute('aria-labelledby','termHelpTitle');d.innerHTML='<div class="detail-head"><h3 id="termHelpTitle"></h3><button type="button">닫기</button></div><p></p>';document.body.append(d);d.querySelector('button').onclick=()=>d.close();}byId('termHelpTitle').textContent=info.getAttribute('aria-label');const fields=[...info.closest('.card').querySelectorAll('thead th')].map(x=>x.dataset.label||x.textContent.trim()).filter((x,i,a)=>COLUMN_HELP[x]&&a.indexOf(x)===i);d.querySelector('p').textContent=info.dataset.tip+(info.closest('#sleepCard')?'\n\n'+chinaSleepActualText():'')+(info.closest('#prodSettings')?'\n\n'+byId('bonusBox').textContent:'')+(fields.length?'\n\n'+fields.map(x=>x+'\n'+COLUMN_HELP[x]).join('\n\n'):'');d.showModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideUIHelp();if(!byId('resetChoiceModal').hidden)closeResetChoiceModal();if(planResearchActionId){planResearchActionId='';renderPlanResearch();}}});
 // Trap focus in retained non-native dialogs, and restore the launching control.
 let modalOpener=null;
 for(const [openName,closeName,modalId]of [['openDetailModal','closeDetailModal','detailModal'],['openResetChoiceModal','closeResetChoiceModal','resetChoiceModal']]){
  const open=window[openName],close=window[closeName];window[openName]=function(...args){modalOpener=document.activeElement;open(...args);byId(modalId).querySelector('button,input,select')?.focus();};window[closeName]=function(...args){close(...args);modalOpener?.focus();};
 }
-document.addEventListener('keydown',e=>{if(e.key!=='Tab')return;const modal=[...document.querySelectorAll('.detail-modal')].find(x=>!x.hidden)||document.querySelector('.research-action.open');if(!modal)return;const nodes=[...modal.querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled),[tabindex="0"]')].filter(x=>x.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
+document.addEventListener('keydown',e=>{if(e.key!=='Tab'||document.querySelector('dialog[open]'))return;const modal=[...document.querySelectorAll('.detail-modal')].find(x=>!x.hidden)||document.querySelector('.research-action.open');if(!modal)return;const nodes=[...modal.querySelectorAll('button:not(:disabled),input:not(:disabled),select:not(:disabled),[tabindex="0"]')].filter(x=>x.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&(document.activeElement===first||!modal.contains(document.activeElement))){e.preventDefault();last.focus();}else if(!e.shiftKey&&(document.activeElement===last||!modal.contains(document.activeElement))){e.preventDefault();first.focus();}});
+function initializeChinaNavigation(){
+ const tabs=[...document.querySelectorAll('.tabs .tab')],nav=document.querySelector('.tabs');nav.setAttribute('role','tablist');
+ tabs.forEach(t=>{t.id='tab-'+t.dataset.tab;t.setAttribute('role','tab');t.removeAttribute('aria-pressed');const panel=byId('panel-'+t.dataset.tab);panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',t.id);t.addEventListener('click',()=>{tabs.forEach(b=>{const active=b===t;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;});try{localStorage.setItem(STORAGE_KEY+'_tab',t.dataset.tab);}catch(e){}});});
+ nav.addEventListener('keydown',e=>{const i=tabs.indexOf(e.target);if(i<0)return;const j=e.key==='ArrowRight'?(i+1)%tabs.length:e.key==='ArrowLeft'?(i+tabs.length-1)%tabs.length:e.key==='Home'?0:e.key==='End'?tabs.length-1:null;if(j!==null){e.preventDefault();tabs[j].click();tabs[j].focus({preventScroll:true});}});
+ window.addEventListener('load',()=>{let saved;try{saved=localStorage.getItem(STORAGE_KEY+'_tab');}catch(e){}(tabs.find(t=>t.dataset.tab===saved)||tabs[0]).click();});
+}
+function chinaSleepActualText(){return '실제 예약 주기: '+['실 가공소','점토 가공소','비단 작업장','도자기 작업장'].map(b=>{const rows=productionConfigs(b).filter(r=>r.count>0),modes=[...new Set(rows.map(r=>closestSleepMode(b,r.lv)))];return displayName(b)+' '+(modes.join(' · ')||'건물 없음');}).join(' / ');}
+function syncChinaDetailControls(){
+ const d=details[activeDetailBuilding],root=byId('detailRows');if(!root||!d)return;
+ root.querySelectorAll('input,select,button').forEach(el=>el.disabled=!d.enabled);
+ root.querySelectorAll('[data-detail-row]').forEach((row,i)=>{row.querySelectorAll('[data-detail-k]').forEach(el=>{const label={lv:'레벨',mode:'생산 방식',count:'건물 수',hours:'운영 시간(h)'}[el.dataset.detailK];el.setAttribute('aria-label',displayName(activeDetailBuilding)+' 구성 '+(i+1)+' '+label);});row.querySelectorAll('.step-btn').forEach(b=>b.setAttribute('aria-label',b.closest('.step-wrap').querySelector('input').getAttribute('aria-label')+(Number(b.dataset.delta)>0?' 늘리기':' 줄이기')));row.querySelector('.detail-remove')?.setAttribute('aria-label',displayName(activeDetailBuilding)+' 구성 '+(i+1)+' 삭제');});
+ const add=byId('detailAdd');add.disabled=!d.enabled||d.rows.length>=20;add.title=d.rows.length>=20?'건물 구성은 최대 20개까지 입력할 수 있습니다.':'';
+ let status=byId('detailConfigStatus');if(!status){status=document.createElement('div');status.id='detailConfigStatus';status.className='detail-config-status';root.before(status);}status.textContent='구성 '+d.rows.length+' / 20개 · '+(d.enabled?'변경 즉시 반영':'상세 설정 미적용');
+}
+function amountStateValue(el){
+ const b=el.closest('tr[data-b]')?.dataset.b;
+ if(el.dataset.k==='stock')return state[b].stock;
+ if(el.dataset.k==='productStock')return b==='비단 작업장'?wStock.silk:wStock.porc;
+ if(el.id==='planCurrencyStock')return planState.currencyStock;
+ return null;
+}
+function isChinaAmountInput(el){return !!el?.matches?.('[data-k="stock"],[data-k="productStock"],#planCurrencyStock');}
+function prepareChinaAmountInputs(){
+ document.querySelectorAll('[data-k="stock"],[data-k="productStock"],#planCurrencyStock').forEach(el=>{el.classList.add('amount-input');el.dataset.exact=String(amountStateValue(el));el.title=Number(el.dataset.exact).toLocaleString('ko-KR');if(el!==document.activeElement&&el.getAttribute('aria-invalid')!=='true')el.value=fmtCompactInput(Number(el.dataset.exact));});
+ document.querySelectorAll('#panel-prod input[data-k="hours"]').forEach(el=>{el.placeholder='기본 '+fmtHours(settings.baseH);});
+ if(byId('sleepPrepH'))byId('sleepPrepH').placeholder='기본 '+fmtHours(settings.baseH);
+ if(byId('planCurrencyHours'))byId('planCurrencyHours').placeholder='기본 '+fmtHours(settings.baseH);
+ document.querySelectorAll('#tArea [data-plan-count]').forEach(el=>{const item=CITY_PLAN_DATA.areaBuildings.find(x=>x.key===el.dataset.planCount);el.classList.toggle('default-choice',el.value==='');const cell=el.closest('td');let controls=cell.querySelector('.city-sync-actions');if(!controls&&item&&(item.sync||item.providesWorkers)){controls=document.createElement('div');controls.className='city-sync-actions';const span=document.createElement('small');span.className='city-sync-status';const button=document.createElement('button');button.type='button';button.dataset.citySync=item.key;button.textContent=item.providesWorkers?'주택 값 사용':'생산 값 사용';controls.append(span,button);cell.append(controls);}if(controls){const manual=Object.prototype.hasOwnProperty.call(planState.buildingOverrides,item.key);controls.querySelector('small').textContent=manual?'직접 입력':item.providesWorkers?'주택 연동':'생산 연동';controls.querySelector('button').hidden=!manual;}});
+ // Active detail values are explicit edit affordances rather than ambiguous text.
+ document.querySelectorAll('#panel-prod tr[data-b]').forEach(row=>{if(!detailEnabled(row.dataset.b))return;for(const cell of [...row.children].filter((x,i)=>[1,2,3,4].includes(i)&&x.classList.contains('detail-active-cell'))){if(cell.querySelector('button'))continue;const label=cell.textContent.trim(),b=document.createElement('button');b.type='button';b.className='composition-shortcut';b.dataset.openComposition=row.dataset.b;b.textContent=label;b.setAttribute('aria-label',displayName(row.dataset.b)+' 상세 구성 편집');cell.replaceChildren(b);}});
+ syncChinaDetailControls();
+}
+let chinaErrorIndex=0;
+function showChinaInputError(el,message){
+ el.setCustomValidity(message);el.setAttribute('aria-invalid','true');const parent=el.closest('.input-cell,.control-field,.detail-field')||el.parentElement;
+ let id=el.dataset.errorId,error=id?byId(id):null;if(!error){id='china-input-error-'+(++chinaErrorIndex);el.dataset.errorId=id;error=document.createElement('span');error.id=id;error.className='amount-error';error.setAttribute('role','alert');parent.append(error);}el.setAttribute('aria-describedby',id);if(error.textContent!==message)error.textContent=message;
+}
+function clearChinaInputError(el){el.setCustomValidity('');el.removeAttribute('aria-invalid');if(el.dataset.errorId){byId(el.dataset.errorId)?.remove();el.removeAttribute('aria-describedby');delete el.dataset.errorId;}}
+function validateChinaInput(el,final){
+ if(isChinaAmountInput(el)){const text=el.value.trim(),n=text===''?0:parseCompactNumber(text);if(!Number.isFinite(n)||n<0||!Number.isSafeInteger(n)){if(final)showChinaInputError(el,'0 이상의 정수 수량 또는 12K, 1.25M 형식으로 입력하세요.');else if(!Number.isFinite(n)||n<0)showChinaInputError(el,'숫자 또는 K·M 단위로 입력하세요.');return false;}clearChinaInputError(el);if(final)el.value=String(n);return true;}
+ if(el.matches?.('input[type=number]')){const n=el.value===''?null:Number(el.value);if(el.validity.badInput||(n!==null&&(!Number.isFinite(n)||n<0||n>Number.MAX_SAFE_INTEGER))){showChinaInputError(el,'0 이상의 유효한 숫자를 입력하세요.');return false;}clearChinaInputError(el);return true;}
+ return true;
+}
+// Capture first: invalid text must never reach legacy parseFloat/default-zero handlers.
+for(const type of ['input','change'])document.addEventListener(type,e=>{if(!e.target.matches?.('input'))return;if(!validateChinaInput(e.target,type==='change')){e.stopImmediatePropagation();return;}},true);
+document.addEventListener('focusin',e=>{const el=e.target;if(isChinaAmountInput(el)&&el.getAttribute('aria-invalid')!=='true'){el.value=String(amountStateValue(el));el.select();}});
+document.addEventListener('focusout',e=>{const el=e.target;if(!isChinaAmountInput(el)||!el.isConnected||el.getAttribute('aria-invalid')==='true')return;el.value=fmtCompactInput(amountStateValue(el));});
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-open-composition]');if(b){const name=b.dataset.openComposition;openDetailModal(detailGroupForBuilding(name));activeDetailBuilding=name;renderDetailModal();}
+ const sync=e.target.closest('[data-city-sync]');if(sync){delete planState.buildingOverrides[sync.dataset.citySync];normalizeState();renderPlan();saveState();postSize();}
+});
+function refreshChinaCityNumbers(){
+ const p=planProgressionInfo(),plots=CITY_PLAN_DATA.initialExpansions+p.count+planState.gemExpansions,area=plots*16,used=planUsedArea(),workers=planWorkerUsage(),supply=planWorkerAvailability(),remain=supply.total-workers.total;
+ const texts={planWorkersRemain:fmtSignedPower(remain)+'명',planWorkersAvailable:fmtCount(supply.total)+'명',planWorkersTotal:fmtCount(workers.total)+'명',planWorkersHomes:fmtCount(supply.homes)+'명',planWorkersWonder:fmtCount(supply.wonder)+'명',planWorkersBase:fmtCount(workers.base)+'명',planWorkersRice:fmtCount(workers.rice)+'명',planWorkersProcessors:fmtCount(workers.processor)+'명',planWorkersWorkshops:fmtCount(workers.workshop)+'명',planAreaUsageRate:fmtPower(area?used/area*100:0)+'%',planTotalExpansionsTable:fmtQty(plots)+'칸',planTotalAreaTable:fmtQty(area),planUsedAreaTable:fmtCount(used),planRemainAreaTable:fmtCount(area-used)+' ('+fmtPower((area-used)/16)+'칸)'};
+ for(const [id,text]of Object.entries(texts))if(byId(id))byId(id).textContent=text;
+ for(const [id,n]of [['planWorkersRemain',remain],['planRemainAreaTable',area-used]]){const cell=byId(id);cell.classList.toggle('remain-ok',n>=0);cell.classList.toggle('remain-bad',n<0);}
+ const h=planState.currencyHoursManual&&planState.currencyHours!==''?Number(planState.currencyHours):settings.baseH;byId('planCurrencyProjected').textContent=fmtQty(availableQuantity(planState.currencyStock+planState.currencyPerHour*h));
+ for(const item of CITY_PLAN_DATA.areaBuildings){const row=document.querySelector('#tArea tr[data-area-key="'+item.key+'"]');if(!row)continue;const count=planBuildingCount(item);row.children[2].lastChild.textContent=typeof item.workers==='number'?fmtCount(count*item.workers):'—';row.children[4].lastChild.textContent=fmtCount(count*item.w*item.l);}
+ const total=planConstructionCost();byId('planConstructionTotal').textContent=fmtQty(total);
+ for(const r of planState.constructionRows){const row=document.querySelector('[data-construction-row="'+r.id+'"]');const cost=row?.querySelector('.construction-cost-cell>span');if(cost)cost.textContent=fmtQty(constructionUnitCost(r.key,r.currentLv,r.lv)*r.count);}
+ updateUISummaries();
+}
+byId('panel-plan').addEventListener('input',e=>{
+ const el=e.target;if(el.tagName==='SELECT'||el.getAttribute('aria-invalid')==='true')return;const value=el.value.trim(),n=Math.max(0,Number(value)||0),field=el.dataset.planField;
+ if(field==='currencyStock')planState.currencyStock=availableQuantity(parseCompactNumber(value));
+ else if(field==='currencyHours'){planState.currencyHoursManual=value!=='';planState.currencyHours=value===''?'':n;}
+ else if(field)planState[field]=field==='gemExpansions'?Math.floor(n):n;
+ else if(el.dataset.planHomeCount)planState.homes[el.dataset.planHomeCount].count=Math.floor(n);
+ else if(el.dataset.planCount){const key=el.dataset.planCount,item=CITY_PLAN_DATA.areaBuildings.find(x=>x.key===key);if(value===''&&(item.sync||item.providesWorkers))delete planState.buildingOverrides[key];else planState.buildingOverrides[key]=n;}
+ else if(el.dataset.constructionField==='count'){const row=planState.constructionRows.find(r=>r.id===el.closest('[data-construction-row]').dataset.constructionRow);if(row)row.count=Math.floor(n);}
+ else return;
+ refreshChinaCityNumbers();queueLiveSave();
+});
+
 setupUI();
+
 
 </script>
 <script src="update-check.js?v=20261102"></script></body>
