@@ -305,11 +305,11 @@ function getBonus(){return DATA.bonus[settings.wonder+'|'+settings.wLv]||{r:0,g:
 function getNextWorker(){const cur=getBonus().w;for(let l=settings.wLv+1;l<=50;l++){const b=DATA.bonus[settings.wonder+'|'+l];if(b&&b.w!==cur)return l;}return null;}
 function prodInfo(building,lv,mode){return DATA.prod[building+'|'+lv+'|'+mode];}
 function getHours(building){const h=state[building].hours;if(h===''||h===null||isNaN(parseFloat(h)))return parseFloat(settings.baseH)||0;return Math.max(0,parseFloat(h)||0);}
-function normalizedDetailHours(v){return v===''||v===null||v===undefined||!Number.isFinite(parseFloat(v))?'':Math.max(0,parseFloat(v)||0);}
+function normalizedDetailHours(v){if(v===''||v===null||v===undefined)return '';const n=Number(v);return Number.isFinite(n)&&n<=Number.MAX_SAFE_INTEGER?Math.max(0,n):'';}
 function isContinuousBuilding(building){return DETAIL_GROUPS.base.includes(building);}
 function validModes(building,lv){return DATA.lm[building+'|'+lv]||[];}
 function normalizedDetailMode(building,lv,mode){const modes=validModes(building,lv);return modes.includes(mode)?mode:(modes[0]||mode||'');}
-function normalizeDetail(building){const d=details[building]||(details[building]={enabled:false,rows:[]});d.enabled=!!d.enabled;if(!Array.isArray(d.rows))d.rows=[];d.rows=d.rows.slice(0,20).map(row=>{const lv=clamp(parseInt(row?.lv)||1,1,6),mode=normalizedDetailMode(building,lv,row?.mode||state[building].mode);return {lv,mode,count:Math.max(0,parseFloat(row?.count)||0),hours:normalizedDetailHours(row?.hours)};});}
+function normalizeDetail(building){const source=details[building],d=storedRecord(source)?source:(details[building]={enabled:false,rows:[]});d.enabled=d.enabled===true;if(!Array.isArray(d.rows)){d.enabled=false;d.rows=[];}d.rows=d.rows.filter(storedRecord).slice(0,20).map(row=>{const lv=clamp(parseInt(row.lv)||1,1,6),mode=normalizedDetailMode(building,lv,row.mode||state[building].mode);return {lv,mode,count:finiteNonnegative(row.count),hours:normalizedDetailHours(row.hours)};});}
 function normalizeDetails(){Object.values(DETAIL_GROUPS).flat().forEach(normalizeDetail);}
 function detailEnabled(building){const d=details[building];return !!(d&&d.enabled&&Array.isArray(d.rows));}
 function seedDetailFromLegacy(building){const d=details[building];if(d.rows.length)return;const s=state[building];d.rows=[{lv:s.lv,mode:normalizedDetailMode(building,s.lv,s.mode),count:Math.max(0,parseFloat(s.bldgs)||0),hours:normalizedDetailHours(s.hours)}];}
@@ -343,7 +343,32 @@ function snapshotState(){return {state:JSON.parse(JSON.stringify(state)),setting
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(snapshotState()));}catch(e){}}
 function showResetStatus(message){const status=document.getElementById('resetStatus');if(!status)return;status.textContent=message;if(resetStatusTimer)clearTimeout(resetStatusTimer);resetStatusTimer=setTimeout(()=>{status.textContent='';},1800);}
 function hasSavedDefault(){try{return !!localStorage.getItem(DEFAULT_STORAGE_KEY);}catch(e){return false;}}
-function normalizeState(){Object.keys(state).forEach(b=>{const s=state[b];s.lv=clamp(parseInt(s.lv)||1,1,6);s.bldgs=Math.max(0,parseFloat(s.bldgs)||0);if(Object.prototype.hasOwnProperty.call(s,'stock'))s.stock=availableQuantity(s.stock);if(s.hours!==''&&s.hours!==null&&s.hours!==undefined){const h=parseFloat(s.hours);s.hours=Number.isFinite(h)?Math.max(0,h):'';}const modes=DATA.lm[b+'|'+s.lv]||[];if(modes.length&&!modes.includes(s.mode))s.mode=modes[0];});if(!['자금성','병마용','만리장성'].includes(settings.wonder))settings.wonder='자금성';settings.wLv=clamp(parseInt(settings.wLv)||0,0,50);settings.baseH=Math.max(0,parseFloat(settings.baseH)||0);if(!['생산 계산기값','30분','1시간','2시간'].includes(settings.productRawCycle))settings.productRawCycle='생산 계산기값';settings.prodDetailsVisible=settings.prodDetailsVisible===true;settings.wonderDetailsVisible=settings.wonderDetailsVisible===true;settings.sleepPrepH=settings.sleepPrepH===''?'':Math.max(0,parseFloat(settings.sleepPrepH)||0);if(!['최장','30분','1시간','2시간'].includes(settings.sleepCycle))settings.sleepCycle='최장';settings.sleepCount=Math.max(0,Math.floor(parseFloat(settings.sleepCount)||0));wStock.silk=availableQuantity(wStock.silk);wStock.porc=availableQuantity(wStock.porc);wLvSet.cur=clamp(parseInt(wLvSet.cur)||0,0,50);wLvSet.tgt=clamp(parseInt(wLvSet.tgt)||0,0,50);if(wLvSet.tgt<wLvSet.cur)wLvSet.tgt=wLvSet.cur;planState.progressOverride=Math.max(0,Math.floor(parseFloat(planState.progressOverride)||0));planState.gemExpansions=Math.max(0,Math.floor(parseFloat(planState.gemExpansions)||0));planState.premiumRice=Math.max(0,parseFloat(planState.premiumRice)||0);if(!planState.homes||typeof planState.homes!=='object')planState.homes={};['smallHome','mediumHome','premiumHome'].forEach(k=>{const h=planState.homes[k]||(planState.homes[k]={lv:1,count:0});h.lv=clamp(parseInt(h.lv)||1,1,6);h.count=Math.max(0,parseFloat(h.count)||0);});planState.currencyStock=availableQuantity(planState.currencyStock);planState.currencyPerHour=Math.max(0,parseFloat(planState.currencyPerHour)||0);if(planState.currencyHoursManual!==true&&planState.currencyHoursManual!==false){const legacyCh=parseFloat(planState.currencyHours);planState.currencyHoursManual=Number.isFinite(legacyCh)&&legacyCh>0;}if(planState.currencyHoursManual!==true){planState.currencyHours='';planState.currencyHoursManual=false;}else{const ch=parseFloat(planState.currencyHours);planState.currencyHours=Number.isFinite(ch)?Math.max(0,ch):'';}const techIds=new Set(CITY_PLAN_DATA.research.map(t=>t.id));if(!Array.isArray(planState.currentTechs))planState.currentTechs=[];if(planState.currentTech&&techIds.has(planState.currentTech)&&!planState.currentTechs.includes(planState.currentTech))planState.currentTechs.push(planState.currentTech);delete planState.currentTech;planState.currentTechs=[...new Set(planState.currentTechs.filter(id=>techIds.has(id)))];if(planState.targetTech&&!techIds.has(planState.targetTech))planState.targetTech='';normalizeDetails();
+function storedRecord(value){return !!value&&typeof value==='object'&&!Array.isArray(value);}
+function finiteNonnegative(value,fallback=0){if(value===null||value===undefined||value==='')return fallback;const n=Number(value);return Number.isFinite(n)&&n<=Number.MAX_SAFE_INTEGER?Math.max(0,n):fallback;}
+function repairStoredValues(){
+ for(const key of Object.keys(state))if(!Object.prototype.hasOwnProperty.call(INITIAL_STATE.prod,key))delete state[key];
+ for(const [b,defaults]of Object.entries(INITIAL_STATE.prod)){const raw=storedRecord(state[b])?state[b]:{};state[b]={...defaults,...raw};const value=state[b];value.bldgs=finiteNonnegative(value.bldgs,defaults.bldgs);if('stock'in defaults)value.stock=finiteNonnegative(value.stock);if(value.hours!==''&&value.hours!==null&&value.hours!==undefined)value.hours=Number.isFinite(Number(value.hours))&&Number(value.hours)<=Number.MAX_SAFE_INTEGER?Math.max(0,Number(value.hours)):'';}
+ for(const key of ['baseH','sleepCount'])settings[key]=finiteNonnegative(settings[key],INITIAL_STATE.settings[key]);
+ if(settings.sleepPrepH!==''&&settings.sleepPrepH!==null&&settings.sleepPrepH!==undefined)settings.sleepPrepH=finiteNonnegative(settings.sleepPrepH);
+ for(const key of ['silk','porc'])wStock[key]=finiteNonnegative(wStock[key]);
+ if(!storedRecord(planState.homes))planState.homes={};for(const key of ['smallHome','mediumHome','premiumHome']){const home=storedRecord(planState.homes[key])?planState.homes[key]:{};planState.homes[key]={...INITIAL_PLAN_STATE.homes[key],...home,count:finiteNonnegative(home.count)};}
+ for(const key of ['buildingOverrides','buildingCounts'])if(!storedRecord(planState[key]))planState[key]={};
+ const known=new Set(CITY_PLAN_DATA.areaBuildings.map(b=>b.key));for(const key of Object.keys(planState.buildingOverrides)){if(!known.has(key))delete planState.buildingOverrides[key];else planState.buildingOverrides[key]=finiteNonnegative(planState.buildingOverrides[key]);}
+ for(const key of ['progressOverride','gemExpansions','premiumRice','currencyStock','currencyPerHour'])planState[key]=finiteNonnegative(planState[key]);
+ if(planState.currencyHours!==''&&planState.currencyHours!==null&&planState.currencyHours!==undefined){const raw=Number(planState.currencyHours);if(!Number.isFinite(raw)||raw>Number.MAX_SAFE_INTEGER){planState.currencyHours='';planState.currencyHoursManual=false;}else planState.currencyHours=Math.max(0,raw);}
+ if(!Array.isArray(planState.constructionRows))planState.constructionRows=[];const ids=new Set();planState.constructionRows=planState.constructionRows.filter(storedRecord).map((row,i)=>{let id=String(row.id||'row'+(i+1));if(!/^[a-zA-Z0-9_-]{1,100}$/.test(id)||ids.has(id)){id='recovered_'+(i+1);while(ids.has(id))id+='_';}ids.add(id);return {...row,id,count:finiteNonnegative(row.count)};});
+}
+function effectiveStepValue(input){
+ const explicit=Number(input.value);if(String(input.value).trim()!==''&&Number.isFinite(explicit))return explicit;
+ const data=input.dataset||{},building=input.closest?.('tr[data-b]')?.dataset.b;
+ if(data.k==='hours'&&building)return getHours(building);
+ if(data.detailK==='hours')return detailHours(activeDetailBuilding,details[activeDetailBuilding]?.rows[Number(input.closest?.('[data-detail-row]')?.dataset.detailRow)]||{hours:''});
+ if(data.planCount){const item=CITY_PLAN_DATA.areaBuildings.find(b=>b.key===data.planCount);return item?planBuildingCount(item):0;}
+ if(input.id==='sleepPrepH')return sleepPrepHours();if(input.id==='planCurrencyHours')return settings.baseH;
+ return 0;
+}
+
+function normalizeState(){repairStoredValues();Object.keys(state).forEach(b=>{const s=state[b];s.lv=clamp(parseInt(s.lv)||1,1,6);s.bldgs=Math.max(0,parseFloat(s.bldgs)||0);if(Object.prototype.hasOwnProperty.call(s,'stock'))s.stock=availableQuantity(s.stock);if(s.hours!==''&&s.hours!==null&&s.hours!==undefined){const h=parseFloat(s.hours);s.hours=Number.isFinite(h)?Math.max(0,h):'';}const modes=DATA.lm[b+'|'+s.lv]||[];if(modes.length&&!modes.includes(s.mode))s.mode=modes[0];});if(!['자금성','병마용','만리장성'].includes(settings.wonder))settings.wonder='자금성';settings.wLv=clamp(parseInt(settings.wLv)||0,0,50);settings.baseH=Math.max(0,parseFloat(settings.baseH)||0);if(!['생산 계산기값','30분','1시간','2시간'].includes(settings.productRawCycle))settings.productRawCycle='생산 계산기값';settings.prodDetailsVisible=settings.prodDetailsVisible===true;settings.wonderDetailsVisible=settings.wonderDetailsVisible===true;settings.sleepPrepH=settings.sleepPrepH===''?'':Math.max(0,parseFloat(settings.sleepPrepH)||0);if(!['최장','30분','1시간','2시간'].includes(settings.sleepCycle))settings.sleepCycle='최장';settings.sleepCount=Math.max(0,Math.floor(parseFloat(settings.sleepCount)||0));wStock.silk=availableQuantity(wStock.silk);wStock.porc=availableQuantity(wStock.porc);wLvSet.cur=clamp(parseInt(wLvSet.cur)||0,0,50);wLvSet.tgt=clamp(parseInt(wLvSet.tgt)||0,0,50);if(wLvSet.tgt<wLvSet.cur)wLvSet.tgt=wLvSet.cur;planState.progressOverride=Math.max(0,Math.floor(parseFloat(planState.progressOverride)||0));planState.gemExpansions=Math.max(0,Math.floor(parseFloat(planState.gemExpansions)||0));planState.premiumRice=Math.max(0,parseFloat(planState.premiumRice)||0);if(!planState.homes||typeof planState.homes!=='object')planState.homes={};['smallHome','mediumHome','premiumHome'].forEach(k=>{const h=planState.homes[k]||(planState.homes[k]={lv:1,count:0});h.lv=clamp(parseInt(h.lv)||1,1,6);h.count=Math.max(0,parseFloat(h.count)||0);});planState.currencyStock=availableQuantity(planState.currencyStock);planState.currencyPerHour=Math.max(0,parseFloat(planState.currencyPerHour)||0);if(planState.currencyHoursManual!==true&&planState.currencyHoursManual!==false){const legacyCh=parseFloat(planState.currencyHours);planState.currencyHoursManual=Number.isFinite(legacyCh)&&legacyCh>0;}if(planState.currencyHoursManual!==true){planState.currencyHours='';planState.currencyHoursManual=false;}else{const ch=parseFloat(planState.currencyHours);planState.currencyHours=Number.isFinite(ch)?Math.max(0,ch):'';}const techIds=new Set(CITY_PLAN_DATA.research.map(t=>t.id));if(!Array.isArray(planState.currentTechs))planState.currentTechs=[];if(planState.currentTech&&techIds.has(planState.currentTech)&&!planState.currentTechs.includes(planState.currentTech))planState.currentTechs.push(planState.currentTech);delete planState.currentTech;planState.currentTechs=[...new Set(planState.currentTechs.filter(id=>techIds.has(id)))];if(planState.targetTech&&!techIds.has(planState.targetTech))planState.targetTech='';normalizeDetails();
 if(!planState.buildingCounts||typeof planState.buildingCounts!=='object')planState.buildingCounts={};
 if(!planState.buildingOverrides||typeof planState.buildingOverrides!=='object')planState.buildingOverrides={};
 /* v28 주택 수를 일꾼 현황으로 한 번만 승계하고 기본 연동으로 전환한다. */
@@ -499,13 +524,13 @@ function constructionBuildingOptions(selected){
   return opts.join('');
 }
 function constructionCurrentLevelOptions(selected){return [0,1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+'>'+(lv===0?'미건설':'Lv.'+lv)+'</option>').join('');}
-function constructionLevelOptions(selected){return [1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+'>Lv.'+lv+'</option>').join('');}
+function constructionLevelOptions(selected,currentLv=0){return [1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+(lv<currentLv?' disabled':'')+'>Lv.'+lv+'</option>').join('');}
 function renderPlanConstruction(){
   const tbody=document.querySelector('#tConstruction tbody');if(!tbody)return;
   if(!(planState.constructionRows||[]).length){tbody.innerHTML='<tr><td colspan="5" class="calc" style="color:#9ca3af">+ 건설 항목 추가를 눌러 계산할 건물을 추가하세요.</td></tr>';}
   else tbody.innerHTML=planState.constructionRows.map(r=>{
     const unit=constructionUnitCost(r.key,r.currentLv,r.lv),need=unit*Math.max(0,Math.floor(r.count||0));
-    return '<tr data-construction-row="'+r.id+'"><td class="input-cell"><span class="construction-mobile-label">건물 종류</span><div class="construction-building-cell"><select data-construction-field="key">'+constructionBuildingOptions(r.key)+'</select></div></td><td class="input-cell"><span class="construction-mobile-label">현재 레벨</span><select data-construction-field="currentLv">'+constructionCurrentLevelOptions(r.currentLv)+'</select></td><td class="input-cell"><span class="construction-mobile-label">목표 레벨</span><select data-construction-field="lv">'+constructionLevelOptions(r.lv)+'</select></td><td class="input-cell"><span class="construction-mobile-label">건설 수</span><input type="number" min="0" step="1" data-construction-field="count" value="'+r.count+'" placeholder="1"></td><td class="num calc"><span class="construction-mobile-label">필요 오수전</span><div class="construction-cost-cell"><span>'+fmtQty(need)+'</span><button type="button" class="construction-remove" data-construction-remove="'+r.id+'" aria-label="건설 항목 삭제" title="건설 항목 삭제">삭제</button></div></td></tr>';
+    return '<tr data-construction-row="'+r.id+'"><td class="input-cell"><span class="construction-mobile-label">건물 종류</span><div class="construction-building-cell"><select data-construction-field="key">'+constructionBuildingOptions(r.key)+'</select></div></td><td class="input-cell"><span class="construction-mobile-label">현재 레벨</span><select data-construction-field="currentLv">'+constructionCurrentLevelOptions(r.currentLv)+'</select></td><td class="input-cell"><span class="construction-mobile-label">목표 레벨</span><select data-construction-field="lv">'+constructionLevelOptions(r.lv,r.currentLv)+'</select></td><td class="input-cell"><span class="construction-mobile-label">건설 수</span><input type="number" min="0" step="1" data-construction-field="count" value="'+r.count+'" placeholder="1"></td><td class="num calc"><span class="construction-mobile-label">필요 오수전</span><div class="construction-cost-cell"><span>'+fmtQty(need)+'</span><button type="button" class="construction-remove" data-construction-remove="'+r.id+'" aria-label="건설 항목 삭제" title="건설 항목 삭제">삭제</button></div></td></tr>';
   }).join('');
   const total=document.getElementById('planConstructionTotal');if(total)total.textContent=fmtQty(planConstructionCost());
 }
@@ -638,7 +663,7 @@ function renderPlanResearch(){
 function renderPlan(){if(!document.getElementById('panel-plan'))return;renderPlanArea();renderPlanCurrency();renderPlanResearch();}
 
 function renderViewModes(){
-  if(typeof refreshUI==='function')refreshUI();
+  if(typeof scheduleUIRefresh==='function')scheduleUIRefresh();
   const prodOpen=settings.prodDetailsVisible===true,wonderOpen=settings.wonderDetailsVisible===true;
   ['t1','t2','t3'].forEach(id=>{const t=document.getElementById(id);if(t)t.classList.toggle('details-visible',prodOpen);});
   ['tw','tSleep','tPower'].forEach(id=>{const t=document.getElementById(id);if(t)t.classList.toggle('details-visible',wonderOpen);});
@@ -646,11 +671,11 @@ function renderViewModes(){
   const wb=document.getElementById('wonderViewToggle');if(wb){wb.textContent=wonderOpen?'상세 숨기기':'상세 보기';wb.setAttribute('aria-expanded',String(wonderOpen));}
 }
 function renderAll(){renderBonus();renderTables();renderWonder();renderSleepReserve();renderPower();renderConversion();renderWonderContext();renderDetailLaunchers();renderPlan();renderViewModes();postSize();}
-function incrementStepInput(input,delta){let cur=parseFloat(input.value);if(isNaN(cur))cur=0;let next=Math.round((cur+delta)*1000000)/1000000;const min=input.min!==''?parseFloat(input.min):null,max=input.max!==''?parseFloat(input.max):null;if(min!==null&&!isNaN(min))next=Math.max(min,next);if(max!==null&&!isNaN(max))next=Math.min(max,next);input.value=String(next);input.dispatchEvent(new Event('change',{bubbles:true}));}
+function incrementStepInput(input,delta){let cur=effectiveStepValue(input);let next=Math.round((cur+delta)*1000000)/1000000;const min=input.min!==''?parseFloat(input.min):null,max=input.max!==''?parseFloat(input.max):null;if(min!==null&&!isNaN(min))next=Math.max(min,next);if(max!==null&&!isNaN(max))next=Math.min(max,next);input.value=String(next);input.dispatchEvent(new Event('change',{bubbles:true}));}
 
 const prodPanel=document.getElementById('panel-prod');
 prodPanel.addEventListener('input',e=>{const el=e.target.closest('[data-k]');if(!el||el.tagName==='SELECT')return;const row=el.closest('tr[data-b]');if(!row)return;const k=commitRowControl(el,row.dataset.b);renderProductionDependents(k);queueLiveSave();});
-prodPanel.addEventListener('change',e=>{const el=e.target.closest('[data-k]');if(!el)return;const row=el.closest('tr[data-b]');if(!row)return;const k=commitRowControl(el,row.dataset.b);renderTables();renderProductionDependents(k);saveState();postSize();});
+prodPanel.addEventListener('change',e=>{const el=e.target.closest('[data-k]');if(!el)return;const row=el.closest('tr[data-b]');if(!row)return;const k=commitRowControl(el,row.dataset.b);syncCommittedProductionInput(el,row.dataset.b,k);renderProductionDependents(k);saveState();postSize();});
 prodPanel.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('[data-k]')){e.preventDefault();e.target.blur();}});
 
 document.getElementById('panel-plan').addEventListener('change',e=>{
@@ -676,9 +701,9 @@ document.getElementById('panel-plan').addEventListener('change',e=>{
   if(cRow&&cField){
     const row=planState.constructionRows.find(r=>r.id===cRow.dataset.constructionRow);
     if(row){if(cField==='key')row.key=e.target.value;else if(cField==='currentLv'){row.currentLv=clamp(parseInt(e.target.value)||0,0,6);if(row.lv<row.currentLv)row.lv=row.currentLv;}else if(cField==='lv'){row.lv=Math.max(row.currentLv||0,clamp(parseInt(e.target.value)||1,1,6));}else if(cField==='count')row.count=Math.max(0,Math.floor(parseFloat(e.target.value)||0));}
-    setTimeout(()=>{renderPlanConstruction();saveState();postSize();},0);return;
+    normalizeState();syncCommittedCityInput(e.target);refreshChinaCityNumbers();saveState();postSize();return;
   }
-  normalizeState();renderPlan();saveState();postSize();
+  normalizeState();syncCommittedCityInput(e.target);refreshChinaCityNumbers();saveState();postSize();
 });
 
 document.getElementById('panel-plan').addEventListener('click',e=>{
@@ -737,10 +762,10 @@ document.getElementById('detailEnabled').addEventListener('change',e=>{const d=d
 document.getElementById('detailAdd').addEventListener('click',addDetailRow);
 function commitDetailControl(el){const rowEl=el.closest('[data-detail-row]'),idx=rowEl?parseInt(rowEl.dataset.detailRow):-1,d=details[activeDetailBuilding];if(!Number.isInteger(idx)||idx<0||idx>=d.rows.length)return false;const row=d.rows[idx],k=el.dataset.detailK,v=el.value;if(k==='lv'){row.lv=clamp(parseInt(v)||1,1,6);row.mode=normalizedDetailMode(activeDetailBuilding,row.lv,row.mode);}else if(k==='mode'){row.mode=normalizedDetailMode(activeDetailBuilding,row.lv,v);}else if(k==='count'){row.count=Math.max(0,parseFloat(v)||0);}else if(k==='hours'){row.hours=normalizedDetailHours(v);}normalizeDetail(activeDetailBuilding);return true;}
 document.getElementById('detailRows').addEventListener('input',e=>{const el=e.target.closest('[data-detail-k]');if(!el||el.tagName==='SELECT')return;if(!commitDetailControl(el))return;refreshProductionCalcCells();renderWonder();renderSleepReserve();renderPower();renderPlanArea();renderViewModes();queueLiveSave();});
-document.getElementById('detailRows').addEventListener('change',e=>{const el=e.target.closest('[data-detail-k]');if(!el||!commitDetailControl(el))return;renderAll();renderDetailModal();saveState();});
+document.getElementById('detailRows').addEventListener('change',e=>{const el=e.target.closest('[data-detail-k]');if(!el||!commitDetailControl(el))return;syncCommittedDetailInput(el);renderAll();saveState();});
 document.getElementById('detailRows').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.matches('input')){e.preventDefault();e.target.blur();}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElementById('detailModal').hasAttribute('hidden'))closeDetailModal();});
-function postSize(){if(typeof refreshUI==='function')refreshUI();try{const h=document.documentElement.scrollHeight;parent.postMessage({type:'wrks:viz:resize',height:h},'*');}catch(e){}}
+function postSize(){if(typeof scheduleUIRefresh==='function')scheduleUIRefresh();try{const h=document.documentElement.scrollHeight;parent.postMessage({type:'wrks:viz:resize',height:h},'*');}catch(e){}}
 window.addEventListener('load',()=>{loadState();renderAll();postSize();});if('ResizeObserver'in window)new ResizeObserver(postSize).observe(document.body);
 </script>
 <script>
@@ -855,6 +880,8 @@ function updateUISummaries(){
  const min=String(wLvSet.cur);if(byId('tgtLv').min!==min)byId('tgtLv').min=min;
 
 }
+let uiRefreshScheduled=false;
+function scheduleUIRefresh(){if(!uiReady||uiRefreshScheduled)return;uiRefreshScheduled=true;queueMicrotask(()=>{uiRefreshScheduled=false;refreshUI();});}
 function refreshUI(){if(!uiReady)return;labelUITables();updateUISummaries();document.querySelectorAll('.tabs .tab').forEach(b=>b.setAttribute('aria-selected',String(b.classList.contains('active'))));}
 // Detailed configurations compare actual output over a common time window.
 function productionWindowChina(building){if(!detailEnabled(building))return getHours(building);const rows=details[building].rows.filter(r=>r.count>0);return rows.length?Math.max(0,...rows.map(r=>detailHours(building,r))):0;}
@@ -942,6 +969,7 @@ function syncChinaDetailControls(){
  const d=details[activeDetailBuilding],root=byId('detailRows');if(!root||!d)return;
  root.querySelectorAll('input,select,button').forEach(el=>el.disabled=!d.enabled);
  root.querySelectorAll('[data-detail-row]').forEach((row,i)=>{row.querySelectorAll('[data-detail-k]').forEach(el=>{const label={lv:'레벨',mode:'생산 방식',count:'건물 수',hours:'운영 시간(h)'}[el.dataset.detailK];el.setAttribute('aria-label',displayName(activeDetailBuilding)+' 구성 '+(i+1)+' '+label);});row.querySelectorAll('.step-btn').forEach(b=>b.setAttribute('aria-label',b.closest('.step-wrap').querySelector('input').getAttribute('aria-label')+(Number(b.dataset.delta)>0?' 늘리기':' 줄이기')));row.querySelector('.detail-remove')?.setAttribute('aria-label',displayName(activeDetailBuilding)+' 구성 '+(i+1)+' 삭제');});
+ const count=d.rows.reduce((sum,row)=>sum+finiteNonnegative(row.count),0);byId('detailResult').textContent=d.enabled?(d.rows.length?'구성 '+d.rows.length+'개 · 총 건물 수 '+fmtCount(count):'구성이 없습니다. 건물 구성을 추가하세요.'):'상세 설정을 켜면 이 항목의 생산 계산에 상세 구성이 적용됩니다.';
  const add=byId('detailAdd');add.disabled=!d.enabled||d.rows.length>=20;add.title=d.rows.length>=20?'건물 구성은 최대 20개까지 입력할 수 있습니다.':'';
  let status=byId('detailConfigStatus');if(!status){status=document.createElement('div');status.id='detailConfigStatus';status.className='detail-config-status';root.before(status);}status.textContent='구성 '+d.rows.length+' / 20개 · '+(d.enabled?'변경 즉시 반영':'상세 설정 미적용');
 }
@@ -958,7 +986,7 @@ function prepareChinaAmountInputs(){
  document.querySelectorAll('#panel-prod input[data-k="hours"]').forEach(el=>{el.placeholder='기본 '+fmtHours(settings.baseH);});
  if(byId('sleepPrepH'))byId('sleepPrepH').placeholder='기본 '+fmtHours(settings.baseH);
  if(byId('planCurrencyHours'))byId('planCurrencyHours').placeholder='기본 '+fmtHours(settings.baseH);
- document.querySelectorAll('#tArea [data-plan-count]').forEach(el=>{const item=CITY_PLAN_DATA.areaBuildings.find(x=>x.key===el.dataset.planCount);el.classList.toggle('default-choice',el.value==='');const cell=el.closest('td');let controls=cell.querySelector('.city-sync-actions');if(!controls&&item&&(item.sync||item.providesWorkers)){controls=document.createElement('div');controls.className='city-sync-actions';const span=document.createElement('small');span.className='city-sync-status';const button=document.createElement('button');button.type='button';button.dataset.citySync=item.key;button.textContent=item.providesWorkers?'주택 값 사용':'생산 값 사용';controls.append(span,button);cell.append(controls);}if(controls){const manual=Object.prototype.hasOwnProperty.call(planState.buildingOverrides,item.key);controls.querySelector('small').textContent=manual?'직접 입력':item.providesWorkers?'주택 연동':'생산 연동';controls.querySelector('button').hidden=!manual;}});
+ document.querySelectorAll('#tArea [data-plan-count]').forEach(el=>{const item=CITY_PLAN_DATA.areaBuildings.find(x=>x.key===el.dataset.planCount);el.classList.toggle('default-choice',el.value==='');if(el.value==='')el.placeholder='기본 '+fmtCount(planBuildingCount(item));const cell=el.closest('td');let controls=cell.querySelector('.city-sync-actions');if(!controls&&item&&(item.sync||item.providesWorkers)){controls=document.createElement('div');controls.className='city-sync-actions';const span=document.createElement('small');span.className='city-sync-status';const button=document.createElement('button');button.type='button';button.dataset.citySync=item.key;button.textContent=item.providesWorkers?'주택 값 사용':'생산 값 사용';controls.append(span,button);cell.append(controls);}if(controls){const manual=Object.prototype.hasOwnProperty.call(planState.buildingOverrides,item.key);controls.querySelector('small').textContent=manual?'직접 입력':item.providesWorkers?'주택 연동':'생산 연동';controls.querySelector('button').hidden=!manual;}});
  // Active detail values are explicit edit affordances rather than ambiguous text.
  document.querySelectorAll('#panel-prod tr[data-b]').forEach(row=>{if(!detailEnabled(row.dataset.b))return;for(const cell of [...row.children].filter((x,i)=>[1,2,3,4].includes(i)&&x.classList.contains('detail-active-cell'))){if(cell.querySelector('button'))continue;const label=cell.textContent.trim(),b=document.createElement('button');b.type='button';b.className='composition-shortcut';b.dataset.openComposition=row.dataset.b;b.textContent=label;b.setAttribute('aria-label',displayName(row.dataset.b)+' 상세 구성 편집');cell.replaceChildren(b);}});
  syncChinaDetailControls();
@@ -970,14 +998,14 @@ function showChinaInputError(el,message){
 }
 function clearChinaInputError(el){el.setCustomValidity('');el.removeAttribute('aria-invalid');if(el.dataset.errorId){byId(el.dataset.errorId)?.remove();el.removeAttribute('aria-describedby');delete el.dataset.errorId;}}
 function validateChinaInput(el,final){
- if(isChinaAmountInput(el)){const text=el.value.trim(),n=text===''?0:parseCompactNumber(text);if(!Number.isFinite(n)||n<0||!Number.isSafeInteger(n)){if(final)showChinaInputError(el,'0 이상의 정수 수량 또는 12K, 1.25M 형식으로 입력하세요.');else if(!Number.isFinite(n)||n<0)showChinaInputError(el,'숫자 또는 K·M 단위로 입력하세요.');return false;}clearChinaInputError(el);if(final)el.value=String(n);return true;}
+ if(isChinaAmountInput(el)){const text=el.value.trim(),n=text===''?0:parseCompactNumber(text);if(!Number.isFinite(n)||n<0||!Number.isSafeInteger(n)){if(final)showChinaInputError(el,'0 이상의 정수 수량 또는 12K, 1.25M 형식으로 입력하세요.');else showChinaInputError(el,Number.isFinite(n)&&n>=0?'정수 수량을 입력하세요. K·M 단위도 사용할 수 있습니다.':'숫자 또는 K·M 단위로 입력하세요.');return false;}clearChinaInputError(el);if(final)el.value=String(n);return true;}
  if(el.matches?.('input[type=number]')){const n=el.value===''?null:Number(el.value);if(el.validity.badInput||(n!==null&&(!Number.isFinite(n)||n<0||n>Number.MAX_SAFE_INTEGER))){showChinaInputError(el,'0 이상의 유효한 숫자를 입력하세요.');return false;}clearChinaInputError(el);return true;}
  return true;
 }
 // Capture first: invalid text must never reach legacy parseFloat/default-zero handlers.
 for(const type of ['input','change'])document.addEventListener(type,e=>{if(!e.target.matches?.('input'))return;if(!validateChinaInput(e.target,type==='change')){e.stopImmediatePropagation();return;}},true);
 document.addEventListener('focusin',e=>{const el=e.target;if(isChinaAmountInput(el)&&el.getAttribute('aria-invalid')!=='true'){el.value=String(amountStateValue(el));el.select();}});
-document.addEventListener('focusout',e=>{const el=e.target;if(!isChinaAmountInput(el)||!el.isConnected||el.getAttribute('aria-invalid')==='true')return;el.value=fmtCompactInput(amountStateValue(el));});
+document.addEventListener('focusout',e=>{const el=e.target;if(!isChinaAmountInput(el)||!el.isConnected||el.getAttribute('aria-invalid')==='true')return;if(!validateChinaInput(el,true))return;el.value=fmtCompactInput(amountStateValue(el));});
 document.addEventListener('click',e=>{
  const b=e.target.closest('[data-open-composition]');if(b){const name=b.dataset.openComposition;openDetailModal(detailGroupForBuilding(name));activeDetailBuilding=name;renderDetailModal();}
  const sync=e.target.closest('[data-city-sync]');if(sync){delete planState.buildingOverrides[sync.dataset.citySync];normalizeState();renderPlan();saveState();postSize();}
@@ -1005,6 +1033,29 @@ byId('panel-plan').addEventListener('input',e=>{
  refreshChinaCityNumbers();queueLiveSave();
 });
 
+function syncCommittedProductionInput(el,building,key){
+ if(key==='lv'){el.value=state[building].lv;const select=el.closest('tr').querySelector('[data-k="mode"]');if(select){select.innerHTML=modeOptions(building,state[building].lv,state[building].mode);select.value=state[building].mode;}}
+ else if(key==='mode')el.value=state[building].mode;
+ else if(key==='stock'||key==='productStock')el.value=String(amountStateValue(el));
+ else if(key==='bldgs'||key==='hours')el.value=state[building][key];
+}
+function syncCommittedDetailInput(el){
+ const i=Number(el.closest('[data-detail-row]')?.dataset.detailRow),row=details[activeDetailBuilding]?.rows[i];if(!row)return;
+ el.value=row[el.dataset.detailK];if(el.dataset.detailK==='lv'){const select=el.closest('[data-detail-row]').querySelector('[data-detail-k="mode"]');if(select){select.innerHTML=modeOptions(activeDetailBuilding,row.lv,row.mode);select.value=row.mode;}}
+}
+function syncCommittedCityInput(el){
+ const data=el.dataset,field=data.planField;
+ if(field==='currencyHours')el.value=planState.currencyHoursManual?planState.currencyHours:'';
+ else if(field)el.value=planState[field];
+ else if(data.planHomeCount)el.value=planState.homes[data.planHomeCount].count;
+ else if(data.planHomeLv)el.value=planState.homes[data.planHomeLv].lv;
+ else if(data.planCount)el.value=Object.prototype.hasOwnProperty.call(planState.buildingOverrides,data.planCount)?planState.buildingOverrides[data.planCount]:'';
+ const tr=el.closest('[data-construction-row]'),row=tr?planState.constructionRows.find(r=>r.id===tr.dataset.constructionRow):null;
+ if(row){tr.querySelectorAll('[data-construction-field]').forEach(input=>input.value=row[input.dataset.constructionField]);tr.querySelectorAll('[data-construction-field="lv"] option').forEach(option=>option.disabled=Number(option.value)<row.currentLv);}
+}
+function flushPendingChinaSave(){if(!liveSaveTimer)return;clearTimeout(liveSaveTimer);liveSaveTimer=null;saveState();}
+window.addEventListener('pagehide',flushPendingChinaSave);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushPendingChinaSave();});
 setupUI();
 
 
