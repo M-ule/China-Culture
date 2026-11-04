@@ -97,6 +97,7 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
 #planCurrencyPerHourInput::-webkit-inner-spin-button,#planCurrencyPerHourInput::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
 .currency-time-context{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 14px}.currency-time-context #currencyTimeBasis{margin:0}.currency-time-context button{font-size:13px;min-height:36px;padding:6px 10px}
 @media(max-width:720px){#currencyCard .bar label>#planCurrencyPerHourInput{height:48px;min-height:48px;width:100%!important}#researchCard .research-legend{gap:10px;flex-wrap:wrap;font-size:12px}}
+#detailHelp:empty{display:none}
 </style>
 </head>
 <body><main>
@@ -114,11 +115,11 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
   </div>
   <div id="bonusSummary" class="summary production-summary"></div><div class="bonus-box" id="bonusBox" hidden></div>
 </section>
-<section class="card" id="resourceCard">  <div class="section-title-row"><div class="production-section-title"><h2>기초 자원</h2><span id="baseResourceDetailSummary" class="detail-summary">상세 설정 미사용</span></div><div class="detail-actions"><button id="baseResourceDetailOpen" class="detail-open-btn" type="button">기초 자원 상세 설정</button></div></div>
+<section class="card" id="resourceCard">  <div class="section-title-row"><div class="production-section-title"><h2>기초 자원</h2><span id="baseResourceDetailSummary" class="detail-summary">기본 설정 사용</span></div><div class="detail-actions"><button id="baseResourceDetailOpen" class="detail-open-btn" type="button">기초 자원 상세 설정</button></div></div>
   <div class="table-wrap"><table id="t1"><thead><tr><th>자원</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>잔여/부족</th><th>소요 시간</th><th>예상 생산량</th><th>필요량</th></tr></thead><tbody></tbody></table></div></section>
-<section class="card" id="intermediateCard">  <div class="section-title-row"><div class="production-section-title"><h2>중간 자원</h2><span id="intermediateDetailSummary" class="detail-summary">상세 설정 미사용</span></div><div class="detail-actions"><button id="intermediateDetailOpen" class="detail-open-btn" type="button">중간 자원 상세 설정</button></div></div>
+<section class="card" id="intermediateCard">  <div class="section-title-row"><div class="production-section-title"><h2>중간 자원</h2><span id="intermediateDetailSummary" class="detail-summary">기본 설정 사용</span></div><div class="detail-actions"><button id="intermediateDetailOpen" class="detail-open-btn" type="button">중간 자원 상세 설정</button></div></div>
   <div class="table-wrap"><table id="t2"><thead><tr><th>자원</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>잔여/부족</th><th>소요 시간</th><th>예상 생산량</th><th>원재료 사용량</th><th>쌀 사용량</th><th>필요량</th></tr></thead><tbody></tbody></table></div></section>
-<section class="card" id="productCard">  <div class="section-title-row"><div class="production-section-title"><h2>상품</h2><span id="productDetailSummary" class="detail-summary">상세 설정 미사용</span></div><div class="detail-actions"><button id="productDetailOpen" class="detail-open-btn" type="button">상품 상세 설정</button></div></div>
+<section class="card" id="productCard">  <div class="section-title-row"><div class="production-section-title"><h2>상품</h2><span id="productDetailSummary" class="detail-summary">기본 설정 사용</span></div><div class="detail-actions"><button id="productDetailOpen" class="detail-open-btn" type="button">상품 상세 설정</button></div></div>
   <div class="table-wrap"><table id="t3"><thead><tr><th>상품</th><th>레벨</th><th>생산 방식</th><th>건물 수</th><th>운영 시간(h)</th><th>현재 보유량</th><th>예상 생산량</th><th>원재료 사용량</th><th>쌀 사용량</th></tr></thead><tbody></tbody></table></div></section>
 </div>
 <div id="panel-wonder" class="panel">
@@ -207,7 +208,7 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
 
 </section><section class="card" id="researchCard">  <div class="section-title-row"><h2>연구</h2></div>
   <div class="research-selection" aria-live="polite">
-    <div class="research-selection-group current-group"><span class="label">현재 연구</span><span id="researchCurrentLabel" class="value">미선택</span></div>
+    <div class="research-selection-group current-group"><span class="label">완료한 연구</span><span id="researchCurrentLabel" class="value">미선택</span></div>
     <div class="research-selection-group target-group"><span class="label">목표 연구</span><span id="researchTargetLabel" class="value">미선택</span></div>
     <span class="reset-cell"><button type="button" id="researchReset" class="research-clear">초기화</button></span>
   </div>
@@ -215,7 +216,7 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
     <div id="researchTree" class="research-tree">
       <div class="research-tree-toolbar">
         <div class="research-legend" aria-label="연구 상태 안내">
-          <span class="done"><i></i>완료</span><span class="need"><i></i>추가 필요</span><span class="cur"><i></i>현재 연구</span><span class="tgt"><i></i>목표 연구</span>
+          <span class="done"><i></i>완료</span><span class="need"><i></i>추가 필요</span><span class="cur"><i></i>완료 지정</span><span class="tgt"><i></i>목표 연구</span>
         </div>
         <div class="research-cost-chip"><span>연구 비용</span><b id="planResearchCost">0</b></div>
       </div>
@@ -223,7 +224,7 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
       <div id="researchTreeNodes" class="research-tree-nodes"></div>
       <div id="researchAction" class="research-action" aria-live="polite">
         <span id="researchActionName" class="research-action-name"></span>
-        <button type="button" id="researchToggleCurrent">현재 연구에 추가</button>
+        <button type="button" id="researchToggleCurrent">완료로 지정</button>
         <button type="button" id="researchSetTarget" class="primary">목표 연구로 설정</button>
         <button type="button" id="researchActionClose">닫기</button>
       </div>
@@ -267,7 +268,7 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
   </section>
 </div>
 
-<dialog id="photoImportDialog" aria-labelledby="photoImportTitle"><div class="modalhead"><h2 id="photoImportTitle">게임 사진으로 입력</h2><button id="photoImportClose" type="button">닫기</button></div><p class="photo-description">가로형 게임 스크린샷을 올리면 숫자를 인식합니다. 건물 목록은 2장까지 첨부할 수 있습니다. 사진은 외부 서버로 전송하지 않으며, 확인 후 선택한 값만 반영됩니다.</p><div class="photo-files"><div class="photo-file"><label for="photoBuildings">건물 목록 화면 (최대 2장)<input id="photoBuildings" type="file" accept="image/*" multiple></label><small class="photo-description">목록을 위아래로 나눠 촬영한 사진 2장을 함께 선택할 수 있습니다. 겹치는 건물은 한 번만 반영합니다.</small><button id="photoBuildingsClear" type="button" disabled>건물 사진 삭제</button></div><div class="photo-file"><label for="photoStocks">생산물·보유 자원 화면<input id="photoStocks" type="file" accept="image/*"></label><button id="photoStocksClear" type="button" disabled>자원 사진 삭제</button></div></div><div class="bar"><button id="photoScan" type="button">사진 분석</button><button id="photoReset" type="button" disabled>사진 입력 초기화</button><span class="status" id="photoStatus" role="status" aria-live="polite">한 종류의 사진만 올려도 됩니다.</span></div><div id="photoReview" class="photo-review"></div><p class="photo-description">인식 결과를 확인한 뒤 적용하세요. 읽지 못한 항목은 직접 입력할 수 있습니다. 선택한 건물의 기존 상세 구성은 사진의 레벨·수량으로 교체됩니다. 생산 주기와 운영 시간은 기존 설정을 사용합니다.</p><div class="bar"><button id="photoApply" type="button" disabled>확인한 값 적용</button></div></dialog>
+<dialog id="photoImportDialog" aria-labelledby="photoImportTitle"><div class="modalhead"><h2 id="photoImportTitle">게임 사진으로 입력</h2><button id="photoImportClose" type="button">닫기</button></div><p class="photo-description">가로형 게임 사진을 분석한 뒤 적용할 값을 선택하세요. 사진은 외부 서버로 전송하지 않습니다.</p><div class="photo-files"><div class="photo-file"><label for="photoBuildings">건물 목록 화면 (최대 2장)<input id="photoBuildings" type="file" accept="image/*" multiple></label><small class="photo-description">목록을 나눠 촬영한 2장을 함께 선택할 수 있습니다. 겹치는 건물은 한 번만 집계하며, 수량이 다르면 확인을 요청합니다.</small><button id="photoBuildingsClear" type="button" disabled>건물 사진 삭제</button></div><div class="photo-file"><label for="photoStocks">생산물·보유 자원 화면<input id="photoStocks" type="file" accept="image/*"></label><button id="photoStocksClear" type="button" disabled>자원 사진 삭제</button></div></div><div class="bar"><button id="photoScan" type="button">사진 분석</button><button id="photoReset" type="button" disabled>사진 입력 초기화</button><span class="status" id="photoStatus" role="status" aria-live="polite">한 종류의 사진만 올려도 됩니다.</span></div><div id="photoReview" class="photo-review"></div><p class="photo-description">선택한 건물의 기존 구성을 사진의 레벨·수량으로 교체합니다. 생산 주기와 운영 시간은 기존 설정을 사용합니다.</p><div class="bar"><button id="photoApply" type="button" disabled>확인한 값 적용</button></div></dialog>
 <script>
 const INITIAL_STATE={prod:{'쌀 농장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'누에 숲':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'고령토 채석장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'실 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'점토 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'비단 작업장':{lv:1,mode:'1분',bldgs:1,hours:''},'도자기 작업장':{lv:1,mode:'1분',bldgs:1,hours:''}},settings:{wonder:'자금성',wLv:0,baseH:0,productRawCycle:'생산 계산기값',sleepPrepH:'',sleepCycle:'최장',sleepCount:3,prodDetailsVisible:false,wonderDetailsVisible:false},wStock:{silk:0,porc:0},wLvSet:{cur:1,tgt:1}};
 const STORAGE_KEY='chinaCalcState';
@@ -343,7 +344,7 @@ const INITIAL_PLAN_STATE={
 const planState=JSON.parse(JSON.stringify(INITIAL_PLAN_STATE));
 
 const DETAIL_GROUPS={base:['쌀 농장','누에 숲','고령토 채석장'],intermediate:['실 가공소','점토 가공소'],product:['비단 작업장','도자기 작업장']};
-const DETAIL_GROUP_META={base:{title:'기초 자원 상세 설정',subtitle:'서로 다른 레벨·건물 수·운영 시간을 실제 구성대로 입력합니다.'},intermediate:{title:'중간 자원 상세 설정',subtitle:'서로 다른 레벨·생산 방식·건물 수·운영 시간을 실제 구성대로 입력합니다.'},product:{title:'상품 상세 설정',subtitle:'서로 다른 레벨·생산 방식·건물 수·운영 시간을 실제 구성대로 입력합니다.'}};
+const DETAIL_GROUP_META={base:{title:'기초 자원 상세 설정',subtitle:'서로 다른 레벨의 건물은 나누어 입력하세요.'},intermediate:{title:'중간 자원 상세 설정',subtitle:'서로 다른 레벨·생산 방식의 건물은 나누어 입력하세요.'},product:{title:'상품 상세 설정',subtitle:'서로 다른 레벨·생산 방식의 건물은 나누어 입력하세요.'}};
 const DETAIL_DEFAULTS=Object.fromEntries(Object.values(DETAIL_GROUPS).flat().map(b=>[b,{enabled:false,rows:[]}])) ;
 const details=JSON.parse(JSON.stringify(DETAIL_DEFAULTS));
 let activeDetailGroup='base',activeDetailBuilding=DETAIL_GROUPS.base[0];
@@ -505,13 +506,13 @@ function displayName(building){
 }
 function modeOptions(building,lv,cur){const modes=DATA.lm[building+'|'+lv]||[];return modes.map(m=>'<option value="'+m+'"'+(m===cur?' selected':'')+'>'+m+'</option>').join('');}
 function detailGroupForBuilding(building){for(const [group,names] of Object.entries(DETAIL_GROUPS))if(names.includes(building))return group;return 'base';}
-function detailGroupSummary(group){const enabled=DETAIL_GROUPS[group].filter(detailEnabled);return enabled.length?'상세 설정 적용: '+enabled.map(displayName).join(' · '):'상세 설정 미사용';}
+function detailGroupSummary(group){const enabled=DETAIL_GROUPS[group].filter(detailEnabled);return enabled.length?'상세 설정 적용: '+enabled.map(displayName).join(' · '):'기본 설정 사용';}
 function renderDetailLaunchers(){const map={base:'baseResourceDetailSummary',intermediate:'intermediateDetailSummary',product:'productDetailSummary'};Object.entries(map).forEach(([g,id])=>{const el=document.getElementById(id);if(el)el.textContent=detailGroupSummary(g);});}
 function detailCountStepper(index,value){return '<div class="step-wrap"><input type="number" class="step-one" min="0" step="any" data-detail-k="count" value="'+value+'"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>';}
 function detailLevelStepper(index,value){return '<div class="step-wrap"><input type="number" class="step-one" min="1" max="6" step="1" data-detail-k="lv" value="'+value+'"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>';}
 function detailHoursStepper(index,value){const v=normalizedDetailHours(value);return '<div class="step-wrap"><input type="number" class="step-one" min="0" step="any" data-detail-k="hours" value="'+v+'" placeholder="기본"><div class="step-controls"><button type="button" class="step-btn" data-delta="1">▲</button><button type="button" class="step-btn" data-delta="-1">▼</button></div></div>';}
 function detailRowHtml(building,row,index){const continuous=isContinuousBuilding(building);const modeField=continuous?'':'<div class="detail-field"><label>생산 방식</label><select data-detail-k="mode">'+modeOptions(building,row.lv,row.mode)+'</select></div>';return '<div class="detail-row'+(continuous?' base-detail-row':'')+'" data-detail-row="'+index+'"><div class="detail-field"><label>레벨</label>'+detailLevelStepper(index,row.lv)+'</div>'+modeField+'<div class="detail-field"><label>건물 수</label>'+detailCountStepper(index,row.count)+'</div><div class="detail-field"><label>운영 시간(h)</label>'+detailHoursStepper(index,row.hours)+'</div><button type="button" class="detail-remove" data-detail-remove="'+index+'" aria-label="구성 삭제">×</button></div>';}
-function renderDetailModal(){const meta=DETAIL_GROUP_META[activeDetailGroup],names=DETAIL_GROUPS[activeDetailGroup];if(!names.includes(activeDetailBuilding))activeDetailBuilding=names[0];const d=details[activeDetailBuilding];document.getElementById('detailTitle').textContent=meta.title;document.getElementById('detailSubtitle').textContent=meta.subtitle;document.getElementById('detailTabs').style.gridTemplateColumns='repeat('+names.length+',1fr)';document.getElementById('detailTabs').innerHTML=names.map(b=>'<button type="button" class="detail-tab'+(b===activeDetailBuilding?' active':'')+'" data-detail-building="'+b+'">'+displayName(b)+(detailEnabled(b)?'<span class="dot"></span>':'')+'</button>').join('');document.getElementById('detailEnabled').checked=!!d.enabled;const continuous=isContinuousBuilding(activeDetailBuilding);document.getElementById('detailHelp').innerHTML=continuous?'레벨·건물 수·운영 시간을 실제 구성대로 입력합니다.':'레벨·생산 방식·건물 수·운영 시간을 실제 구성대로 입력합니다. 생산 주기가 완전히 끝난 횟수만 생산량과 사용량에 반영됩니다.';const activeRows=d.rows.filter(r=>(parseFloat(r.count)||0)>0);const total=activeRows.reduce((sum,r)=>sum+(parseFloat(r.count)||0),0);document.getElementById('detailResult').textContent=d.enabled?(d.rows.length?'구성 '+d.rows.length+'개 · 총 건물 수 '+(Math.round(total*100)/100).toLocaleString('ko-KR',{maximumFractionDigits:2}):'구성이 없습니다. 건물 구성을 추가하세요.'):'상세 설정을 켜면 이 항목의 생산 계산에 상세 구성이 적용됩니다.';document.getElementById('detailRows').innerHTML=d.rows.map((row,i)=>detailRowHtml(activeDetailBuilding,row,i)).join('');document.getElementById('detailAdd').disabled=!d.enabled;if(typeof syncChinaDetailControls==='function')syncChinaDetailControls();}
+function renderDetailModal(){const meta=DETAIL_GROUP_META[activeDetailGroup],names=DETAIL_GROUPS[activeDetailGroup];if(!names.includes(activeDetailBuilding))activeDetailBuilding=names[0];const d=details[activeDetailBuilding];document.getElementById('detailTitle').textContent=meta.title;document.getElementById('detailSubtitle').textContent=meta.subtitle;document.getElementById('detailTabs').style.gridTemplateColumns='repeat('+names.length+',1fr)';document.getElementById('detailTabs').innerHTML=names.map(b=>'<button type="button" class="detail-tab'+(b===activeDetailBuilding?' active':'')+'" data-detail-building="'+b+'">'+displayName(b)+(detailEnabled(b)?'<span class="dot"></span>':'')+'</button>').join('');document.getElementById('detailEnabled').checked=!!d.enabled;const continuous=isContinuousBuilding(activeDetailBuilding);document.getElementById('detailHelp').innerHTML=continuous?'':'가공소·작업장은 생산 주기가 끝난 횟수만 계산합니다.';const activeRows=d.rows.filter(r=>(parseFloat(r.count)||0)>0);const total=activeRows.reduce((sum,r)=>sum+(parseFloat(r.count)||0),0);document.getElementById('detailResult').textContent=d.enabled?(d.rows.length?'구성 '+d.rows.length+'개 · 총 건물 수 '+(Math.round(total*100)/100).toLocaleString('ko-KR',{maximumFractionDigits:2}):'구성이 없습니다. 건물 구성을 추가하세요.'):'상세 설정을 켜면 건물 구성을 나누어 입력할 수 있습니다.';document.getElementById('detailRows').innerHTML=d.rows.map((row,i)=>detailRowHtml(activeDetailBuilding,row,i)).join('');document.getElementById('detailAdd').disabled=!d.enabled;if(typeof syncChinaDetailControls==='function')syncChinaDetailControls();}
 function openDetailModal(group){activeDetailGroup=group;activeDetailBuilding=DETAIL_GROUPS[group][0];renderDetailModal();const modal=document.getElementById('detailModal');modal.removeAttribute('hidden');modal.setAttribute('aria-hidden','false');document.body.classList.add('detail-modal-open');postSize();}
 function closeDetailModal(){const modal=document.getElementById('detailModal');modal.setAttribute('hidden','');modal.setAttribute('aria-hidden','true');document.body.classList.remove('detail-modal-open');postSize();}
 function addDetailRow(){const d=details[activeDetailBuilding];if(!d.enabled)return;const s=state[activeDetailBuilding],lv=s.lv,mode=normalizedDetailMode(activeDetailBuilding,lv,s.mode);d.rows.push({lv,mode,count:1,hours:''});normalizeDetail(activeDetailBuilding);renderAll();renderDetailModal();saveState();document.querySelector('#detailRows [data-detail-row="'+(d.rows.length-1)+'"] [data-detail-k="count"]')?.focus();}
@@ -601,7 +602,7 @@ function constructionBuildingOptions(selected){
   for(const [key,v] of Object.entries(CITY_PLAN_DATA.constructionCatalog))opts.push('<option value="'+key+'"'+(selected===key?' selected':'')+'>'+v.name+'</option>');
   return opts.join('');
 }
-function constructionCurrentLevelOptions(selected){return [0,1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+'>'+(lv===0?'미건설':'Lv.'+lv)+'</option>').join('');}
+function constructionCurrentLevelOptions(selected){return [0,1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+'>'+(lv===0?'미건설(0)':'Lv.'+lv)+'</option>').join('');}
 function constructionLevelOptions(selected,currentLv=0){return [1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+(lv<currentLv?' disabled':'')+'>Lv.'+lv+'</option>').join('');}
 function renderPlanConstruction(){
   const tbody=document.querySelector('#tConstruction tbody');if(!tbody)return;
@@ -734,7 +735,7 @@ function renderPlanResearch(){
   if(actionTech){
     action.classList.add('open');document.getElementById('researchActionName').textContent=actionTech.name;
     const selected=currentIds.includes(actionTech.id),alreadyDone=info.done.has(actionTech.id)&&!selected,currentBtn=document.getElementById('researchToggleCurrent');
-    currentBtn.textContent=selected?'현재 연구에서 해제':(alreadyDone?'연구 완료':'현재 연구에 추가');currentBtn.disabled=alreadyDone;
+    currentBtn.textContent=selected?'완료 지정 해제':(alreadyDone?'연구 완료':'완료로 지정');currentBtn.disabled=alreadyDone;
     const pos=RESEARCH_TREE_LAYOUT[actionTech.id]||[380,40],x=Math.max(105,Math.min(655,pos[0])),y=pos[1]>650?Math.max(8,pos[1]-150):pos[1]+34;action.style.left=x+'px';action.style.top=y+'px';
   }else action.classList.remove('open');
   renderResearchTree(info);
@@ -852,32 +853,38 @@ window.addEventListener('load',()=>{loadState();renderAll();postSize();});if('Re
 const byId=id=>document.getElementById(id);
 const escapeText=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const SECTION_HELP={
-prodSettings:'건물 구성과 운영 시간으로 생산량을 계산합니다. 건물 수는 소수점 입력이 가능합니다. 원료와 일꾼이 충분하다고 가정하므로 부족량은 해당 자원과 도시 관리에서 확인하세요.',
-resourceCard:'쌀·누에고치·고령토는 연속 생산합니다. 보유량과 생산량에서 중간 자원·상품 생산의 필요량을 차감합니다. 소요 시간은 입력한 운영 시간을 넘어도 계산합니다.',
-intermediateCard:'실과 점토는 완료한 생산 주기를 기준으로 생산량과 원료·쌀 사용량을 계산합니다. 상품에 필요한 양과 비교해 잔여/부족을 표시합니다.',
-productCard:'비단과 도자기는 완료한 생산 주기만 반영합니다. 현재 보유량은 불가사의 목표와 연동됩니다. 원료 부족에 따른 생산 중단은 자동 반영하지 않습니다.',
-wonderSettings:'현재 레벨 다음부터 목표 레벨까지 필요한 상품량을 계산합니다. 최대 도달 레벨은 고령토·점토·도자기 보유량과 고령토 예상 생산량을 Lv6·30분 기준으로 환산한 값입니다. 쌀·비단 및 생산 시간은 고려하지 않습니다.',
-goalCard:'잔여/부족은 입력한 운영 시간 기준입니다. 소요 시간은 현재 건물 구성으로 부족한 상품을 확보할 때까지 계산하며, 운영 시간을 넘어도 표시합니다. 원료·일꾼이 충분하다고 가정합니다.',
-sleepCard:'취침 전까지 예약 생산에 필요한 자원을 확보할 수 있는지 확인합니다. 현재 보유량과 취침 전 생산·소비를 반영합니다. 수면 중 자원 생산량이나 별도의 수면 중 소비는 더하지 않고, 예약할 생산 횟수에 필요한 원료만 확보합니다.',
-powerCard:'현재 생산력과 목표 상품 부족분에 필요한 생산력을 비교합니다. 목표량을 넘는 상품 생산은 필요량에서 제외합니다. 생산 계산기값은 각 항목의 생산 주기를 따르며 상세 구성의 생산 비중을 반영합니다. 상세 구성의 비교 시간은 가장 긴 운영 시간이며, 각 구성은 자체 운영 시간을 따릅니다.',
-conversionCard:'생산력 100은 Lv6 건물 1채의 기준 생산력입니다. 가공소·작업장은 30분 주기, 자원은 연속 생산을 기준으로 합니다. 표에는 생산 계산기에 설정한 주기를 표시합니다. —는 해당 레벨에 없는 방식입니다.',
-cityOverviewCard:'주택과 불가사의가 제공하는 일꾼을 건물의 필요 일꾼과 비교합니다. 영토 1칸은 4×4 면적입니다. Lv.2·7·13·17·24의 확장 보상은 각각 +3·+5·+7·+8·+8칸을 누적 반영합니다. 건물 배치 모양은 고려하지 않습니다.',
-currencyCard:'예상 보유량은 현재 보유량 + 시간당 생산량 × 운영 시간입니다. 운영 시간을 비우면 생산 계산기의 기본 운영 시간을 사용합니다. 사용 계획 잔액에서는 건설과 목표 연구 비용을 차감합니다. 계획한 건설과 연구를 완료 처리하지는 않습니다.',
-buildingComposition:'주택 수는 일꾼 현황, 생산 건물 수는 생산 계산기에서 가져옵니다. 빈칸은 기본 연동이며 직접 입력한 값이 우선합니다. 누에 숲·고령토 채석장은 면적을 사용하지 않습니다. 초기화하면 직접 입력한 건물 수를 기본 연동으로 되돌립니다.',
-constructionCard:'현재 레벨부터 목표 레벨까지 건설·업그레이드 비용을 합산합니다. 미건설은 새 건물입니다. 계산한 건물은 도시 구성에 자동 추가되지 않습니다.',
-researchCard:'연구를 눌러 현재 완료 상태나 목표를 지정하거나 해제하세요. 병렬로 진행한 현재 연구를 여러 개 선택할 수 있습니다. 목표의 선행 연구를 자동 포함하고, 이미 완료한 연구의 비용은 제외합니다.'};
+prodSettings:'건물 구성과 운영 시간으로 생산량을 계산합니다. 원료와 일꾼은 충분하다고 가정하며, 부족에 따른 생산 중단은 자동 반영하지 않습니다.',
+resourceCard:'쌀·누에고치·고령토는 연속 생산합니다. 중간 자원과 상품을 만드는 데 필요한 양을 빼고 잔여/부족을 표시합니다.',
+intermediateCard:'실·점토는 생산 주기가 끝난 횟수만 계산합니다. 예: 2시간 생산을 3시간 운영하면 1회 생산합니다.',
+productCard:'비단·도자기는 생산 주기가 끝난 횟수만 계산합니다. 보유량은 불가사의 목표와 함께 사용합니다.',
+wonderSettings:'현재 레벨에서 목표 레벨까지 필요한 비단·도자기를 계산합니다.',
+goalCard:'잔여/부족은 설정한 운영 시간 기준입니다. 소요 시간은 운영 시간을 넘어도 표시하며, 원료와 일꾼은 충분하다고 가정합니다.',
+sleepCard:'취침 전에 예약할 생산에 필요한 원료를 확보하는 계산입니다. 현재 보유량과 취침 전 생산·소비를 반영하며, 수면 중 생산·소비는 별도로 더하지 않습니다.',
+powerCard:'목표 달성에 필요한 생산력과 현재 생산력을 비교합니다. 보유 상품과 목표량을 넘는 상품 생산분은 필요량에서 제외합니다.',
+conversionCard:'Lv6 건물 1채의 생산력을 100으로 비교합니다. 기준은 가공소·작업장 30분, 기초 자원 연속 생산입니다. 표의 생산 방식은 생산 계산기 설정을 따르며, —는 해당 레벨에 없는 방식입니다.',
+cityOverviewCard:'주택·불가사의의 일꾼과 건물의 필요 일꾼을 비교합니다. 면적은 건물 크기의 합계이며, 배치 모양은 고려하지 않습니다.',
+currencyCard:'현재 보유량 + 예상 생산량 − 건설 비용 − 목표 연구 비용입니다. 보석 비용은 별도로 표시합니다.',
+buildingComposition:'주택 수는 여기서 입력합니다. 생산 건물은 생산 계산기와 연동되며, 생산 건물 보기에서 따로 조정할 수 있습니다. 누에 숲·고령토 채석장은 면적을 사용하지 않습니다.',
+constructionCard:'현재 레벨에서 목표 레벨까지의 건설·업그레이드 비용입니다. 미건설(0)은 새 건물이며, 계산한 건물은 도시 구성에 자동 추가되지 않습니다. 호화 건물은 보석 비용으로 표시합니다.',
+researchCard:'완료한 연구와 목표 연구를 선택하세요. 목표의 선행 연구를 포함하고, 완료한 연구와 그 선행 연구는 비용에서 제외합니다.'};
 const COLUMN_HELP={
 '레벨':'생산 건물의 현재 레벨입니다.',
-'건물 수':'소수점 입력이 가능합니다. 0.5채는 생산량과 소비량을 절반으로 계산합니다.',
-'운영 시간(h)':'비우면 기본 운영 시간을 사용합니다. 상세 구성의 시간을 우선하며, 0은 해당 구성의 생산을 중지합니다.',
-'현재 보유량':'현재 가진 정수 수량입니다. K·M 단위로 입력할 수 있습니다.',
-'잔여/부족':'현재 보유량 + 예상 생산량 − 필요량입니다. 양수는 잔여, 음수는 부족입니다.',
-'소요 시간':'부족한 양을 현재 구성으로 확보하는 시간입니다. 운영 시간을 넘어도 계산하며 생산 가능한 건물이 없으면 —로 표시합니다.',
+'건물 수':'생산 계산용 건물 수입니다. 소수점도 입력할 수 있으며, 0.5채는 생산량·소비량을 절반으로 계산합니다.',
+'운영 시간(h)':'빈칸은 기본 운영 시간을 사용하고, 0은 생산하지 않습니다. 상세 구성에 입력한 시간이 가장 먼저 적용됩니다.',
+'현재 보유량':'정수 또는 K·M 단위로 입력하세요. 예: 12000 또는 12K',
+'잔여/부족':'현재 보유량 + 예상 생산량 − 필요량입니다. 양수는 남는 양, 음수는 부족한 양입니다.',
+'소요 시간':'부족량을 현재 건물 구성으로 생산하는 데 걸리는 시간입니다. 운영 시간을 넘어도 표시합니다. 원료·일꾼은 충분하다고 가정하며, 생산할 건물이 없으면 —로 표시합니다.',
 '예상 생산량':'현재 구성과 운영 시간에 따른 생산량입니다.',
 '생산력 차이':'현재 생산력 − 필요 생산력입니다. 음수이면 생산력이 부족합니다.',
-'필요 생산력':'보유량을 차감한 필요량을 비교 시간 안에 생산하기 위한 생산력입니다.',
-'현재 생산력':'비교 시간 동안의 실제 생산량을 Lv6 기준 생산량으로 환산합니다. 생산 주기가 끝나지 않으면 그 주기의 생산량은 포함하지 않습니다.',
+'필요 생산력':'보유량을 뺀 필요량을 비교 시간 안에 생산하는 데 필요한 생산력입니다.',
+'현재 생산력':'비교 시간 동안의 생산량을 Lv6 기준으로 환산합니다. 상세 구성의 비교 시간은 가장 긴 운영 시간이며, 각 구성은 자체 운영 시간을 따릅니다. 가공소·작업장은 끝난 생산 주기만 반영합니다.',
 '구간 필요량':'현재 레벨 다음부터 목표 레벨까지 요구하는 상품량입니다.'};
+const MAX_LEVEL_HELP='고령토·점토·도자기 보유량과 고령토 예상 생산량을 Lv6·30분 생산 비율로 환산한 참고 레벨입니다. 쌀·비단과 가공에 걸리는 시간은 제외하므로 실제 달성 가능 레벨과 다를 수 있습니다.';
+function columnHelpForTable(id,label){
+ if(id==='tArea'&&label==='건물 수')return '주택 수는 직접 입력합니다. 생산 건물의 빈칸은 생산 계산기와 연동되며, 직접 입력한 값이 우선합니다.';
+ if(id==='tConstruction'&&label==='건설 수')return '새로 짓거나 업그레이드할 건물 수입니다. 정수로 입력하세요.';
+ return COLUMN_HELP[label];
+}
 const TABLE_SECONDARY={t1:[8,9],t2:[8,9,10,11],t3:[7,8],tw:[3,4,5,6],tSleep:[2,3,4,5,6],tPower:[2,3],tArea:[]};
 let uiReady=false,researchFilter='all';
 function setupUI(){
@@ -894,7 +901,7 @@ function setupUI(){
  }
  const load=document.createElement('button');load.type='button';load.id='loadSavedBtn';load.textContent='저장값 불러오기';load.addEventListener('click',()=>{if(hasSavedDefault())restoreSavedDefault();else showResetStatus('저장값 없음');});byId('saveDefaultBtn').after(load);
  byId('resetBtn').replaceWith(byId('resetBtn').cloneNode(true));byId('resetBtn').addEventListener('click',()=>openResetChoiceModal());byId('resetBtn').textContent='초기화';
- byId('restoreSavedBtn').hidden=true;byId('resetChoiceTitle').textContent='생산 계산기 초기화';byId('resetChoiceTitle').nextElementSibling.textContent='생산 설정과 보유량을 초기화합니다.';
+ byId('restoreSavedBtn').hidden=true;byId('resetChoiceTitle').textContent='생산 계산기 초기화';byId('resetChoiceTitle').nextElementSibling.textContent='생산 설정과 보유량을 초기화합니다. 도시 관리 입력값과 연구 계획은 유지됩니다.';
  for(const [id,help]of Object.entries(SECTION_HELP)){
   const title=byId(id)?.querySelector('h2');if(!title)continue;const button=document.createElement('button');button.type='button';button.className='info-tip';button.dataset.tip=help;button.setAttribute('aria-label',title.textContent+' 설명');button.textContent='i';title.append(' ',button);
  }
@@ -937,7 +944,7 @@ function labelUITables(){
  });
  document.querySelectorAll('.control-field .step-btn').forEach(b=>b.setAttribute('aria-label',(b.closest('.control-field').querySelector('label').dataset.fieldLabel||b.closest('.control-field').querySelector('label').textContent)+(Number(b.dataset.delta)>0?' 늘리기':' 줄이기')));
  document.querySelectorAll('input[placeholder^="기본"],select').forEach(el=>el.classList.toggle('default-choice',el.tagName==='SELECT'?['생산 계산기값','최장'].includes(el.value):el.value===''));
- document.querySelectorAll('.detail-summary').forEach(el=>el.classList.toggle('applied',!el.textContent.includes('미사용')));
+ document.querySelectorAll('.detail-summary').forEach(el=>el.classList.toggle('applied',!el.textContent.includes('기본 설정 사용')));
 }
 function metricUI(label,value,cls='',support=''){return '<div class="metric"><span>'+label+'</span><strong class="'+cls+'">'+value+'</strong>'+(support?'<span class="support">'+support+'</span>':'')+'</div>';}
 function updateUISummaries(){
@@ -999,13 +1006,13 @@ saveUserDefault=function(){
 byId('saveDefaultBtn').replaceWith(byId('saveDefaultBtn').cloneNode(true));byId('saveDefaultBtn').addEventListener('click',()=>saveUserDefault());
 const renderPlanResearchBeforeUI=renderPlanResearch;
 let researchOpener=null;
-renderPlanResearch=function(){const dialog=byId('researchAction');if(planResearchActionId&&!dialog.open)researchOpener=document.activeElement;renderPlanResearchBeforeUI();renderResearchMobileChina();if(planResearchActionId){const info=planResearchInfo(),current=planState.currentTechs.includes(planResearchActionId),done=info.done.has(planResearchActionId);byId('researchToggleCurrent').disabled=false;byId('researchToggleCurrent').textContent=current||done?'완료 지정 해제':'현재 완료로 지정';byId('researchSetTarget').textContent=planState.targetTech===planResearchActionId?'목표 지정 해제':'목표 연구로 지정';if(!dialog.open)dialog.showModal();}else if(dialog.open){dialog.close();const id=researchOpener?.dataset.researchId,live=id?[...document.querySelectorAll('[data-research-id="'+id+'"]')].find(el=>el.getClientRects().length):researchOpener;(live||document.querySelector('[data-research-filter].active'))?.focus();}};
+renderPlanResearch=function(){const dialog=byId('researchAction');if(planResearchActionId&&!dialog.open)researchOpener=document.activeElement;renderPlanResearchBeforeUI();renderResearchMobileChina();if(planResearchActionId){const info=planResearchInfo(),current=planState.currentTechs.includes(planResearchActionId),done=info.done.has(planResearchActionId);byId('researchToggleCurrent').disabled=false;byId('researchToggleCurrent').textContent=current||done?'완료 지정 해제':'완료로 지정';byId('researchSetTarget').textContent=planState.targetTech===planResearchActionId?'목표 지정 해제':'목표 연구로 지정';if(!dialog.open)dialog.showModal();}else if(dialog.open){dialog.close();const id=researchOpener?.dataset.researchId,live=id?[...document.querySelectorAll('[data-research-id="'+id+'"]')].find(el=>el.getClientRects().length):researchOpener;(live||document.querySelector('[data-research-filter].active'))?.focus();}};
 planToggleCurrentTech=function(id){const info=planResearchInfo(),map=info.map;if(info.done.has(id)){planState.currentTechs=planState.currentTechs.filter(current=>current!==id&&!planAncestors(current,map,new Set()).has(id));return;}const ancestors=planAncestors(id,map,new Set());planState.currentTechs=planState.currentTechs.filter(current=>!ancestors.has(current));planState.currentTechs.push(id);};
 function renderResearchMobileChina(){
  const info=planResearchInfo();let nodes=CITY_PLAN_DATA.research.filter(t=>researchFilter==='done'?info.done.has(t.id):researchFilter==='needed'?info.needed.has(t.id):true);
  byId('researchMobile').innerHTML=nodes.length?'<div class="research-mobile-list">'+nodes.map(t=>{
   const cls=['research-mobile-node'];if(info.done.has(t.id))cls.push('completed');if(info.needed.has(t.id))cls.push('needed');if(planState.currentTechs.includes(t.id))cls.push('current');if(planState.targetTech===t.id)cls.push('target');
-  const status=planState.targetTech===t.id?'목표 연구':planState.currentTechs.includes(t.id)?'현재 연구':info.done.has(t.id)?'완료':info.needed.has(t.id)?'추가 필요':'미완료';
+  const status=planState.targetTech===t.id?'목표 연구':planState.currentTechs.includes(t.id)?'완료 지정':info.done.has(t.id)?'완료':info.needed.has(t.id)?'추가 필요':'미완료';
   return '<button type="button" class="'+cls.join(' ')+'" data-research-id="'+t.id+'" aria-pressed="'+(planState.targetTech===t.id||planState.currentTechs.includes(t.id))+'">'+escapeText(t.name)+'<span>'+fmtQty(t.cost)+' 오수전 · '+status+'</span></button>';
  }).join('')+'</div>':'<p class="research-empty">'+(researchFilter==='needed'?'목표 연구를 선택하면 필요한 연구가 표시됩니다.':'표시할 연구가 없습니다.')+'</p>';
  // On desktop filtering dims unrelated nodes while preserving the tree topology.
@@ -1015,7 +1022,7 @@ function renderResearchMobileChina(){
  const svg=byId('researchTreeLines');svg.innerHTML=nodes.flatMap(t=>(t.parents||[]).filter(id=>positions.has(id)).map(id=>{const a=positions.get(id),b=positions.get(t.id);return '<line x1="'+a[0]+'" y1="'+(a[1]+29)+'" x2="'+b[0]+'" y2="'+(b[1]-29)+'" class="'+(info.done.has(t.id)?'completed':info.needed.has(t.id)?'needed':'')+'"/>';})).join('');
  const height=filtered?Math.max(100,ys.length*76+30):790;svg.setAttribute('viewBox','0 0 760 '+height);svg.style.height=height+'px';byId('researchTree').style.height=(height+30)+'px';
  let empty=byId('researchTreeEmpty');if(!empty){empty=document.createElement('p');empty.id='researchTreeEmpty';empty.className='research-empty';byId('researchTree').append(empty);}empty.hidden=nodes.length>0;empty.textContent=researchFilter==='done'?'완료로 선택한 연구가 없습니다.':'목표까지 추가로 필요한 연구가 없습니다.';
- byId('researchSummary').textContent='현재 완료 '+info.done.size+'개 · 목표까지 추가 '+info.needed.size+'개';
+ byId('researchSummary').textContent='완료 '+info.done.size+'개 · 목표까지 추가 '+info.needed.size+'개';
  if(planResearchActionId){byId('researchAction').setAttribute('aria-labelledby','researchActionName');byId('researchAction').setAttribute('aria-describedby','researchActionCost');let cost=byId('researchActionCost');if(!cost){cost=document.createElement('p');cost.id='researchActionCost';cost.className='note';byId('researchActionName').after(cost);}cost.textContent='연구 비용 '+fmtQty(info.map.get(planResearchActionId)?.cost||0)+' 오수전';}
 
  document.querySelectorAll('[data-research-filter]').forEach(b=>{b.classList.toggle('active',b.dataset.researchFilter===researchFilter);b.setAttribute('aria-pressed',String(b.dataset.researchFilter===researchFilter));});
@@ -1029,7 +1036,7 @@ document.addEventListener('pointerout',e=>{const info=e.target.closest('.info-ti
 document.addEventListener('focusin',e=>{const info=e.target.closest('.info-tip');if(info)showUIHelp(info);});
 document.addEventListener('focusout',e=>{if(e.target.closest('.info-tip'))hideUIHelp();});
 document.addEventListener('scroll',hideUIHelp,true);window.addEventListener('resize',hideUIHelp);
-document.addEventListener('click',e=>{const info=e.target.closest('.info-tip');if(!info)return;if(e.detail>0&&matchMedia('(hover: hover) and (pointer: fine)').matches){showUIHelp(info);return;}hideUIHelp();let d=byId('termHelpDialog');if(!d){d=document.createElement('dialog');d.id='termHelpDialog';d.className='term-help-dialog';d.setAttribute('aria-labelledby','termHelpTitle');d.innerHTML='<div class="detail-head"><h3 id="termHelpTitle"></h3><button type="button">닫기</button></div><p></p>';document.body.append(d);d.querySelector('button').onclick=()=>d.close();}byId('termHelpTitle').textContent=info.getAttribute('aria-label');const fields=[...info.closest('.card').querySelectorAll('thead th')].map(x=>x.dataset.label||x.textContent.trim()).filter((x,i,a)=>COLUMN_HELP[x]&&a.indexOf(x)===i);d.querySelector('p').textContent=info.dataset.tip+(info.closest('#sleepCard')?'\n\n'+chinaSleepActualText():'')+(info.closest('#prodSettings')?'\n\n'+byId('bonusBox').textContent:'')+(fields.length?'\n\n'+fields.map(x=>x+'\n'+COLUMN_HELP[x]).join('\n\n'):'');d.showModal();});
+document.addEventListener('click',e=>{const info=e.target.closest('.info-tip');if(!info)return;if(e.detail>0&&matchMedia('(hover: hover) and (pointer: fine)').matches){showUIHelp(info);return;}hideUIHelp();let d=byId('termHelpDialog');if(!d){d=document.createElement('dialog');d.id='termHelpDialog';d.className='term-help-dialog';d.setAttribute('aria-labelledby','termHelpTitle');d.innerHTML='<div class="detail-head"><h3 id="termHelpTitle"></h3><button type="button">닫기</button></div><p></p>';document.body.append(d);d.querySelector('button').onclick=()=>d.close();}byId('termHelpTitle').textContent=info.getAttribute('aria-label');d.querySelector('p').textContent=info.dataset.tip;d.showModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideUIHelp();if(!byId('resetChoiceModal').hidden)closeResetChoiceModal();if(planResearchActionId){planResearchActionId='';renderPlanResearch();}}});
 // Trap focus in retained non-native dialogs, and restore the launching control.
 let modalOpener=null;
@@ -1048,9 +1055,9 @@ function syncChinaDetailControls(){
  const d=details[activeDetailBuilding],root=byId('detailRows');if(!root||!d)return;
  root.querySelectorAll('input,select,button').forEach(el=>el.disabled=!d.enabled);
  root.querySelectorAll('[data-detail-row]').forEach((row,i)=>{row.querySelectorAll('[data-detail-k]').forEach(el=>{const label={lv:'레벨',mode:'생산 방식',count:'건물 수',hours:'운영 시간(h)'}[el.dataset.detailK];el.setAttribute('aria-label',displayName(activeDetailBuilding)+' 구성 '+(i+1)+' '+label);});row.querySelectorAll('.step-btn').forEach(b=>b.setAttribute('aria-label',b.closest('.step-wrap').querySelector('input').getAttribute('aria-label')+(Number(b.dataset.delta)>0?' 늘리기':' 줄이기')));row.querySelector('.detail-remove')?.setAttribute('aria-label',displayName(activeDetailBuilding)+' 구성 '+(i+1)+' 삭제');});
- const count=d.rows.reduce((sum,row)=>sum+finiteNonnegative(row.count),0);byId('detailResult').textContent=d.enabled?(d.rows.length?'구성 '+d.rows.length+'개 · 총 건물 수 '+fmtCount(count):'구성이 없습니다. 건물 구성을 추가하세요.'):'상세 설정을 켜면 이 항목의 생산 계산에 상세 구성이 적용됩니다.';
+ const count=d.rows.reduce((sum,row)=>sum+finiteNonnegative(row.count),0);byId('detailResult').textContent=d.enabled?(d.rows.length?'구성 '+d.rows.length+'개 · 총 건물 수 '+fmtCount(count):'구성이 없습니다. 건물 구성을 추가하세요.'):'상세 설정을 켜면 건물 구성을 나누어 입력할 수 있습니다.';
  const add=byId('detailAdd');add.disabled=!d.enabled||d.rows.length>=20;add.title=d.rows.length>=20?'건물 구성은 최대 20개까지 입력할 수 있습니다.':'';
- let status=byId('detailConfigStatus');if(!status){status=document.createElement('div');status.id='detailConfigStatus';status.className='detail-config-status';root.before(status);}status.textContent='구성 '+d.rows.length+' / 20개 · '+(d.enabled?'변경 즉시 반영':'상세 설정 미적용');
+ let status=byId('detailConfigStatus');if(!status){status=document.createElement('div');status.id='detailConfigStatus';status.className='detail-config-status';root.before(status);}status.hidden=true;byId('detailResult').textContent=d.enabled?'구성 '+d.rows.length+'/20개 · 총 '+fmtCount(count)+'채 · 즉시 반영':'상세 설정을 켜면 건물 구성을 나누어 입력할 수 있습니다.';
 }
 function amountStateValue(el){
  const b=el.closest('tr[data-b]')?.dataset.b;
@@ -1077,7 +1084,7 @@ function showChinaInputError(el,message){
 }
 function clearChinaInputError(el){el.setCustomValidity('');el.removeAttribute('aria-invalid');if(el.dataset.errorId){byId(el.dataset.errorId)?.remove();el.removeAttribute('aria-describedby');delete el.dataset.errorId;}}
 function validateChinaInput(el,final){
- if(isChinaAmountInput(el)){const text=el.value.trim(),n=text===''?0:parseCompactNumber(text);if(!Number.isFinite(n)||n<0||!Number.isSafeInteger(n)){if(final)showChinaInputError(el,'0 이상의 정수 수량 또는 12K, 1.25M 형식으로 입력하세요.');else showChinaInputError(el,Number.isFinite(n)&&n>=0?'정수 수량을 입력하세요. K·M 단위도 사용할 수 있습니다.':'숫자 또는 K·M 단위로 입력하세요.');return false;}clearChinaInputError(el);if(final)el.value=String(n);return true;}
+ if(isChinaAmountInput(el)){const text=el.value.trim(),n=text===''?0:parseCompactNumber(text);if(!Number.isFinite(n)||n<0||!Number.isSafeInteger(n)){if(final)showChinaInputError(el,'0 이상의 정수로 입력하세요. 예: 12000 또는 12K');else showChinaInputError(el,Number.isFinite(n)&&n>=0?'정수로 입력하세요. 예: 12000 또는 12K':'숫자를 입력하세요. 예: 12000 또는 12K');return false;}clearChinaInputError(el);if(final)el.value=String(n);return true;}
  if(el.matches?.('input[type=number]')){const n=el.value===''?null:Number(el.value);if(el.validity.badInput||(n!==null&&(!Number.isFinite(n)||n<0||n>Number.MAX_SAFE_INTEGER))){showChinaInputError(el,'0 이상의 유효한 숫자를 입력하세요.');return false;}clearChinaInputError(el);return true;}
  return true;
 }
@@ -1152,7 +1159,7 @@ const originalPlanAreaRenderer=renderPlanArea;
 renderPlanArea=function(){stashHomeInputs();originalPlanAreaRenderer();arrangeHomeInputs();syncUnifiedCompositionView();};
 function syncUnifiedCompositionView(){const open=planState.buildingDetailsVisible===true;byId('tArea').querySelectorAll('tbody tr').forEach(row=>{const isHome=homeKeys.includes(row.dataset.areaKey);row.hidden=!isHome&&!open;});const button=byId('buildingView');if(button){button.textContent=open?'생산 건물 닫기 ▲':'생산 건물 보기 ▼';button.setAttribute('aria-expanded',String(open));}byId('tArea').classList.toggle('composition-expanded',open);if(byId('compositionActions'))byId('compositionActions').hidden=!open;}
 function sharedHelpButton(label,tip){return '<button type="button" class="info-tip" data-tip="'+escapeText(tip)+'" aria-label="'+escapeText(label)+' 설명">i</button>';}
-function unifiedGoalHtml(maxLevel,short,unknown){const warning=escapeText(short.join(' · ')||(!unknown.length?'없음':''))+(unknown.length?(short.length?'<br>':'')+'운영 시간 확인: '+escapeText(unknown.join(' · ')):'');return metricUI('최대 도달(고령토 기준) '+sharedHelpButton('최대 도달(고령토 기준)',SECTION_HELP.wonderSettings),'<span id="maxLv">'+maxLevel+'</span>')+metricUI('생산력 부족 항목',warning,short.length||unknown.length?'bad':'');}
+function unifiedGoalHtml(maxLevel,short,unknown){const warning=escapeText(short.join(' · ')||(!unknown.length?'없음':''))+(unknown.length?(short.length?'<br>':'')+'운영 시간 확인: '+escapeText(unknown.join(' · ')):'');return metricUI('최대 도달(고령토 기준) '+sharedHelpButton('최대 도달(고령토 기준)',MAX_LEVEL_HELP),'<span id="maxLv">'+maxLevel+'</span>')+metricUI('생산력 부족 항목',warning,short.length||unknown.length?'bad':'');}
 function commitLiveConstructionInput(el,value){
  const tr=el.closest('[data-construction-row]'),row=tr?planState.constructionRows.find(r=>r.id===tr.dataset.constructionRow):null;if(!row)return;
  const field=el.dataset.constructionField;
@@ -1192,7 +1199,7 @@ renderResearchMobileChina=function(){
 function improveCityLayout(){
  const city=byId('cityOverviewCard'),composition=byId('buildingComposition');city.after(composition);
  const title=composition.querySelector('h2');title.firstChild.textContent='주택·건물 구성 ';
- const note=document.createElement('p');note.className='city-section-note';note.textContent='주택 수를 입력하면 일꾼과 면적이 함께 반영됩니다. 생산 건물은 생산 계산기의 구성을 가져옵니다.';composition.querySelector('.section-title-row').after(note);
+ const note=document.createElement('p');note.className='city-section-note';note.textContent='주택 수를 입력하세요. 생산 건물은 생산 계산기와 연동됩니다.';composition.querySelector('.section-title-row').after(note);
  byId('buildingReset').textContent='건물 수 기본값 복원';byId('buildingReset').title='직접 입력한 건물 수를 기본값으로 되돌립니다. 호화 쌀 농장은 0채로 돌아가며 주택 입력값은 유지됩니다.';
  const territory=city.querySelector('.territory-section');territory.id='territorySettings';territory.insertAdjacentHTML('beforeend','<progress id="areaUsage" aria-label="영토 면적 사용량" max="1" value="0"></progress><p id="expansionStatus" class="city-section-note"></p>');
  const nav=byId('panel-plan').querySelector('.mobile-section-nav');nav.innerHTML=[['cityOverviewCard','도시 현황'],['buildingComposition','주택·건물'],['currencyCard','오수전'],['constructionCard','건설 비용'],['researchCard','연구']].map(([id,name])=>'<a href="#'+id+'">'+name+'</a>').join('');
@@ -1200,18 +1207,18 @@ function improveCityLayout(){
  const breakdown=document.createElement('div');breakdown.id='budgetBreakdown';breakdown.className='budget-breakdown';byId('budgetSummary').after(breakdown);byId('currencyBreakdown').closest('details').hidden=true;
  const research=byId('researchCard');research.querySelector('.research-legend').hidden=false;
  const legend=research.querySelector('.research-legend');legend.querySelector('.cur').lastChild.textContent='완료 지정';
- const selection=research.querySelector('.research-selection').closest('details');selection.open=true;selection.querySelector('summary').textContent='현재 완료·목표 연구';selection.querySelector('.current-group .label').textContent='완료로 지정한 연구';
- const instructions=document.createElement('p');instructions.className='city-section-note';instructions.textContent='연구를 선택해 완료 상태나 목표를 지정하세요. 목표까지 필요한 선행 연구 비용도 함께 계산합니다.';research.querySelector('.research-filter').before(instructions);
+ const selection=research.querySelector('.research-selection').closest('details');selection.open=true;selection.querySelector('summary').textContent='완료한 연구·목표 연구';selection.querySelector('.current-group .label').textContent='완료한 연구';
+ const instructions=document.createElement('p');instructions.className='city-section-note';instructions.textContent='연구를 눌러 완료 상태나 목표를 지정하세요. 선행 연구 비용도 함께 계산합니다.';research.querySelector('.research-filter').before(instructions);
 }
 function applyUnifiedLayout(){
  document.querySelectorAll('.tabs .tab').forEach(tab=>tab.addEventListener('click',()=>{if(unifiedNavigationReady)byId('panel-'+tab.dataset.tab).scrollIntoView({block:'start',behavior:'instant'});}));window.addEventListener('load',()=>{unifiedNavigationReady=true;});
  COLUMN_HELP['생산 방식']='기초 자원은 연속 생산합니다. 중간 자원과 상품은 완료한 생산 주기만 생산량·소비량에 반영합니다.';COLUMN_HELP['필요량']='현재 생산 계획을 실행하는 데 필요한 원료량입니다.';
- const fieldHelp={wLv:'현재 적용받는 불가사의 보너스 레벨입니다.',baseH:'항목별 시간을 비워 두면 적용됩니다. 상세 설정 → 항목별 시간 → 기본 운영 시간 순으로 우선하며, 0은 생산하지 않습니다.',sleepPrepH:'취침 전까지 남은 시간입니다. 각 건물의 운영 시간과 이 시간 중 짧은 시간을 적용합니다. 비우면 기본 운영 시간을 사용합니다.',sleepCycle:'취침 전에 예약할 생산 주기입니다. 해당 레벨에 없는 주기는 선택 가능한 주기 중 가까운 주기를 사용합니다.',sleepCount:'건물 1채당 예약할 생산 횟수입니다. 모든 예약에 필요한 원료를 취침 전까지 확보해야 합니다.',productRawCycle:'생산 계산기값은 각 생산 항목의 설정 주기를 따릅니다. 상세 설정은 건물 수·운영 시간·Lv6 기준 생산량 비중을 반영하며, 운영 시간이 모두 0이면 생산 능력 비중을 사용합니다.'};
+ const fieldHelp={wLv:'현재 적용받는 불가사의 보너스 레벨입니다.',baseH:'항목별 운영 시간이 빈칸이면 이 시간을 사용합니다. 상세 구성의 시간이 우선하며, 0을 입력하면 생산하지 않습니다.',sleepPrepH:'취침 전까지 남은 시간입니다. 각 건물의 운영 시간과 이 시간 중 짧은 시간을 적용합니다. 비우면 기본 운영 시간을 사용합니다.',sleepCycle:'취침 전에 예약할 생산 주기입니다. 해당 레벨에 없는 주기는 선택 가능한 주기 중 가까운 주기를 사용합니다.',sleepCount:'건물 1채당 예약할 생산 횟수입니다. 모든 예약에 필요한 원료를 취침 전까지 확보해야 합니다.',productRawCycle:'생산 계산기값을 선택하면 각 항목에 설정한 생산 주기를 사용합니다. 여러 상세 구성은 생산량 비중으로 합산하며, 운영 시간이 모두 0이면 생산 능력 비중을 사용합니다.'};
  for(const [id,tip]of Object.entries(fieldHelp)){const input=byId(id),label=document.querySelector('label[for="'+id+'"]');if(!input||!label)continue;const text=label.textContent.trim();label.dataset.fieldLabel=text;input.setAttribute('aria-label',text);label.insertAdjacentHTML('beforeend',' '+sharedHelpButton(text,tip));}
  // Each elapsed-time column occupies the same final position as Egypt.
  for(const [id,order]of [['t1',[0,1,2,3,4,5,6,8,9,7]],['t2',[0,1,2,3,4,5,6,8,9,10,11,7]],['tw',[0,1,3,4,5,6,2]]])reorderCells(byId(id).querySelector('thead tr'),order);
  TABLE_SECONDARY.t1=[4,7,8];TABLE_SECONDARY.t2=[4,7,8,9,10];TABLE_SECONDARY.t3=[4,6,7,8];TABLE_SECONDARY.tw=[2,3,4,5];
- for(const table of document.querySelectorAll('table'))for(const th of table.querySelectorAll('thead th')){const label=th.textContent.trim();th.dataset.label=label;if(COLUMN_HELP[label]&&!(table.id==='tConvert'&&label==='생산 방식'))th.insertAdjacentHTML('beforeend',' '+sharedHelpButton(label,COLUMN_HELP[label]));}
+ for(const table of document.querySelectorAll('table'))for(const th of table.querySelectorAll('thead th')){const label=th.textContent.trim();th.dataset.label=label;const help=columnHelpForTable(table.id,label);if(help&&!(table.id==='tConvert'&&label==='생산 방식'))th.insertAdjacentHTML('beforeend',' '+sharedHelpButton(label,help));}
 
  byId('prodSettings').querySelector('.sync-goal-level')?.remove();document.querySelector('.sync-goal-level')?.setAttribute('hidden','');
  const legend=document.querySelector('.legend');legend.innerHTML='<span class="legend-item"><span class="legend-box legend-input"></span>노란 칸에 입력</span>';
@@ -1235,9 +1242,9 @@ function applyUnifiedLayout(){
  // A sticky completion action matches Egypt's detailed-input sheets.
  const done=document.createElement('button');done.className='detail-done';done.type='button';done.dataset.detailClose='';done.textContent='완료';byId('detailModal').querySelector('.detail-footer').append(done);
  // Remove obsolete explanatory copy from the primary summary while retaining it in help.
- SECTION_HELP.currencyCard='현재 보유량에 운영 시간 동안의 생산량을 더하고 건설·목표 연구 비용을 차감합니다. 보석 건설 비용은 별도 표시하며 오수전에서 차감하지 않습니다. 시간당 생산량은 게임에 표시되는 실제 생산량을 입력하세요.';
- SECTION_HELP.buildingComposition='주택 수는 이 표에서 입력합니다. 생산 건물 수는 생산 계산기와 연동되며, 상세 보기에서 직접 입력하거나 생산 값 사용으로 연동을 복원할 수 있습니다. 누에 숲·고령토 채석장은 면적을 사용하지 않습니다.';
- SECTION_HELP.constructionCard='현재 레벨부터 목표 레벨까지 건설·업그레이드 비용을 합산합니다. 현재 레벨 0은 새 건물이며, 호화 주택·호화 쌀 농장은 보석 비용으로 따로 집계합니다. 계산한 건물은 도시 구성에 자동 추가되지 않습니다.';
+ SECTION_HELP.currencyCard='현재 보유량 + 예상 생산량 − 건설 비용 − 목표 연구 비용입니다. 보석 비용은 별도로 표시합니다.';
+ SECTION_HELP.buildingComposition='주택 수는 여기서 입력합니다. 생산 건물은 생산 계산기와 연동되며, 생산 건물 보기에서 따로 조정할 수 있습니다. 누에 숲·고령토 채석장은 면적을 사용하지 않습니다.';
+ SECTION_HELP.constructionCard='현재 레벨에서 목표 레벨까지의 건설·업그레이드 비용입니다. 미건설(0)은 새 건물이며, 계산한 건물은 도시 구성에 자동 추가되지 않습니다. 호화 건물은 보석 비용으로 표시합니다.';
  for(const id of ['currencyCard','buildingComposition','constructionCard'])byId(id).querySelector('.info-tip').dataset.tip=SECTION_HELP[id];
 }
 applyUnifiedLayout();
@@ -1247,6 +1254,6 @@ refreshUI();
 
 
 </script>
-<script src="photo-import.js?v=20261104-1" defer></script>
+<script src="photo-import.js?v=20261104-2" defer></script>
 <script src="update-check.js?v=20261102"></script></body>
 </html>
