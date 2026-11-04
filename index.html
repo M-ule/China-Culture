@@ -84,14 +84,19 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
 #buildingView{white-space:nowrap}#compositionActions{justify-content:flex-end}#compositionActions #buildingReset{min-height:36px}
 #budgetBreakdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:6px;margin:12px 0}
 #budgetBreakdown>div{padding:10px 14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-right:1px solid var(--line);font-size:13px;line-height:1.6}#budgetBreakdown>div:last-child{border:0}#budgetBreakdown span{color:#827069}#budgetBreakdown b,#budgetBreakdown a{font-weight:600;font-variant-numeric:tabular-nums}
-#researchCard.research-list-view .research-tree-scroll{display:none}#researchCard.research-list-view .research-mobile{display:block}#researchCard.research-tree-view .research-mobile{display:none}#researchCard.research-tree-view .research-tree-scroll{display:block;overflow-x:auto}
-#researchCard.research-list-view .research-mobile-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+
+
 #researchCard .research-mobile-node{width:100%;min-width:0;min-height:66px;text-align:left;border:1px solid var(--line);border-left:4px solid #ddd1c7;border-radius:6px;padding:10px 12px;background:#fffaf7}
 #researchCard .research-mobile-node.completed{background:#e7f4ec;border-left-color:#3d8b60}#researchCard .research-mobile-node.needed{background:#fff4d7;border-left-color:#c4993c}#researchCard .research-mobile-node.target{border:2px solid #9e2735;background:#fff0ed}#researchCard .research-mobile-node.current{border-color:#4b8b65}
 #researchCard .research-mobile-node span{display:block;font-size:12px;font-weight:400;margin-top:5px;line-height:1.5;color:#76695f}#researchCard .research-budget{margin-left:auto}
 @media(max-width:850px){#budgetBreakdown{grid-template-columns:repeat(2,minmax(0,1fr))}#budgetBreakdown>div:nth-child(2){border-right:0}#budgetBreakdown>div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
-@media(max-width:720px){#panel-plan>.mobile-section-nav{gap:6px}#panel-plan>.mobile-section-nav a{padding:8px 10px;font-size:13px}#citySummary .metric:last-child{grid-column:1/-1}#tArea:not(.composition-expanded) tbody td:nth-child(2){grid-column:1/-1;border-right:0}#tArea:not(.composition-expanded) tbody td{min-height:64px}#researchCard.research-list-view .research-mobile-list{grid-template-columns:repeat(2,minmax(0,1fr))}#researchCard .research-mobile-node{font-size:14px;padding:10px 8px}#researchCard .research-mobile-node span{font-size:12px}#researchViewToggle{min-height:44px}}
-@media(max-width:390px){#researchCard.research-list-view .research-mobile-list{grid-template-columns:1fr}#budgetBreakdown>div{padding:8px;gap:4px}}
+@media(max-width:720px){#panel-plan>.mobile-section-nav{gap:6px}#panel-plan>.mobile-section-nav a{padding:8px 10px;font-size:13px}#citySummary .metric:last-child{grid-column:1/-1}#tArea:not(.composition-expanded) tbody td:nth-child(2){grid-column:1/-1;border-right:0}#tArea:not(.composition-expanded) tbody td{min-height:64px}#researchCard .research-mobile-node{font-size:14px;padding:10px 8px}#researchCard .research-mobile-node span{font-size:12px}}
+@media(max-width:390px){#budgetBreakdown>div{padding:8px;gap:4px}}
+
+#planCurrencyPerHourInput{appearance:textfield;-moz-appearance:textfield;width:140px;text-align:center}
+#planCurrencyPerHourInput::-webkit-inner-spin-button,#planCurrencyPerHourInput::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.currency-time-context{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 14px}.currency-time-context #currencyTimeBasis{margin:0}.currency-time-context button{font-size:13px;min-height:36px;padding:6px 10px}
+@media(max-width:720px){#currencyCard .bar label>#planCurrencyPerHourInput{height:48px;min-height:48px;width:100%!important}#researchCard .research-legend{gap:10px;flex-wrap:wrap;font-size:12px}}
 </style>
 </head>
 <body><main>
@@ -186,7 +191,7 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
 </section><section class="card" id="currencyCard"><div class="section-title-row"><h2>오수전 현황·사용 계획</h2></div>    <div class="plan-overview-block">
       <div class="table-wrap"><table id="tCurrency"><thead><tr><th colspan="2" scope="colgroup" class="city-heading">오수전 현황</th></tr></thead><tbody>
         <tr class="plan-input-row"><td>현재 보유량</td><td class="input-cell"><input id="planCurrencyStock" data-plan-field="currencyStock" type="text" inputmode="decimal" autocomplete="off" value="0" placeholder="예: 100K, 1.2M"></td></tr>
-        <tr class="plan-input-row"><td>시간당 생산량</td><td class="input-cell"><input id="planCurrencyPerHourInput" data-plan-field="currencyPerHour" type="number" min="0" step="any" value="0"></td></tr>
+        <tr class="plan-input-row"><td>시간당 생산량</td><td class="input-cell"><input id="planCurrencyPerHourInput" data-plan-field="currencyPerHour" type="number" inputmode="decimal" min="0" step="any" value="0"></td></tr>
         <tr class="plan-input-row"><td>운영 시간(h)</td><td class="input-cell"><input id="planCurrencyHours" data-plan-field="currencyHours" type="number" min="0" step="any" value="" placeholder="기본"></td></tr>
         <tr class="plan-key-row"><td>예상 보유량</td><td class="num calc" id="planCurrencyProjected">0</td></tr>
       </tbody></table></div>
@@ -600,7 +605,7 @@ function constructionCurrentLevelOptions(selected){return [0,1,2,3,4,5,6].map(lv
 function constructionLevelOptions(selected,currentLv=0){return [1,2,3,4,5,6].map(lv=>'<option value="'+lv+'"'+(lv===selected?' selected':'')+(lv<currentLv?' disabled':'')+'>Lv.'+lv+'</option>').join('');}
 function renderPlanConstruction(){
   const tbody=document.querySelector('#tConstruction tbody');if(!tbody)return;
-  if(!(planState.constructionRows||[]).length){tbody.innerHTML='<tr><td colspan="6" class="calc" style="color:#9ca3af">+ 건설 항목 추가를 눌러 계산할 건물을 추가하세요.</td></tr>';}
+  if(!(planState.constructionRows||[]).length){tbody.innerHTML='<tr><td colspan="6" class="calc" style="color:#9ca3af">‘항목 추가’로 건물과 현재·목표 레벨을 선택하세요.</td></tr>';}
   else tbody.innerHTML=planState.constructionRows.map(r=>{
     const unit=constructionUnitCost(r.key,r.currentLv,r.lv),need=unit*Math.max(0,Math.floor(r.count||0));
     return '<tr data-construction-row="'+r.id+'"><td class="input-cell"><span class="construction-mobile-label">건물 종류</span><div class="construction-building-cell"><select data-construction-field="key">'+constructionBuildingOptions(r.key)+'</select></div></td><td class="input-cell"><span class="construction-mobile-label">현재 레벨</span><input type="number" min="0" max="6" step="1" data-construction-field="currentLv" value="'+r.currentLv+'"></td><td class="input-cell"><span class="construction-mobile-label">목표 레벨</span><input type="number" min="'+Math.max(1,r.currentLv)+'" max="6" step="1" data-construction-field="lv" value="'+r.lv+'"></td><td class="input-cell"><span class="construction-mobile-label">건설 수</span><input type="number" min="0" step="1" data-construction-field="count" value="'+r.count+'" placeholder="1"></td><td class="num calc"><div class="construction-cost-cell"><span>'+constructionCostLabel(r.key,need)+'</span></div></td><td class="construction-delete-cell"><button type="button" class="construction-remove" data-construction-remove="'+r.id+'" aria-label="건설 항목 삭제" title="건설 항목 삭제">삭제</button></td></tr>';
@@ -916,7 +921,7 @@ function setupUI(){
 }
 function labelUITables(){
  document.querySelectorAll('input[type=number]').forEach(input=>{
-  if(input.closest('.step-wrap'))return;
+  if(input.id==='planCurrencyPerHourInput'||input.closest('.step-wrap'))return;
   const wrapper=document.createElement('div');wrapper.className='step-wrap';input.before(wrapper);wrapper.append(input);input.classList.add('step-one');
   const arrows=document.createElement('div');arrows.className='step-controls';arrows.innerHTML='<button type="button" class="step-btn" data-delta="1" aria-label="값 늘리기">▲</button><button type="button" class="step-btn" data-delta="-1" aria-label="값 줄이기">▼</button>';wrapper.append(arrows);
  });
@@ -1165,7 +1170,8 @@ function renderUnifiedCity(){
  byId('areaStatus').textContent='사용 '+fmtCount(used)+' / 전체 '+fmtQty(totalArea)+' 면적 · 총 영토 '+fmtQty(plots)+'칸 (1칸 = 16면적)';
  const meter=byId('areaUsage');if(meter){meter.max=Math.max(1,totalArea);meter.value=Math.max(0,Math.min(used,totalArea));meter.setAttribute('aria-valuetext','전체 '+fmtQty(totalArea)+' 중 '+fmtCount(used)+' 사용');meter.classList.toggle('over-capacity',used>totalArea);}
  const expansion=byId('expansionStatus');if(expansion){const auto=planProgressionInfo(),future=(CITY_PLAN_DATA.progressionRewards[settings.wonder]||[]).find(r=>r.level>settings.wLv);expansion.textContent='기본 '+CITY_PLAN_DATA.initialExpansions+'칸 + 진행 보상 '+auto.count+'칸 + 보석 '+fmtCount(planState.gemExpansions)+'칸'+(future?' · 다음 확장 Lv.'+future.level+' (+'+future.amount+'칸)':' · 진행 보상 모두 적용');}
- const budgetRows=byId('budgetBreakdown');if(budgetRows)budgetRows.innerHTML='<div><span>현재 보유</span><b>'+fmtQty(planState.currencyStock)+'</b></div><div><span>예상 생산 ('+fmtHours(q.hours)+'h)</span><b>+'+fmtQty(q.production)+'</b></div><div><span>건설 비용</span><a href="#constructionCard">−'+fmtQty(q.build.wuZhu)+'</a></div><div><span>목표 연구 비용</span><a href="#researchCard">−'+fmtQty(q.research)+'</a></div>';
+ const budgetRows=byId('budgetBreakdown');if(budgetRows)budgetRows.innerHTML='<div><span>현재 보유</span><b>'+fmtQty(planState.currencyStock)+'</b></div><div><span>예상 생산 ('+fmtHours(q.hours)+'h)</span><b>'+(q.production?'+':'')+fmtQty(q.production)+'</b></div><div><span>건설 비용</span><a href="#constructionCard" aria-label="건설 비용 '+fmtQty(q.build.wuZhu)+' 오수전 확인">'+(q.build.wuZhu?'−':'')+fmtQty(q.build.wuZhu)+'</a></div><div><span>목표 연구 비용</span><a href="#researchCard" aria-label="목표 연구 비용 '+fmtQty(q.research)+' 오수전 확인">'+(q.research?'−':'')+fmtQty(q.research)+'</a></div>';
+ const useBase=byId('currencyUseBase');if(useBase)useBase.hidden=planState.currencyHoursManual!==true;
  const basis=byId('currencyTimeBasis');if(basis)basis.textContent=planState.currencyHoursManual?'직접 설정한 운영 시간 사용':'생산 계산기의 기본 운영 시간 '+fmtHours(settings.baseH)+'h 사용';
  byId('territoryBonusLv').textContent='Lv.'+settings.wLv;
  byId('currencyBreakdown').textContent='현재 보유 '+fmtQty(planState.currencyStock)+' + 예상 생산 '+fmtQty(q.production)+' − 건설 '+fmtQty(q.build.wuZhu)+' − 목표 연구 '+fmtQty(q.research)+' 오수전';
@@ -1176,17 +1182,13 @@ function renderUnifiedCity(){
 let unifiedNavigationReady=false;
 const originalMobileResearchRenderer=renderResearchMobileChina;
 renderResearchMobileChina=function(){
- originalMobileResearchRenderer();syncCityResearchView();const nodes=[...byId('researchTreeNodes').querySelectorAll('[data-research-id]')].filter(el=>!el.hidden),positions=new Map(),info=planResearchInfo();
+ originalMobileResearchRenderer();const nodes=[...byId('researchTreeNodes').querySelectorAll('[data-research-id]')].filter(el=>!el.hidden),positions=new Map(),info=planResearchInfo();
  for(const node of nodes){const x=(RESEARCH_TREE_LAYOUT[node.dataset.researchId]?.[0]||0)*960/760,y=parseFloat(node.style.top)*1.4;node.style.left=x+'px';node.style.top=y+'px';positions.set(node.dataset.researchId,[x,y]);}
  const height=nodes.length?Math.max(...[...positions.values()].map(p=>p[1]))+60:100,svg=byId('researchTreeLines');
  svg.setAttribute('viewBox','0 0 960 '+height);svg.style.width='960px';svg.style.height=height+'px';
  svg.innerHTML=CITY_PLAN_DATA.research.filter(t=>positions.has(t.id)).flatMap(t=>t.parents.filter(id=>positions.has(id)).map(id=>{const a=positions.get(id),b=positions.get(t.id);return '<line x1="'+a[0]+'" y1="'+(a[1]+33)+'" x2="'+b[0]+'" y2="'+(b[1]-33)+'" class="'+(info.done.has(t.id)?'completed':info.needed.has(t.id)?'needed':'')+'"/>';})).join('');
  byId('researchTree').style.width='960px';byId('researchTree').style.height=(height+30)+'px';byId('researchTreeNodes').style.width='960px';byId('researchTreeNodes').style.height=height+'px';
 };
-function syncCityResearchView(){
- const card=byId('researchCard'),tree=planState.researchView==='tree';card.classList.toggle('research-list-view',!tree);card.classList.toggle('research-tree-view',tree);
- const toggle=byId('researchViewToggle');if(toggle){toggle.textContent=tree?'목록 보기':'연구 트리 보기';toggle.setAttribute('aria-expanded',String(tree));}
-}
 function improveCityLayout(){
  const city=byId('cityOverviewCard'),composition=byId('buildingComposition');city.after(composition);
  const title=composition.querySelector('h2');title.firstChild.textContent='주택·건물 구성 ';
@@ -1194,12 +1196,12 @@ function improveCityLayout(){
  byId('buildingReset').textContent='건물 수 기본값 복원';byId('buildingReset').title='직접 입력한 건물 수를 기본값으로 되돌립니다. 호화 쌀 농장은 0채로 돌아가며 주택 입력값은 유지됩니다.';
  const territory=city.querySelector('.territory-section');territory.id='territorySettings';territory.insertAdjacentHTML('beforeend','<progress id="areaUsage" aria-label="영토 면적 사용량" max="1" value="0"></progress><p id="expansionStatus" class="city-section-note"></p>');
  const nav=byId('panel-plan').querySelector('.mobile-section-nav');nav.innerHTML=[['cityOverviewCard','도시 현황'],['buildingComposition','주택·건물'],['currencyCard','오수전'],['constructionCard','건설 비용'],['researchCard','연구']].map(([id,name])=>'<a href="#'+id+'">'+name+'</a>').join('');
- const money=byId('currencyCard'),basis=document.createElement('p');basis.id='currencyTimeBasis';basis.className='city-section-note';money.querySelector('.bar').after(basis);
+ const money=byId('currencyCard'),basis=document.createElement('p');basis.id='currencyTimeBasis';basis.className='city-section-note';const context=document.createElement('div');context.className='currency-time-context';const useBase=document.createElement('button');useBase.id='currencyUseBase';useBase.type='button';useBase.textContent='기본 시간 사용';useBase.addEventListener('click',()=>{const input=byId('planCurrencyHours');input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));input.dispatchEvent(new Event('change',{bubbles:true}));});context.append(basis,useBase);money.querySelector('.bar').after(context);
  const breakdown=document.createElement('div');breakdown.id='budgetBreakdown';breakdown.className='budget-breakdown';byId('budgetSummary').after(breakdown);byId('currencyBreakdown').closest('details').hidden=true;
- const research=byId('researchCard'),toggle=document.createElement('button');toggle.type='button';toggle.id='researchViewToggle';toggle.setAttribute('aria-controls','researchTree researchMobile');toggle.addEventListener('click',()=>{planState.researchView=planState.researchView==='tree'?'list':'tree';syncCityResearchView();saveState();postSize();});research.querySelector('.section-title-row').insertBefore(toggle,byId('researchReset'));
+ const research=byId('researchCard');research.querySelector('.research-legend').hidden=false;
+ const legend=research.querySelector('.research-legend');legend.querySelector('.cur').lastChild.textContent='완료 지정';
  const selection=research.querySelector('.research-selection').closest('details');selection.open=true;selection.querySelector('summary').textContent='현재 완료·목표 연구';selection.querySelector('.current-group .label').textContent='완료로 지정한 연구';
  const instructions=document.createElement('p');instructions.className='city-section-note';instructions.textContent='연구를 선택해 완료 상태나 목표를 지정하세요. 목표까지 필요한 선행 연구 비용도 함께 계산합니다.';research.querySelector('.research-filter').before(instructions);
- syncCityResearchView();
 }
 function applyUnifiedLayout(){
  document.querySelectorAll('.tabs .tab').forEach(tab=>tab.addEventListener('click',()=>{if(unifiedNavigationReady)byId('panel-'+tab.dataset.tab).scrollIntoView({block:'start',behavior:'instant'});}));window.addEventListener('load',()=>{unifiedNavigationReady=true;});
