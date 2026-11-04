@@ -861,7 +861,7 @@ wonderSettings:'현재 레벨 다음부터 목표 레벨까지 필요한 상품�
 goalCard:'설정한 운영 시간 기준으로 목표에 필요한 상품이 얼마나 남거나 부족한지 확인합니다.',
 sleepCard:'취침 전에 예약 생산에 필요한 원료를 확보할 수 있는지 확인합니다. 현재 보유량과 취침 전 생산·소비를 반영합니다.',
 powerCard:'현재 생산력과 목표 달성에 필요한 생산력을 비교합니다. 보유량을 반영하고, 목표량을 넘는 상품 생산분은 제외합니다.',
-conversionCard:'Lv6 건물 1채의 생산력을 100으로 비교합니다. 기준은 가공소·작업장 30분, 기초 자원 연속 생산입니다. 표의 생산 방식은 생산 계산기 설정을 따르며, —는 해당 레벨에 없는 방식입니다.',
+conversionCard:'Lv6 건물 1채의 생산력을 100으로 비교합니다. 가공소·작업장은 30분 생산을 기준으로 합니다.',
 cityOverviewCard:'입력한 건물 구성의 일꾼과 영토 사용량을 확인합니다. 실제 건물 배치 모양은 고려하지 않습니다.',
 currencyCard:'현재 보유량에 예상 생산량을 더하고, 사용 계획에 필요한 비용을 차감합니다.',
 buildingComposition:'생산 건물 수는 생산 계산기와 연동됩니다. 직접 입력한 건물 수가 있으면 그 값을 우선 적용합니다.',
@@ -873,7 +873,7 @@ const COLUMN_HELP={
 '운영 시간(h)':'빈칸은 기본 운영 시간을 사용하고, 0은 생산하지 않습니다. 상세 구성에 입력한 시간이 가장 먼저 적용됩니다.',
 '현재 보유량':'정수 또는 K·M 단위로 입력하세요. 예: 12000 또는 12K',
 '잔여/부족':'현재 보유량 + 예상 생산량 − 필요량입니다. 양수는 남는 양, 음수는 부족한 양입니다.',
-'소요 시간':'현재 보유량을 포함해 필요량을 확보할 때까지 걸리는 총 생산 시간입니다. 설정한 운영 시간을 넘어도 표시합니다. 원료·일꾼은 충분하다고 가정합니다. 보유량만으로 충족하면 0분, 생산할 건물이 없으면 —로 표시합니다.',
+'소요 시간':'현재 보유량을 포함해 필요량을 확보할 때까지 걸리는 총 생산 시간입니다.',
 '예상 생산량':'현재 구성과 운영 시간에 따른 생산량입니다.',
 '생산력 차이':'현재 생산력 − 필요 생산력입니다. 음수이면 생산력이 부족합니다.',
 '필요 생산력':'보유량을 뺀 필요량을 비교 시간 안에 생산하는 데 필요한 생산력입니다.',
@@ -1216,7 +1216,7 @@ function improveCityLayout(){
 function applyUnifiedLayout(){
  document.querySelectorAll('.tabs .tab').forEach(tab=>tab.addEventListener('click',()=>{if(unifiedNavigationReady)byId('panel-'+tab.dataset.tab).scrollIntoView({block:'start',behavior:'instant'});}));window.addEventListener('load',()=>{unifiedNavigationReady=true;});
  COLUMN_HELP['생산 방식']='연속 생산은 운영 시간만큼, 주기 생산은 완료한 횟수만 생산량·소비량에 반영합니다.';COLUMN_HELP['필요량']='현재 생산 계획을 실행하는 데 필요한 원료량입니다.';
- const fieldHelp={wLv:'현재 적용받는 불가사의 보너스 레벨입니다.',baseH:'항목별 운영 시간이 빈칸이면 이 시간을 사용합니다. 상세 구성의 시간이 우선하며, 0을 입력하면 생산하지 않습니다.',sleepPrepH:'취침 전까지 남은 시간입니다. 각 건물의 운영 시간과 이 시간 중 짧은 시간을 적용합니다. 비우면 기본 운영 시간을 사용합니다.',sleepCycle:'취침 전에 예약할 생산 주기입니다. 해당 레벨에 없는 주기는 선택 가능한 주기 중 가까운 주기를 사용합니다.',sleepCount:'건물 1채당 예약할 생산 횟수입니다. 모든 예약에 필요한 원료를 취침 전까지 확보해야 합니다.',productRawCycle:'생산 계산기값을 선택하면 각 항목에 설정한 생산 주기를 사용합니다. 여러 상세 구성은 생산량 비중으로 합산하며, 운영 시간이 모두 0이면 생산 능력 비중을 사용합니다.'};
+ const fieldHelp={wLv:'현재 적용받는 불가사의 보너스 레벨입니다.',baseH:'항목별 운영 시간이 빈칸이면 이 시간을 사용합니다. 상세 구성의 시간이 우선하며, 0을 입력하면 생산하지 않습니다.',sleepPrepH:'건물별 운영 시간 설정을 적용하며, 취침 전까지의 생산·소비만 계산합니다. 이 칸을 비우면 기본 운영 시간을 사용합니다.',sleepCycle:'취침 전에 예약할 생산 주기입니다. 해당 레벨에 없는 주기는 선택 가능한 주기 중 가까운 주기를 사용합니다.',sleepCount:'건물 1채당 예약할 생산 횟수입니다. 모든 예약에 필요한 원료를 취침 전까지 확보해야 합니다.',productRawCycle:'생산 계산기값을 선택하면 각 항목에 설정한 생산 주기를 사용합니다. 여러 상세 구성은 생산량 비중으로 합산하며, 운영 시간이 모두 0이면 생산 능력 비중을 사용합니다.'};
  for(const [id,tip]of Object.entries(fieldHelp)){const input=byId(id),label=document.querySelector('label[for="'+id+'"]');if(!input||!label)continue;const text=label.textContent.trim();label.dataset.fieldLabel=text;input.setAttribute('aria-label',text);label.insertAdjacentHTML('beforeend',' '+sharedHelpButton(text,tip));}
  // Each elapsed-time column occupies the same final position as Egypt.
  for(const [id,order]of [['t1',[0,1,2,3,4,5,6,8,9,7]],['t2',[0,1,2,3,4,5,6,8,9,10,11,7]],['tw',[0,1,3,4,5,6,2]]])reorderCells(byId(id).querySelector('thead tr'),order);
