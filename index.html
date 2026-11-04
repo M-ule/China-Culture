@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content">
 <title>중국 문명 시뮬레이터</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2232%22%20height%3D%2232%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%225%22%20fill%3D%22%239f1d20%22%2F%3E%3Ctext%20x%3D%2216%22%20y%3D%2224%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2225%22%20font-family%3D%22serif%22%3EC%3C%2Ftext%3E%3C%2Fsvg%3E" type="image/svg+xml">
 <meta name="description" content="중국 문명의 생산·불가사의 목표·도시 관리 계산기">
@@ -99,7 +99,49 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
 @media(max-width:720px){#currencyCard .bar label>#planCurrencyPerHourInput{height:48px;min-height:48px;width:100%!important}#researchCard .research-legend{gap:10px;flex-wrap:wrap;font-size:12px}}
 #detailHelp:empty{display:none}
 #powerCalculationDetails p{font-size:13px;line-height:1.7}
-button.info-tip.unavailable-value{border:0!important;border-radius:3px;background:transparent!important;color:inherit!important;font:inherit!important;min-width:32px!important;width:32px!important;height:32px!important;min-height:32px!important;vertical-align:middle}button.info-tip.unavailable-value:focus-visible{outline:2px solid var(--primary);outline-offset:2px}@media(max-width:720px){#tPower }
+button.info-tip.unavailable-value{border:0!important;border-radius:3px;background:transparent!important;color:inherit!important;font:inherit!important;min-width:32px!important;width:32px!important;height:32px!important;min-height:32px!important;vertical-align:middle}button.info-tip.unavailable-value:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+
+/* Mobile interaction and density pass. */
+@media(max-width:720px){
+ main{padding:12px 8px}.card{padding:12px;margin:10px 0}.panel,.card{scroll-margin-top:72px}
+ .tabs{padding-top:6px;gap:4px}.tabs .tab{min-height:48px;line-height:1.4;font-size:14px;padding:10px 4px}
+ .mobile-section-nav{flex-wrap:wrap;overflow:visible;gap:6px}.mobile-section-nav a,#panel-plan>.mobile-section-nav a{min-height:40px;padding:8px 11px}
+ #prodSettings .section-title-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-bottom:14px}
+ #prodSettings .title-actions{display:contents}#prodSettings h2{white-space:normal;min-width:0;padding:8px;font-size:18px;line-height:1.5}
+ #prodSettings #photoImportBtn{grid-column:2;grid-row:1;width:100%;height:auto;min-height:44px;white-space:normal}
+ #prodSettings #saveDefaultBtn,#prodSettings #loadSavedBtn,#prodSettings #resetBtn,#prodSettings #prodViewToggle{width:100%;justify-self:stretch;min-width:0;white-space:normal;font-size:13px;height:auto;min-height:44px;padding:7px}
+ #prodSettings #saveDefaultBtn{grid-column:1;grid-row:2}#prodSettings #loadSavedBtn{grid-column:2;grid-row:2}#prodSettings #resetBtn{grid-column:1;grid-row:3}#prodSettings #prodViewToggle{grid-column:2;grid-row:3}
+ .control-field:has(#sleepCycle),.control-field:has(#productRawCycle){grid-template-columns:minmax(0,1fr)!important;gap:6px}
+ .settings{gap:10px;margin-bottom:12px}.control-field,#prodSettings .control-field{display:grid;grid-template-columns:minmax(0,1fr) minmax(100px,42%);gap:8px;width:100%;min-width:0;white-space:normal;font-size:14px}
+ .control-field>label{min-width:0;white-space:normal;word-break:keep-all;line-height:1.5}
+ .control-field>.step-wrap,.control-field>input,.control-field>select,#prodSettings .control-field>.step-wrap,#prodSettings #wonder{width:100%!important;max-width:none!important;min-width:0;height:48px;min-height:48px}
+ input,select{font-size:16px}button,input,select{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}.step-controls{width:38px}.step-btn{min-height:0}
+ .section-title-row{margin-bottom:12px;gap:8px}.production-section-title{flex:1;flex-basis:0;min-width:0;flex-direction:column;align-items:flex-start;gap:4px}
+ .production-section-title h2{font-size:18px;padding:8px}.production-section-title .detail-summary{font-size:12px;margin-left:12px}.detail-actions{margin-left:0!important}.detail-open-btn{padding:8px 10px;min-width:84px;font-size:13px}
+ #panel-prod .responsive-table tbody td{min-height:70px;padding:7px;gap:4px}#panel-prod .responsive-table tbody td:first-child{min-height:40px;padding:8px}
+ #tPower:not(.details-visible) tbody tr,#tSleep:not(.details-visible) tbody tr{grid-template-columns:minmax(84px,35%) minmax(0,1fr);margin-bottom:8px}
+ #tPower:not(.details-visible) tbody td:first-child,#tSleep:not(.details-visible) tbody td:first-child{grid-column:1;min-height:68px;background:var(--soft);color:var(--primary);font-size:15px;border-right:1px solid var(--line);padding:10px 8px;word-break:keep-all}
+ #tPower:not(.details-visible) tbody td:nth-child(2),#tSleep:not(.details-visible) tbody td:nth-child(2){grid-column:2;min-height:68px;border-right:0;padding:8px;gap:5px}
+ #tArea:not(.composition-expanded) tbody td{min-height:60px}#tArea tbody td,#tConstruction tbody td{min-height:68px;padding:8px}#tConstruction tbody td:first-child{min-height:54px}#tConstruction tbody td:last-child{min-height:56px}
+ .city-summary .metric{padding:10px;min-height:0!important}.city-summary .metric strong{font-size:19px!important}#citySummary .support{font-size:12px;line-height:1.7}#citySummary a{display:inline-block;min-height:32px;padding-top:4px}
+ #budgetBreakdown>div{padding:9px;min-width:0}#budgetBreakdown a{min-height:32px;display:inline-flex;align-items:center}.bar{gap:10px}.currency-time-context{gap:8px}#currencyUseBase{min-height:44px}
+ .detail-modal{padding:8px}.detail-sheet{width:100%;max-width:560px;max-height:calc(100dvh - 16px);padding:14px 12px;border-radius:12px;overscroll-behavior:contain}
+ .detail-head{gap:8px}.detail-head h3{font-size:18px;line-height:1.5}.detail-head>div{min-width:0}.detail-head p{font-size:13px;line-height:1.5}.detail-close{min-width:44px;width:44px;height:44px;flex:none}
+ .detail-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px}.detail-tab{padding:8px 4px;font-size:14px;min-height:44px}.detail-row,.detail-row.base-detail-row{gap:10px;padding:12px 10px}.detail-field{min-width:0}.detail-field>label{font-size:13px;line-height:1.5}.detail-toggle-wrap{min-height:44px}.detail-toggle-wrap>label{padding:8px 0}
+ .detail-footer{background:#fff;border-top:1px solid var(--line);padding:10px 0 max(8px,env(safe-area-inset-bottom));gap:8px}.detail-footer button{font-size:14px;min-height:48px}.detail-footer .detail-add{min-width:0;white-space:normal;padding:8px}.detail-footer .detail-done{min-width:72px}
+ dialog#termHelpDialog,dialog#photoImportDialog,dialog#researchAction.open{width:calc(100% - 16px);max-width:560px;max-height:calc(100dvh - 24px);overflow:auto;overscroll-behavior:contain;padding:14px 12px;border-radius:12px}
+ #termHelpDialog .detail-head h3{font-size:18px}#termHelpDialog p{font-size:15px;line-height:1.8;overflow-wrap:anywhere}#termHelpDialog .detail-head button,#photoImportClose,#researchActionClose{min-height:44px;min-width:52px;flex:none}
+ #researchAction .bar{display:grid;grid-template-columns:1fr;gap:8px}#researchAction .bar button{width:100%;min-height:48px}#researchAction>p{font-size:15px;margin:12px 0}.research-selection-group{min-width:0;width:100%}
+ #researchCard .research-mobile-node{min-height:68px;font-size:15px;padding:12px}.research-mobile-node span{line-height:1.5}.research-filter button{min-height:44px}
+ #photoImportDialog .modalhead h2{font-size:18px;padding:8px;min-width:0}#photoImportDialog .photo-description{font-size:13px;line-height:1.65}#photoImportDialog .photo-file>button{min-height:44px}#photoImportDialog .photo-files input[type=file]{min-height:48px;max-width:100%;font-size:14px}
+ #photoImportDialog .photo-table,#photoImportDialog .photo-table tbody{display:block;width:100%}#photoImportDialog .photo-table thead{display:none}#photoImportDialog .photo-table tbody tr{display:grid;grid-template-columns:36px minmax(0,1fr);border:1px solid var(--line);border-radius:6px;margin:8px 0;padding:8px;gap:4px 8px}
+ #photoImportDialog .photo-table td{display:block;border:0;width:auto!important;height:auto;padding:0;min-width:0}#photoImportDialog .photo-table td:first-child{grid-column:1;grid-row:1/3;background:transparent;align-self:start;padding:10px 0}#photoImportDialog .photo-table td:nth-child(2){grid-column:2;font-size:14px;line-height:1.5;text-align:left;font-weight:700}#photoImportDialog .photo-table td:nth-child(3){grid-column:2}#photoImportDialog .photo-table input[type=text]{height:48px;min-height:48px}#photoImportDialog .photo-table input[type=checkbox]{width:24px;height:24px;min-width:24px}
+ #photoImportDialog .bar>button{min-height:44px;flex:1}#photoApply{width:100%;min-height:48px!important}#photoStatus{flex-basis:100%;font-size:13px}
+ button.info-tip:not(.unavailable-value){position:relative;width:22px!important;height:22px!important;min-width:22px!important;min-height:22px!important;max-width:22px;max-height:22px;flex-basis:22px;font-size:12px!important;margin-left:4px}button.info-tip:not(.unavailable-value)::after{content:"";position:absolute;inset:-5px}
+ #conversionCard .table-wrap{overflow-x:auto;overscroll-behavior-x:contain;border-radius:6px}#tConvert th:first-child,#tConvert td[rowspan]{position:sticky;left:0;z-index:1}#tConvert th:first-child{z-index:2}#tConvert td[rowspan]{background:var(--calc-bg)}#tConvert th:first-child{background:var(--primary)}
+}
+@media(max-width:359px){.tabs .tab{font-size:13px}.control-field,#prodSettings .control-field{grid-template-columns:minmax(0,1fr) minmax(92px,40%);font-size:13px}.production-section-title h2{font-size:17px;padding:8px 6px}.detail-open-btn{min-width:76px;padding:8px;font-size:12px}.city-summary .metric strong{font-size:17px!important}}
+
 </style>
 </head>
 <body><main>
@@ -152,7 +194,7 @@ button.info-tip.unavailable-value{border:0!important;border-radius:3px;backgroun
     <label for="productRawCycle">필요량 환산 기준 주기</label>
     <select id="productRawCycle"><option value="생산 계산기값">생산 계산기값</option><option value="30분">30분</option><option value="1시간">1시간</option><option value="2시간">2시간</option></select>
   </div>
-<details class="calculation-details" id="powerCalculationDetails"><summary>계산 기준</summary><p class="note">설정한 운영 시간 안에 목표량을 만들 수 있는지 비교합니다. 필요한 원료량은 선택한 생산 주기로 계산합니다.</p><details class="calculation-details"><summary>상세 구성 계산</summary><p class="note">같은 항목의 건물마다 운영 시간이 다르면 가장 긴 시간을 비교 기준으로 사용합니다. 각 건물은 자신에게 설정한 시간만큼만 생산한 것으로 계산합니다.</p><p class="note">생산 계산기값을 선택하면 생산량이 많은 구성의 원료 사용 비율을 더 크게 반영합니다. 운영 시간이 모두 0이면 건물 수와 생산 능력으로 비중을 정합니다.</p></details></details>
+<details class="calculation-details" id="powerCalculationDetails"><summary>계산 기준</summary><p class="note">설정한 운영 시간 안에 목표량을 만들 수 있는지 비교합니다. 필요한 원료량은 선택한 생산 주기로 계산합니다.</p><details class="calculation-details"><summary>상세 구성 계산</summary><p class="note">같은 항목의 건물마다 운영 시간이 다르면 가장 긴 시간을 비교 기준으로 사용합니다. 각 건물은 자신에게 설정한 시간만큼만 생산한 것으로 계산합니다.</p><p class="note">생산 계산기값을 선택하면 각 구성을 Lv6 기준으로 환산한 생산량에 따라 원료 사용 비율을 합산합니다. 운영 시간이 모두 0이면 건물 수와 생산 능력으로 비중을 정합니다.</p></details></details>
 <div class="table-wrap"><table id="tPower"><thead><tr><th>생산 항목</th><th>생산력 차이</th><th>현재 생산력</th><th>필요 생산력</th></tr></thead><tbody></tbody></table></div></section><section class="card" id="conversionCard"><div class="section-title-row"><h2>생산력 환산표</h2></div><button id="convertToggle" hidden>생산력 환산표 보기</button><div id="convertPanel"><div class="table-wrap"><table id="tConvert"><colgroup><col class="conversion-name"><col class="conversion-mode"><col span="6"></colgroup><thead><tr><th>생산 항목</th><th>생산 방식</th><th>Lv1</th><th>Lv2</th><th>Lv3</th><th>Lv4</th><th>Lv5</th><th>Lv6</th></tr></thead><tbody></tbody></table></div></div></section>
 </div>
 
@@ -975,7 +1017,12 @@ function updateUISummaries(){
 }
 let uiRefreshScheduled=false;
 function scheduleUIRefresh(){if(!uiReady||uiRefreshScheduled)return;uiRefreshScheduled=true;queueMicrotask(()=>{uiRefreshScheduled=false;refreshUI();});}
-function refreshUI(){if(!uiReady)return;labelUITables();updateUISummaries();document.querySelectorAll('.tabs .tab').forEach(b=>b.setAttribute('aria-selected',String(b.classList.contains('active'))));}
+function syncMobileLabels(){
+ const mobile=window.matchMedia('(max-width:720px)').matches;
+ for(const [id,name]of [['baseResourceDetailOpen','기초 자원 상세 설정'],['intermediateDetailOpen','중간 자원 상세 설정'],['productDetailOpen','상품 상세 설정']]){const b=byId(id);if(b){b.textContent=mobile?'상세 설정':name;b.setAttribute('aria-label',name);}}
+}
+window.matchMedia('(max-width:720px)').addEventListener('change',()=>{syncMobileLabels();hideUIHelp();postSize();});
+function refreshUI(){if(!uiReady)return;syncMobileLabels();labelUITables();updateUISummaries();document.querySelectorAll('.tabs .tab').forEach(b=>b.setAttribute('aria-selected',String(b.classList.contains('active'))));}
 // Detailed configurations compare actual output over a common time window.
 function productionWindowChina(building){if(!detailEnabled(building))return getHours(building);const rows=details[building].rows.filter(r=>r.count>0);return rows.length?Math.max(0,...rows.map(r=>detailHours(building,r))):0;}
 currentPower=function(building){const base=powerBenchmarkRate(building),h=productionWindowChina(building);if(!(base>0))return null;if(!(h>0))return 0;return rawPlannedAmount(building)/(base*h)*100;};
