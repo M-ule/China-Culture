@@ -98,7 +98,7 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
 .currency-time-context{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:8px 0 14px}.currency-time-context #currencyTimeBasis{margin:0}.currency-time-context button{font-size:13px;min-height:36px;padding:6px 10px}
 @media(max-width:720px){#currencyCard .bar label>#planCurrencyPerHourInput{height:48px;min-height:48px;width:100%!important}#researchCard .research-legend{gap:10px;flex-wrap:wrap;font-size:12px}}
 #detailHelp:empty{display:none}
-#powerCalculationDetails p{font-size:13px;line-height:1.7}
+
 button.info-tip.unavailable-value{border:0!important;border-radius:3px;background:transparent!important;color:inherit!important;font:inherit!important;min-width:32px!important;width:32px!important;height:32px!important;min-height:32px!important;vertical-align:middle}button.info-tip.unavailable-value:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 
 /* Mobile interaction and density pass. */
@@ -194,7 +194,6 @@ button.info-tip.unavailable-value{border:0!important;border-radius:3px;backgroun
     <label for="productRawCycle">필요량 환산 기준 주기</label>
     <select id="productRawCycle"><option value="생산 계산기값">생산 계산기값</option><option value="30분">30분</option><option value="1시간">1시간</option><option value="2시간">2시간</option></select>
   </div>
-<details class="calculation-details" id="powerCalculationDetails"><summary>계산 기준</summary><p class="note">설정한 운영 시간 안에 목표량을 만들 수 있는지 비교합니다. 필요한 원료량은 선택한 생산 주기로 계산합니다.</p><details class="calculation-details"><summary>상세 구성 계산</summary><p class="note">같은 항목의 건물마다 운영 시간이 다르면 가장 긴 시간을 비교 기준으로 사용합니다. 각 건물은 자신에게 설정한 시간만큼만 생산한 것으로 계산합니다.</p><p class="note">생산 계산기값을 선택하면 각 구성을 Lv6 기준으로 환산한 생산량에 따라 원료 사용 비율을 합산합니다. 운영 시간이 모두 0이면 건물 수와 생산 능력으로 비중을 정합니다.</p></details></details>
 <div class="table-wrap"><table id="tPower"><thead><tr><th>생산 항목</th><th>생산력 차이</th><th>현재 생산력</th><th>필요 생산력</th></tr></thead><tbody></tbody></table></div></section><section class="card" id="conversionCard"><div class="section-title-row"><h2>생산력 환산표</h2></div><button id="convertToggle" hidden>생산력 환산표 보기</button><div id="convertPanel"><div class="table-wrap"><table id="tConvert"><colgroup><col class="conversion-name"><col class="conversion-mode"><col span="6"></colgroup><thead><tr><th>생산 항목</th><th>생산 방식</th><th>Lv1</th><th>Lv2</th><th>Lv3</th><th>Lv4</th><th>Lv5</th><th>Lv6</th></tr></thead><tbody></tbody></table></div></div></section>
 </div>
 
