@@ -53,6 +53,24 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
 #researchAction.open{width:min(850px,94vw);padding:22px;max-height:90vh;overflow:auto;display:block}#researchAction .modalhead{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}#researchAction .modalhead h2{margin:0;padding:0;border:0;background:transparent;font-size:19px;line-height:1.5}#researchAction>p{margin:16px 0;font-size:16px;line-height:1.7;text-align:left}#researchAction .bar{display:flex;gap:12px;margin-bottom:0}#researchAction .bar button{flex:0 1 auto}#researchAction .modalhead button{flex-shrink:0}
 @media(max-width:720px){#researchAction.open{width:96vw;padding:16px 12px}#researchAction .modalhead{flex-wrap:wrap}}
 
+#photoImportDialog{width:min(810px,96vw);max-height:88dvh;overflow-y:auto;overscroll-behavior:contain;padding:20px}
+.photo-description{font-size:14px;color:#75674d;line-height:1.65;margin:12px 0}
+.photo-files{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0}
+.photo-file{display:flex;flex-direction:column;gap:8px}.photo-file>button{align-self:flex-start}
+.photo-files label{font-size:15px;font-weight:700;display:flex;flex-direction:column;gap:8px}
+.photo-files input[type=file]{background:#faf5e8;border:1px solid #cdbb91;padding:10px;text-align:left;height:auto;font-size:14px}
+.photo-preview{display:block;width:100%;max-width:240px;height:auto;margin:8px auto 0;border:1px solid var(--border);border-radius:4px}.photo-review{max-height:none;overflow:visible}
+.photo-table{min-width:0;table-layout:fixed;width:100%}
+.photo-table th,.photo-table td{height:auto;min-width:0;font-size:14px;padding:10px 7px}
+.photo-table th:first-child,.photo-table td:first-child{width:58px;text-align:center}
+.photo-table th:nth-child(2),.photo-table td:nth-child(2){width:37%}
+.photo-table input[type=text]{height:40px;min-height:40px}
+.photo-candidates{display:flex;flex-direction:column;gap:6px;margin:8px 0}.photo-candidates small{font-size:12px;line-height:1.4}.photo-candidates button{min-height:44px;height:auto;white-space:normal;font-size:14px;padding:8px}.photo-candidates button[aria-pressed="true"]{background:#65542f;color:white;border-color:#65542f}
+.photo-caution{display:block;font-weight:400;color:#886119;font-size:12px;line-height:1.45;margin-top:4px}
+#photoStatus{font-size:14px;flex:1;line-height:1.5}
+#photoImportDialog button:disabled{opacity:.45;cursor:default}
+@media(max-width:720px){.photo-files{grid-template-columns:1fr}#photoImportDialog{padding:13px}.photo-table th,.photo-table td{font-size:13px;padding:8px 4px}.photo-table th:nth-child(2),.photo-table td:nth-child(2){width:42%}.photo-table input[type=text]{font-size:16px}}
+#photoImportDialog{border:1px solid var(--line);border-radius:8px;background:white;color:inherit}#photoImportDialog::backdrop{background:#0007}#photoImportDialog .modalhead{display:flex;justify-content:space-between;align-items:center;gap:12px}#photoImportDialog h2{margin:0}#photoImportDialog .bar{display:flex;flex-wrap:wrap;gap:10px}#photoImportDialog input[type=checkbox]{width:20px;height:20px;min-height:20px}#photoImportDialog .photo-table{display:table}#photoImportDialog .photo-table tr{display:table-row}#photoImportDialog .photo-table td,#photoImportDialog .photo-table th{display:table-cell}#photoImportDialog .photo-table td::before{display:none}#photoImportDialog .photo-table input[type=text]{width:100%;box-sizing:border-box}#photoImportBtn{min-height:40px}#bonusSummary .support{display:block}.photo-description{color:#827069}
 </style>
 </head>
 <body><main>
@@ -189,7 +207,7 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
 <p id="researchSummary" class="note" role="status"></p><div id="researchMobile" class="research-mobile"></div></section>
 </div>
 
-<footer>제작자 Mule · 수정일 2026. 11. 3.</footer></main>
+<footer>제작자 Mule · 수정일 2026. 11. 4.</footer></main>
 <div id="detailModal" class="detail-modal" hidden aria-hidden="true">
   <div class="detail-backdrop" data-detail-close></div>
   <section class="detail-sheet" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
@@ -223,6 +241,7 @@ button.info-tip{box-sizing:border-box;display:inline-flex;align-items:center;jus
   </section>
 </div>
 
+<dialog id="photoImportDialog" aria-labelledby="photoImportTitle"><div class="modalhead"><h2 id="photoImportTitle">게임 사진으로 입력</h2><button id="photoImportClose" type="button">닫기</button></div><p class="photo-description">가로형 게임 스크린샷을 올리면 숫자를 인식합니다. 건물 목록은 2장까지 첨부할 수 있습니다. 사진은 외부 서버로 전송하지 않으며, 확인 후 선택한 값만 반영됩니다.</p><div class="photo-files"><div class="photo-file"><label for="photoBuildings">건물 목록 화면 (최대 2장)<input id="photoBuildings" type="file" accept="image/*" multiple></label><small class="photo-description">목록을 위아래로 나눠 촬영한 사진 2장을 함께 선택할 수 있습니다. 겹치는 건물은 한 번만 반영합니다.</small><button id="photoBuildingsClear" type="button" disabled>건물 사진 삭제</button></div><div class="photo-file"><label for="photoStocks">생산물·보유 자원 화면<input id="photoStocks" type="file" accept="image/*"></label><button id="photoStocksClear" type="button" disabled>자원 사진 삭제</button></div></div><div class="bar"><button id="photoScan" type="button">사진 분석</button><button id="photoReset" type="button" disabled>사진 입력 초기화</button><span class="status" id="photoStatus" role="status" aria-live="polite">한 종류의 사진만 올려도 됩니다.</span></div><div id="photoReview" class="photo-review"></div><p class="photo-description">인식 결과를 확인한 뒤 적용하세요. 읽지 못한 항목은 직접 입력할 수 있습니다. 선택한 건물의 기존 상세 구성은 사진의 레벨·수량으로 교체됩니다. 생산 주기와 운영 시간은 기존 설정을 사용합니다.</p><div class="bar"><button id="photoApply" type="button" disabled>확인한 값 적용</button></div></dialog>
 <script>
 const INITIAL_STATE={prod:{'쌀 농장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'누에 숲':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'고령토 채석장':{lv:1,mode:'연속(6시간 기준)',bldgs:1,hours:'',stock:0},'실 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'점토 가공소':{lv:1,mode:'1분',bldgs:1,hours:'',stock:0},'비단 작업장':{lv:1,mode:'1분',bldgs:1,hours:''},'도자기 작업장':{lv:1,mode:'1분',bldgs:1,hours:''}},settings:{wonder:'자금성',wLv:0,baseH:0,productRawCycle:'생산 계산기값',sleepPrepH:'',sleepCycle:'최장',sleepCount:3,prodDetailsVisible:false,wonderDetailsVisible:false},wStock:{silk:0,porc:0},wLvSet:{cur:1,tgt:1}};
 const STORAGE_KEY='chinaCalcState';
@@ -905,7 +924,7 @@ function updateUISummaries(){
  const names=Object.keys(state),hasBuildings=names.some(b=>productionConfigs(b).some(r=>r.count>0)),operating=names.some(b=>productionConfigs(b).some(r=>r.count>0&&detailHours(b,r)>0));
  const consumption={ '쌀 농장':riceConsumption(),'누에 숲':silkwormConsumption(),'고령토 채석장':kaolinConsumption(),'실 가공소':threadConsumption(),'점토 가공소':clayConsumption()};
  const short=Object.keys(consumption).filter(b=>resourceStock(b)+totalOutput(b)<consumption[b]);
- const production=metricUI('불가사의 보너스',escapeText(bonusText))+metricUI(!hasBuildings||!operating?'생산 설정 확인':'조정 필요 생산 항목',!hasBuildings?'건물 수를 입력하세요.':!operating?'운영 시간을 입력하세요.':short.length?short.map(displayName).join(' · '):'없음',operating&&short.length?'bad':'');
+ const production=metricUI('불가사의 보너스',escapeText(bonusText),'',next?'다음 일꾼 추가 Lv.'+next+' (+'+(DATA.bonus[settings.wonder+'|'+next].w-bonus.w)+'명)':'다음 일꾼 추가 없음')+metricUI(!hasBuildings||!operating?'생산 설정 확인':'조정 필요 생산 항목',!hasBuildings?'건물 수를 입력하세요.':!operating?'운영 시간을 입력하세요.':short.length?short.map(displayName).join(' · '):'없음',operating&&short.length?'bad':'');
  if(byId('bonusSummary').innerHTML!==production)byId('bonusSummary').innerHTML=production;
  const needs=targetProductionNeeds(),adjustments=names.map(b=>powerAdjustment(b,needs)),powerShort=adjustments.filter(a=>a.diff!==null&&a.diff<-1e-8).map(a=>displayName(a.building)),unknown=adjustments.filter(a=>a.diff===null).map(a=>displayName(a.building));
  const goalValue=unifiedGoalHtml(old,powerShort,unknown);
@@ -1181,5 +1200,6 @@ applyUnifiedLayout();
 
 
 </script>
+<script src="photo-import.js?v=20261104-1" defer></script>
 <script src="update-check.js?v=20261102"></script></body>
 </html>
