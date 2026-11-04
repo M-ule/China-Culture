@@ -142,10 +142,11 @@ button.info-tip.unavailable-value{border:0!important;border-radius:3px;backgroun
 }
 @media(max-width:359px){.tabs .tab{font-size:13px}.control-field,#prodSettings .control-field{grid-template-columns:minmax(0,1fr) minmax(92px,40%);font-size:13px}.production-section-title h2{font-size:17px;padding:8px 6px}.detail-open-btn{min-width:76px;padding:8px;font-size:12px}.city-summary .metric strong{font-size:17px!important}}
 
+.simulator-title{display:flex;align-items:center;gap:10px;line-height:1.4}.civilization-icon{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;flex:0 0 34px;border-radius:6px;background:var(--primary);color:#fff;font-family:Georgia,serif;font-size:27px;line-height:1;font-weight:700}@media(max-width:720px){.simulator-title{gap:8px}.civilization-icon{width:28px;height:28px;flex-basis:28px;font-size:23px;border-radius:5px}}
 </style>
 </head>
 <body><main>
-<h1>중국 문명 시뮬레이터</h1>
+<h1 class="simulator-title"><span class="civilization-icon" aria-hidden="true">C</span><span>중국 문명 시뮬레이터</span></h1>
 <div class="legend"><div class="legend-item"><span class="legend-box legend-input"></span>입력 가능 (노란색)</div><div class="legend-item"><span class="legend-box legend-calc"></span>자동 계산</div></div>
 <nav class="tabs" aria-label="계산기 탭"><button class="tab active" data-tab="prod">생산 계산기</button><button class="tab" data-tab="wonder">불가사의 목표</button><button class="tab" data-tab="plan">도시 관리</button></nav>
 <div id="panel-prod" class="panel active">
