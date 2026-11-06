@@ -42,3 +42,12 @@ test('photo CSP permits local image decoding, the OCR worker, and model download
  assert.ok(sources['script-src'].includes("'wasm-unsafe-eval'"));
  for(const directive of ['script-src','connect-src'])assert.ok(sources[directive].includes('https://cdn.jsdelivr.net'));
 });
+test('Korean game labels map to their calculator fields',()=>{
+ const {api}=harness();
+ assert.equal(api.matchBuilding('벼 농장').id,'쌀 농장');
+ assert.equal(api.matchBuilding('호화 벼 농장').id,'premiumRice');
+ assert.equal(api.matchBuilding('실크 작업장').id,'비단 작업장');
+ assert.equal(api.matchBuilding('소형 집').id,'smallHome');
+ const rows=api.parseStockLines([{text:'나방 고치 36,352'},{text:'명주실 1,990'}]);
+ assert.deepEqual(Array.from(rows,r=>[r.target,r.value]),[['누에 숲',36352],['실 가공소',1990]]);
+});
