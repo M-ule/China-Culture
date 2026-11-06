@@ -98,8 +98,11 @@ function dedupePhotoPages(){
   if(previous.card.count&&card.count){
    const old=previous.card.count,other=card.count;
    const options=[...new Set([...(old.candidates||[]),...(other.candidates||[]),old.value,other.value].filter(n=>n!==null&&n!==undefined))];
-   if(old.value!==other.value){old.value=null;old.needsReview=true;old.candidates=options;}
-   else if(other.needsReview){old.needsReview=true;old.candidates=options;}
+   if(options.length>1){old.value=null;old.needsReview=true;old.candidates=options;}
+   else if(options.length===1){
+    if(old.value===null)old.preview=other.preview||old.preview;
+    old.value=options[0];old.needsReview=true;
+   }
   }
   if(previous.card.lv&&card.lv&&(previous.card.lv.needsReview||card.lv.needsReview)){
    previous.card.lv.needsReview=true;previous.card.lv.candidates=[...new Set([...(previous.card.lv.candidates||[]),...(card.lv.candidates||[]),lv])];
@@ -112,7 +115,7 @@ function dedupePhotoPages(){
 // candidate selection and manual edits; never keep the first visual guess.
 function reviewLabel(f){if(f.kind!=='building')return f.label;const b=BUILDINGS.find(b=>b.id===f.building);if(!b)return f.label;const lv=findings.find(g=>g.group===f.group&&g.field==='lv')?.value;return b.name+(Number.isInteger(lv)&&lv>=1&&lv<=6?' (Lv.'+lv+')':'')+(f.field==='lv'?' 레벨':' 수량');}
 function syncReviewLabels(group){for(const [i,f]of findings.entries()){if(!group||f.group!==group)continue;const label=reviewLabel(f),node=document.querySelector('[data-photo-label="'+i+'"]');if(node)node.textContent=label;for(const [selector,suffix]of [['[data-photo-value="'+i+'"]',' 인식값'],['[data-photo-check="'+i+'"]',' 적용']])document.querySelector(selector)?.setAttribute('aria-label',label+suffix);}}
-function render(){el('photoReview').innerHTML=findings.length?'<button type="button" id="photoSkipUncertain">확인 필요 항목 선택 해제</button><table class="photo-table"><thead><tr><th>적용</th><th>항목</th><th>인식값 · 수정 가능</th></tr></thead><tbody>'+findings.map((f,i)=>'<tr><td><input type="checkbox" data-photo-check="'+i+'" '+(f.value!==null&&!f.needsReview&&!findings.some(g=>g.group&&g.group===f.group&&(g.value===null||g.needsReview))?'checked ':'')+'aria-label="'+safeText(reviewLabel(f))+' 적용"></td><td><span data-photo-label="'+i+'">'+safeText(reviewLabel(f))+'</span>'+(f.needsReview?'<small class="photo-caution">추가 확인 필요</small>':'')+'</td><td><input type="text" inputmode="decimal" placeholder="직접 입력" data-photo-value="'+i+'" value="'+(f.value??'')+'" aria-label="'+safeText(reviewLabel(f))+' 인식값">'+(f.candidates?.length&&(f.needsReview||f.candidates.length>1)?'<div class="photo-candidates">'+f.candidates.map(n=>'<button type="button" data-photo-pick="'+i+'" data-photo-number="'+n+'" aria-pressed="'+(f.value===n)+'">'+n+'</button>').join('')+'</div>':'')+(f.preview?'<img class="photo-preview" src="'+f.preview+'" alt="'+safeText(reviewLabel(f))+' 원본 숫자 확대">':'')+'</td></tr>').join('')+'</tbody></table><p class="photo-description">인식값을 수정한 뒤 적용할 항목을 체크하세요. 건물은 레벨과 수량을 함께 선택하세요.</p>':'';el('photoApply').disabled=!findings.length;}
+function render(){el('photoReview').innerHTML=findings.length?'<button type="button" id="photoSkipUncertain">확인 필요 항목 선택 해제</button><table class="photo-table"><thead><tr><th>적용</th><th>항목</th><th>인식값 · 수정 가능</th></tr></thead><tbody>'+findings.map((f,i)=>'<tr><td><input type="checkbox" data-photo-check="'+i+'" '+(f.value!==null&&!f.needsReview&&!findings.some(g=>g.group&&g.group===f.group&&(g.value===null||g.needsReview))?'checked ':'')+'aria-label="'+safeText(reviewLabel(f))+' 적용"></td><td><span data-photo-label="'+i+'">'+safeText(reviewLabel(f))+'</span>'+(f.needsReview?'<small class="photo-caution">추가 확인 필요</small>':'')+'</td><td><input type="text" inputmode="decimal" placeholder="직접 입력" data-photo-value="'+i+'" value="'+(f.value??'')+'" aria-label="'+safeText(reviewLabel(f))+' 인식값">'+(f.candidates?.length&&(f.needsReview||f.candidates.length>1)?'<div class="photo-candidates">'+f.candidates.map(n=>'<button type="button" data-photo-pick="'+i+'" data-photo-number="'+n+'" aria-pressed="'+(f.value===n)+'">'+n+'</button>').join('')+'</div>':'')+(f.preview?'<img class="photo-preview" src="'+f.preview+'" alt="'+safeText(reviewLabel(f))+' 원본 숫자 확대">':'')+'</td></tr>').join('')+'</tbody></table><p class="photo-description">인식값을 수정한 뒤 적용할 항목을 체크하세요. 건물은 레벨과 수량을 함께 선택하세요. 생산 계산기의 기존 상세 구성에서 사진에 없는 레벨은 유지됩니다.</p>':'';el('photoApply').disabled=!findings.length;}
 // Coordinates describe the wide Korean game layout at a reference height of 709px.
 function photoCrop(canvas,[x,y,w,h],threshold,light){
  const scale=canvas.height/709,cv=document.createElement('canvas');
@@ -140,7 +143,8 @@ function colorRatio(data,match){
  return hits*4/data.length;
 }
 async function readGameLayout(worker,canvas,kind){
- if(Math.abs(canvas.width/canvas.height-1536/709)>.035)return [];
+ const referenceWidth=canvas.width*709/canvas.height;
+ if(referenceWidth<1380||referenceWidth>1700)return [];
  const read=async (box,threshold,light)=>{
   const crop=photoCrop(canvas,box,threshold,light);
   const {data}=await worker.recognize(crop);
@@ -149,15 +153,17 @@ async function readGameLayout(worker,canvas,kind){
  const rows=[];
  try{
   if(kind==='stocks'){
-   const paper=photoPixels(canvas,750,340,40,24);
+   const shift=(referenceWidth-1536)/2;
+   const centered=([x,...box])=>[x+shift,...box];
+   const paper=photoPixels(canvas,...centered([750,340,40,24]));
    if(colorRatio(paper,(r,g,b)=>r>215&&g>195&&r>g&&g>b+20)<.9)return [];
    await worker.setParameters({tessedit_pageseg_mode:'7'});
-   const title=await read([303,122,47,25],155,true);
+   const title=await read(centered([303,122,47,25]),155,true);
    if(!clean(title.data.text).includes('중국'))return [];
    const positions=[[555,18,58,20],[662,18,58,20],[375,186,75,23],[375,270,75,23],[688,186,75,23],[688,270,75,23],[1000,186,75,23],[1000,270,75,23]];
    await worker.setParameters({tessedit_char_whitelist:'0123456789.,KkMm'});
    for(const [i,stock] of STOCKS.entries()){
-    const {data,preview}=await read(positions[i],i<2?115:125,i<2);
+    const {data,preview}=await read(centered(positions[i]),i<2?115:125,i<2);
     const value=stockNumber(data.text);
     if(value!==null)rows.push(entry('stock_'+stock.target,stock.name+' 보유량',value,{kind:'stock',target:stock.target,preview:preview()}));
    }
@@ -203,9 +209,10 @@ async function scan(){
  if(buildingFiles.length>2){status('건물 목록 사진은 최대 2장까지 선택할 수 있습니다.',true);return;}
  const files=[...buildingFiles.map((f,i)=>['buildings',f,'buildings_'+i]),...stockFiles.slice(0,1).map(f=>['stocks',f,'stocks'])];
  if(!files.length){status('사진을 선택해주세요.',true);return;}
+ const failed=[];
  busy=true;el('photoScan').disabled=true;el('photoApply').disabled=true;findings=[];render();syncClear();
  try{status('문자 인식 엔진을 준비하고 있습니다. 처음에는 시간이 걸릴 수 있습니다…');const w=await engine();await w.setParameters({tessedit_pageseg_mode:'11'});
- for(const [kind,file,source]of files){if(!file.type.startsWith('image/')||file.size>20*1024*1024)throw new Error('20MB 이하 이미지 파일을 선택하세요.');
+ for(const [kind,file,source]of files){try{if(!file.type.startsWith('image/')||file.size>20*1024*1024)throw new Error('20MB 이하 이미지 파일을 선택하세요.');
  status('사진 '+(files.findIndex(f=>f[2]===source)+1)+' / '+files.length+' · 건물명과 숫자를 확인하고 있습니다…');
  const url=URL.createObjectURL(file);try{const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(new Error('사진을 열 수 없습니다.'));image.src=url;});
  const scale=Math.min(2,1600/image.naturalHeight,3000/image.naturalWidth),canvas=document.createElement('canvas');canvas.width=Math.round(image.naturalWidth*scale);canvas.height=Math.round(image.naturalHeight*scale);const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0,canvas.width,canvas.height);
@@ -236,8 +243,10 @@ async function scan(){
  await collect(canvas);
  status('대비를 높여 이름과 숫자를 다시 확인하고 있습니다…');
  await collect(contrastImage(canvas));
- }finally{URL.revokeObjectURL(url);}}
- dedupePhotoPages();const recognized=findings.filter(f=>f.value!==null||f.candidates?.length).length;addMissing(files);render();status(recognized?'인식값 '+recognized+'개 · 원본과 비교해 적용할 항목을 선택하세요.':'이름과 숫자를 읽지 못했습니다. 글자가 선명한 게임 화면으로 다시 분석하거나 직접 입력해 주세요.',!recognized);
+ }finally{URL.revokeObjectURL(url);}
+ }catch(e){failed.push((kind==='stocks'?'보유량 사진':'건물 사진 '+(Number(source.split('_')[1])+1))+' · '+e.message);}}
+ dedupePhotoPages();const recognized=findings.filter(f=>f.value!==null||f.candidates?.length).length;addMissing(files);render();const result=recognized?'인식값 '+recognized+'개 · 원본과 비교해 적용할 항목을 선택하세요.':'이름과 숫자를 읽지 못했습니다. 글자가 선명한 게임 화면으로 다시 분석하거나 직접 입력해 주세요.';
+ status([result,...failed].join(' / '),!recognized||failed.length>0);
  }catch(e){addMissing(files);render();status(e.message+' · 아래에서 직접 입력할 수도 있습니다.',true);}
  finally{busy=false;el('photoScan').disabled=false;syncClear();}
 }
@@ -254,12 +263,25 @@ function apply(){
  for(const g of groups.values())if(g.lv===undefined||g.count===undefined){status('건물은 같은 항목의 레벨과 수량을 함께 선택하세요.',true);return;}
  for(const g of groups.values())if(findings.some(f=>f.kind==='building'&&f.building===g.building&&!groups.has(f.group))){status('이 건물의 다른 레벨도 모두 선택하세요. 일부만 적용하면 기존 구성이 누락될 수 있습니다.',true);return;}
  const byBuilding=new Map();for(const g of groups.values()){if(!byBuilding.has(g.building))byBuilding.set(g.building,[]);byBuilding.get(g.building).push(g);}
- for(const [id,rows]of byBuilding){const b=BUILDINGS.find(b=>b.id===id);if(b.home&&new Set(rows.map(r=>r.lv)).size>1){status(b.name+'의 여러 레벨 구성은 도시 관리에서 직접 확인해주세요.',true);return;}}
+ for(const [id,rows]of byBuilding){const b=BUILDINGS.find(b=>b.id===id);const levels=new Set(rows.map(r=>r.lv));if(levels.size!==rows.length){status(b.name+'의 같은 레벨이 여러 번 선택되었습니다. 수량을 확인해 주세요.',true);return;}if(b.home&&levels.size>1){status(b.name+'의 여러 레벨 구성은 도시 관리에서 직접 확인해주세요.',true);return;}}
  // All validation completes before any state is changed.
  for(const f of selected.filter(f=>f.kind==='stock')){if(f.target==='currency')planState.currencyStock=f.value;else if(['silk','porc'].includes(f.target))wStock[f.target]=f.value;else state[f.target].stock=f.value;}
  for(const [id,rows]of byBuilding){const b=BUILDINGS.find(b=>b.id===id),count=rows.reduce((s,r)=>s+r.count,0);
  if(b.home){planState.homes[b.home]={lv:rows[0].lv,count};delete planState.buildingOverrides[b.home];}
- else if(b.production){const old=state[b.production];details[b.production]={enabled:rows.length>1,rows:rows.map(r=>({lv:r.lv,count:r.count,mode:normalizedDetailMode(b.production,r.lv,old.mode),hours:old.hours}))};old.lv=rows[0].lv;old.bldgs=count;old.mode=normalizedDetailMode(b.production,old.lv,old.mode);delete planState.buildingOverrides[b.production];}
+ else if(b.production){
+  const old=state[b.production],previous=details[b.production],active=previous?.enabled?previous.rows:[];
+  const imported=new Map(rows.map(row=>[row.lv,row.count]));
+  const updated=active.map(row=>imported.has(Number(row.lv))?{...row,count:0}:{...row});
+  for(const {lv,count} of rows){
+   const index=active.findIndex(row=>Number(row.lv)===lv);
+   if(index>=0)updated[index].count=count;
+   else updated.push({lv,count,mode:normalizedDetailMode(b.production,lv,old.mode),hours:old.hours});
+  }
+  details[b.production]={enabled:!!previous?.enabled||updated.length>1,rows:updated};
+  old.lv=rows[0].lv;old.bldgs=updated.reduce((sum,row)=>sum+(Number(row.count)||0),0);
+  old.mode=normalizedDetailMode(b.production,old.lv,old.mode);
+  delete planState.buildingOverrides[b.production];
+ }
  else if(id==='premiumRice'){planState.premiumRice=count;planState.buildingOverrides.premiumRice=count;}}
  syncUIFromState();renderAll();saveState();status('선택한 값 '+selected.length+'개를 적용했습니다.');el('resetStatus').textContent='사진 입력 완료 · 선택한 항목만 반영했습니다.';el('photoImportDialog').close();
 }

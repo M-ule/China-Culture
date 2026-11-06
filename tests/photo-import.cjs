@@ -51,3 +51,25 @@ test('Korean game labels map to their calculator fields',()=>{
  const rows=api.parseStockLines([{text:'나방 고치 36,352'},{text:'명주실 1,990'}]);
  assert.deepEqual(Array.from(rows,r=>[r.target,r.value]),[['누에 숲',36352],['실 가공소',1990]]);
 });
+test('an overlapping photo can supply a missing badge count',()=>{
+ const {api}=harness();
+ api.setRows([...card('a','쌀 농장',3,null,'0'),...card('b','쌀 농장',3,5,'1')]);
+ api.dedupePhotoPages();
+ assert.equal(api.getRows().length,2);
+ assert.equal(api.getRows()[1].value,5);
+});
+test('photo import preserves existing operating settings and levels outside the photo',()=>{
+ const h=harness();
+ h.e.details['쌀 농장']={enabled:true,rows:[{lv:3,count:2,mode:'1시간',hours:8},{lv:4,count:7,mode:'2시간',hours:6}]};
+ h.select(card('a','쌀 농장',3,5));
+ h.api.apply();
+ assert.equal(h.saves(),1);
+ assert.equal(h.e.state['쌀 농장'].bldgs,12);
+ assert.equal(JSON.stringify(h.e.details['쌀 농장'].rows),JSON.stringify([{lv:3,count:5,mode:'1시간',hours:8},{lv:4,count:7,mode:'2시간',hours:6}]));
+});
+test('two selected rows for the same building level cannot double its count',()=>{
+ const h=harness();
+ h.select([...card('a','쌀 농장',3,5),...card('b','쌀 농장',3,5)]);
+ h.api.apply();
+ assert.equal(h.saves(),0);
+});
