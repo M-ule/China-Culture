@@ -155,6 +155,75 @@ button.info-tip.unavailable-value{border:0!important;border-radius:3px;backgroun
 #productCard .quest-rewards input{width:18px;height:18px;min-width:18px;min-height:18px;margin:0;accent-color:#7f1d1d}
 @media(max-width:720px){.quest-rewards label{min-height:36px}}
 </style>
+<style>
+@media (max-width:720px){
+  #panel-plan .section-title-row h2{word-break:keep-all}
+  #panel-plan>.mobile-section-nav a,
+  #panel-plan .section-title-row>button,
+  #compositionActions button{min-height:44px}
+  #territorySettings .bar>label,
+  #currencyCard .bar>label{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(112px,46%);
+    align-items:center;
+    gap:8px;
+  }
+  #territorySettings .bar>label>span{text-align:center}
+  #currencyCard .bar>label>span{min-width:0;word-break:keep-all}
+  #currencyCard .bar>label>.step-wrap{height:44px;min-height:44px}
+  #panel-plan :is(#tArea,#tConstruction) tbody tr{
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    margin-bottom:8px;
+  }
+  #panel-plan :is(#tArea,#tConstruction) tbody td{
+    min-height:0;
+    height:auto;
+    padding:6px 8px;
+    gap:4px;
+  }
+  #panel-plan :is(#tArea,#tConstruction) tbody td:not(:first-child)::before{
+    border:0;
+    background:none;
+    padding:0;
+  }
+  #panel-plan #tArea tbody td:first-child{
+    grid-column:span 3;
+    background:var(--soft);
+    color:var(--primary);
+    word-break:keep-all;
+  }
+  #panel-plan #tArea tbody td:nth-child(2){
+    grid-column:span 3;
+    border-right:0;
+  }
+  #panel-plan #tArea tbody td:nth-child(n+3){grid-column:span 2}
+  #panel-plan #tArea:not(.composition-expanded) tbody td:nth-child(n+4){grid-column:span 3}
+  #panel-plan #tConstruction tbody td:first-child{
+    grid-column:1/-1;
+    background:var(--input-bg);
+    color:inherit;
+  }
+  #panel-plan #tConstruction tbody td:nth-child(n+2):nth-child(-n+4){grid-column:span 2}
+  #panel-plan #tConstruction tbody td:nth-child(5){grid-column:span 4;border-right:1px solid var(--line)}
+  #panel-plan #tConstruction tbody td:last-child{grid-column:span 2}
+  #panel-plan #tConstruction tbody td[colspan]{
+    grid-column:1/-1;
+    padding:12px;
+    background:var(--calc-bg);
+    color:inherit;
+    line-height:1.5;
+  }
+  #panel-plan :is(#tArea,#tConstruction) :is(input,select,.step-wrap){height:44px;min-height:44px}
+  #panel-plan #tConstruction .construction-cost-cell{justify-content:center}
+  #panel-plan #tConstruction .construction-remove{padding:6px}
+  #researchCard .research-selection-group .value{min-width:0;word-break:keep-all}
+  #researchCard .research-mobile-list{gap:6px}
+}
+@media (min-width:380px) and (max-width:720px){
+  #researchCard .research-mobile-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #researchCard .research-mobile-node{height:100%;word-break:keep-all}
+}
+</style>
 </head>
 <body><main>
 <h1>중국 문명 시뮬레이터</h1>
@@ -1299,7 +1368,7 @@ function improveCityLayout(){
  const breakdown=document.createElement('div');breakdown.id='budgetBreakdown';breakdown.className='budget-breakdown';byId('budgetSummary').after(breakdown);byId('currencyBreakdown').closest('details').hidden=true;
  const research=byId('researchCard');research.querySelector('.research-legend').hidden=false;
  const legend=research.querySelector('.research-legend');legend.querySelector('.cur').lastChild.textContent='완료 지정';
- const selection=research.querySelector('.research-selection').closest('details');selection.open=true;selection.querySelector('summary').textContent='완료한 연구·목표 연구';selection.querySelector('.current-group .label').textContent='완료한 연구';
+ const selection=research.querySelector('.research-selection').closest('details');selection.open=!window.matchMedia('(max-width:720px)').matches;selection.querySelector('summary').textContent='완료한 연구·목표 연구';selection.querySelector('.current-group .label').textContent='완료한 연구';
  const instructions=document.createElement('p');instructions.className='city-section-note';instructions.textContent='연구를 눌러 완료 상태나 목표를 지정하세요. 선행 연구 비용도 함께 계산합니다.';research.querySelector('.research-filter').before(instructions);
 }
 function applyUnifiedLayout(){
@@ -1321,7 +1390,7 @@ function applyUnifiedLayout(){
  const detail=document.createElement('details');detail.className='calculation-details';detail.innerHTML='<summary>일꾼 계산 내역</summary><p id="workerStatus" class="note"></p>';summary.after(detail);
  const territory=document.createElement('div');territory.className='territory-section';territory.innerHTML='<h3>영토 현황</h3><div class="bar"><label>보너스 적용 레벨 <span id="territoryBonusLv"></span></label><label id="gemControl">보석 해금(칸)</label></div><p id="areaStatus" class="note"></p>';detail.after(territory);byId('gemControl').append(byId('planGemExpansions').closest('.step-wrap')||byId('planGemExpansions'));
  // Keep the exact retained currency controls but use the shared bar + budget + breakdown flow.
- const money=byId('currencyCard'),bar=document.createElement('div');bar.className='bar';for(const [id,label]of [['planCurrencyStock','현재 보유량'],['planCurrencyPerHourInput','시간당 생산량'],['planCurrencyHours','운영 시간(h)']]){const item=document.createElement('label');item.textContent=label;item.htmlFor=id;const input=byId(id);item.append(input.closest('.step-wrap')||input);bar.append(item);}bar.querySelector('#planCurrencyPerHourInput').insertAdjacentHTML('beforebegin',sharedHelpButton('시간당 생산량','게임에 표시된 실제 시간당 생산량을 입력하세요. 자동 계산하지 않습니다.'));money.querySelector('.section-title-row').after(bar);byId('tCurrency').closest('.plan-overview-block').hidden=true;byId('budgetSummary').classList.add('city-summary');
+ const money=byId('currencyCard'),bar=document.createElement('div');bar.className='bar';for(const [id,label]of [['planCurrencyStock','현재 보유량'],['planCurrencyPerHourInput','시간당 생산량'],['planCurrencyHours','운영 시간(h)']]){const item=document.createElement('label');const caption=document.createElement('span');caption.textContent=label;item.append(caption);item.htmlFor=id;const input=byId(id);item.append(input.closest('.step-wrap')||input);bar.append(item);}bar.querySelector('label[for="planCurrencyPerHourInput"]>span').insertAdjacentHTML('beforeend',sharedHelpButton('시간당 생산량','게임에 표시된 실제 시간당 생산량을 입력하세요. 자동 계산하지 않습니다.'));money.querySelector('.section-title-row').after(bar);byId('tCurrency').closest('.plan-overview-block').hidden=true;byId('budgetSummary').classList.add('city-summary');
  const moneyDetails=document.createElement('details');moneyDetails.className='calculation-details';moneyDetails.innerHTML='<summary>오수전 계산 내역</summary><p id="currencyBreakdown" class="note"></p>';money.append(moneyDetails);const premium=document.createElement('p');premium.id='premiumBudget';premium.className='costbox';premium.hidden=true;money.append(premium);
  // Home inputs are always available; production-building overrides are secondary settings.
  const composition=byId('buildingComposition'),view=document.createElement('button');view.id='buildingView';view.type='button';view.setAttribute('aria-controls','tArea');view.addEventListener('click',()=>{planState.buildingDetailsVisible=planState.buildingDetailsVisible!==true;syncUnifiedCompositionView();saveState();postSize();});composition.querySelector('.section-title-row').append(view);
