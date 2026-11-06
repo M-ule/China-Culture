@@ -9,22 +9,81 @@ const STOCKS=[{name:'오수전',target:'currency'},...Object.entries({'쌀':'쌀
 let worker=null,busy=false,findings=[];
 const clean=s=>String(s).replace(/\s|[·:：]/g,'');
 function status(s,bad=false){el('photoStatus').textContent=s;el('photoStatus').classList.toggle('bad',bad);}
-async function engine(){if(worker)return worker;if(!window.Tesseract)await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';s.onload=resolve;s.onerror=()=>reject(new Error('인식 엔진을 불러오지 못했습니다. 인터넷 연결을 확인하세요.'));document.head.append(s);});worker=await Tesseract.createWorker('kor+eng',1,{logger:()=>{}});return worker;}
+async function engine(){
+ if(worker)return worker;
+ if(!window.Tesseract)await new Promise((resolve,reject)=>{
+  const script=document.createElement('script');
+  const fail=()=>{clearTimeout(timer);script.remove();reject(new Error('인식 엔진을 불러오지 못했습니다. 인터넷 연결을 확인하세요.'));};
+  const timer=setTimeout(fail,20000);
+  script.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+  script.onload=()=>{clearTimeout(timer);resolve();};
+  script.onerror=fail;
+  document.head.append(script);
+ });
+ let timer,expired=false;
+ try{
+  worker=await new Promise((resolve,reject)=>{
+   const fail=()=>{expired=true;reject(new Error('인식 엔진을 시작하지 못했습니다. 잠시 후 다시 분석해 주세요.'));};
+   timer=setTimeout(fail,45000);
+   window.Tesseract.createWorker('kor+eng',1,{errorHandler:fail}).then(w=>{
+    if(expired)void w.terminate();else resolve(w);
+   },fail);
+  });
+  return worker;
+ }finally{clearTimeout(timer);}
+}
+function contrastImage(canvas){
+ const copy=document.createElement('canvas');
+ copy.width=canvas.width;copy.height=canvas.height;
+ const ctx=copy.getContext('2d',{willReadFrequently:true});
+ ctx.drawImage(canvas,0,0);
+ const pixels=ctx.getImageData(0,0,copy.width,copy.height);
+ for(let i=0;i<pixels.data.length;i+=4){
+  const gray=.299*pixels.data[i]+.587*pixels.data[i+1]+.114*pixels.data[i+2];
+  const value=Math.max(0,Math.min(255,(gray-128)*1.75+128));
+  pixels.data[i]=pixels.data[i+1]=pixels.data[i+2]=value;
+ }
+ ctx.putImageData(pixels,0,0);
+ return copy;
+}
 function quantity(s){if(String(s).trim()==='')return null;const n=parseCompactNumber(String(s).replace(/[Oo]/g,'0'));return Number.isFinite(n)&&Number.isInteger(n)&&n>=0&&n<=1e12?n:null;}
 function matchBuilding(s){const text=clean(s);const exact=BUILDINGS.filter(b=>b.aliases.some(a=>text.includes(a))&&(!/호화|고급/.test(text)||/호화|고급/.test(b.name)));exact.sort((a,b)=>Math.max(...b.aliases.map(x=>x.length))-Math.max(...a.aliases.map(x=>x.length)));return exact[0]||null;}
 function entry(id,label,value,extra={}){return {id,label,value,...extra};}
-function parseStockLines(lines){const out=[];for(const line of lines){const text=clean(line.text),candidates=STOCKS.filter(s=>text.includes(clean(s.name))).sort((a,b)=>b.name.length-a.name.length),s=candidates[0];if(!s)continue;let after=text.slice(text.indexOf(clean(s.name))+clean(s.name).length);if(!/\d/.test(after)&&line.bbox){const p=line.bbox,next=lines.filter(l=>l.bbox&&l.bbox.y0>=p.y1&&l.bbox.y0-p.y1<(p.y1-p.y0)*2&&Math.abs(l.bbox.x0-p.x0)<30).sort((a,b)=>a.bbox.y0-b.bbox.y0)[0];after=next?.text||'';}const m=after.match(/^\s*(\d[\d,]*(?:\.\d+)?\s*[KkMm]?)\s*$/);if(m){const n=quantity(m[1]);if(n!==null)out.push(entry('stock_'+s.target,s.name+' 보유량',n,{kind:'stock',target:s.target}));}}return out;}
+function stockNumber(text){
+ const match=String(text).trim().match(/^[·:：]?\s*([0-9Oo][0-9Oo,]*(?:\.[0-9Oo]+)?\s*[KM]?)$/i);
+ return match?quantity(match[1]):null;
+}
+function parseStockLines(lines){
+ const out=[];
+ for(const line of lines){
+  const text=clean(line.text),stock=STOCKS.filter(s=>text.startsWith(clean(s.name))).sort((a,b)=>b.name.length-a.name.length)[0];
+  if(!stock)continue;
+  let value=stockNumber(text.slice(clean(stock.name).length)),box=line.bbox;
+  if(value===null&&box&&text===clean(stock.name)){
+   const height=box.y1-box.y0;
+   const nearby=lines.filter(({bbox:p,text})=>p&&stockNumber(text)!==null&&(
+    (p.x0>=box.x1&&p.x0-box.x1<height*4&&Math.abs(p.y0-box.y0)<height*.6)||
+    (p.y0>=box.y1&&p.y0-box.y1<height*1.5&&Math.abs(p.x0-box.x0)<height)
+   )).sort((a,b)=>Math.hypot(a.bbox.x0-box.x0,a.bbox.y0-box.y0)-Math.hypot(b.bbox.x0-box.x0,b.bbox.y0-box.y0));
+   if(nearby.length===1){value=stockNumber(nearby[0].text);box=nearby[0].bbox;}
+  }
+  if(value!==null)out.push(entry('stock_'+stock.target,stock.name+' 보유량',value,{kind:'stock',target:stock.target,box}));
+ }
+ return out;
+}
 function parseBuildingLines(lines,width,height){
  const out=[];
  for(const line of lines){const b=matchBuilding(line.text);if(!b)continue;const p=line.bbox||{},rh=Math.max(15,(p.y1||0)-(p.y0||0));
  const below=lines.filter(l=>l!==line&&l.bbox&&l.bbox.y0>=(p.y1||0)-rh*.3&&l.bbox.y0<(p.y1||0)+rh*3&&Math.abs(l.bbox.x0-(p.x0||0))<rh*3);
  const above=lines.filter(l=>l!==line&&l.bbox&&l.bbox.y1<=(p.y0||0)+rh*.5&&l.bbox.y1>(p.y0||0)-rh*5&&l.bbox.x0>=(p.x0||0)-rh&&l.bbox.x0<(p.x0||0)+rh*10);
- const lv=(line.text+' '+below.map(l=>l.text).join(' ')).match(/(?:Lv\.?|레벨)\s*([1-6])(?!\d)/i),count=(line.text+' '+above.map(l=>l.text).join(' ')).match(/[x×X]\s*(\d{1,4})(?!\d)/);
+ const read=(nearby,pattern)=>[line,...nearby].map(l=>({match:l.text.match(pattern),box:l.bbox})).find(r=>r.match);
+ const lv=read(below,/(?:L[vV]\.?|레벨)\s*([1-6])(?!\d)/i);
+ const count=read(above,/[x×✕]\s*(\d{1,4})(?!\d)/i);
  const group=b.id+'_'+Math.round(p.x0||0)+'_'+Math.round(p.y0||0);
- for(const [field,m]of [['lv',lv],['count',count]])out.push(entry(group+'_'+field,b.name+(field==='lv'?' 레벨':' 수량'),m?Number(m[1]):null,{kind:'building',building:b.id,field,group,anchor:p,needsReview:true}));
+ for(const [field,m]of [['lv',lv],['count',count]])out.push(entry(group+'_'+field,b.name+(field==='lv'?' 레벨':' 수량'),m?Number(m.match[1]):null,{kind:'building',building:b.id,field,group,anchor:p,box:m?.box,needsReview:true}));
  }return out;
 }
-function mergeFindings(additions){for(const f of additions){const prior=findings.find(p=>p.source===f.source&&(f.kind==='stock'?p.kind==='stock'&&p.target===f.target:p.building===f.building&&p.field===f.field&&Math.abs((p.anchor?.y0||0)-(f.anchor?.y0||0))<25&&Math.abs((p.anchor?.x0||0)-(f.anchor?.x0||0))<25));if(!prior){findings.push(f);continue;}if(f.value===null||f.value===undefined)continue;if(prior.value===null||prior.value===undefined){prior.value=f.value;prior.needsReview=!!f.needsReview;}else if(prior.value!==f.value){prior.needsReview=true;prior.candidates=[...new Set([prior.value,f.value,...(prior.candidates||[])])];}}}
+function mergeFindings(additions){for(const f of additions){const prior=findings.find(p=>p.source===f.source&&(f.kind==='stock'?p.kind==='stock'&&p.target===f.target:p.building===f.building&&p.field===f.field&&Math.abs((p.anchor?.y0||0)-(f.anchor?.y0||0))<25&&Math.abs((p.anchor?.x0||0)-(f.anchor?.x0||0))<25));if(!prior){findings.push(f);continue;}if(f.value===null||f.value===undefined)continue;if(prior.value===null||prior.value===undefined){prior.value=f.value;prior.needsReview=!!f.needsReview;prior.preview=f.preview||prior.preview;}else if(prior.value!==f.value){prior.needsReview=true;prior.candidates=[...new Set([prior.value,f.value,...(prior.candidates||[])])];}}}
 // Overlapping scrolling screenshots show the same card at different positions.
 // Preserve its count once by matching a building and its displayed level.
 function dedupePhotoPages(){
@@ -64,11 +123,28 @@ async function scan(){
  status('사진 '+(files.findIndex(f=>f[2]===source)+1)+' / '+files.length+' · 건물명과 숫자를 확인하고 있습니다…');
  const url=URL.createObjectURL(file);try{const image=new Image();await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(new Error('사진을 열 수 없습니다.'));image.src=url;});
  const scale=Math.min(2,1600/image.naturalHeight,3000/image.naturalWidth),canvas=document.createElement('canvas');canvas.width=Math.round(image.naturalWidth*scale);canvas.height=Math.round(image.naturalHeight*scale);const ctx=canvas.getContext('2d');ctx.drawImage(image,0,0,canvas.width,canvas.height);
- const result=await w.recognize(canvas),lines=result.data.lines||[];
- const rows=kind==='buildings'?parseBuildingLines(lines,canvas.width,canvas.height):parseStockLines(lines);
- for(const f of rows){f.source=source;f.needsReview=true;if(f.group)f.group=source+'_'+f.group;}mergeFindings(rows);
+ const collect=async input=>{
+  const {data}=await w.recognize(input);
+  const lines=data.lines||[];
+  const rows=kind==='buildings'?parseBuildingLines(lines):parseStockLines(lines);
+  for(const f of rows){
+   f.source=source;f.needsReview=true;
+   if(f.group)f.group=source+'_'+f.group;
+   if(f.box){
+    const {x0,y0,x1,y1}=f.box;
+    const preview=document.createElement('canvas');
+    preview.width=Math.max(1,x1-x0);preview.height=Math.max(1,y1-y0);
+    preview.getContext('2d').drawImage(canvas,x0,y0,preview.width,preview.height,0,0,preview.width,preview.height);
+    f.preview=preview.toDataURL('image/png');
+   }
+  }
+  mergeFindings(rows);
+ };
+ await collect(canvas);
+ status('대비를 높여 이름과 숫자를 다시 확인하고 있습니다…');
+ await collect(contrastImage(canvas));
  }finally{URL.revokeObjectURL(url);}}
- dedupePhotoPages();addMissing(files);render();status('분석 완료 · 인식값을 확인하고 적용할 항목을 선택하세요.');
+ dedupePhotoPages();const recognized=findings.filter(f=>f.value!==null||f.candidates?.length).length;addMissing(files);render();status(recognized?'인식값 '+recognized+'개 · 원본과 비교해 적용할 항목을 선택하세요.':'이름과 숫자를 읽지 못했습니다. 글자가 선명한 게임 화면으로 다시 분석하거나 직접 입력해 주세요.',!recognized);
  }catch(e){addMissing(files);render();status(e.message+' · 아래에서 직접 입력할 수도 있습니다.',true);}
  finally{busy=false;el('photoScan').disabled=false;syncClear();}
 }
